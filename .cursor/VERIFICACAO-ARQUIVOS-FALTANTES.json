@@ -1,0 +1,1537 @@
+{
+  "found_exact": [
+    "ab_testing.go",
+    "ai.go",
+    "ai_app_service.go",
+    "ai_assistance.go",
+    "ai_domain_service.go",
+    "ai_dto.go",
+    "ai_events_handler.go",
+    "ai_grpc_server.go",
+    "ai_http_handler.go",
+    "ai_port.go",
+    "alerting.go",
+    "alerting_system.go",
+    "auth.go",
+    "auth_manager.go",
+    "base_generator.go",
+    "base_validator.go",
+    "build.go",
+    "build.sh",
+    "cache_coherency.go",
+    "cache_distribution.go",
+    "cache_invalidation.go",
+    "cache_warmer.go",
+    "Cargo.toml.tmpl",
+    "clone.go",
+    "config.go.tmpl",
+    "conflict_resolver.go",
+    "cors.go",
+    "cost_analytics.go",
+    "data_lineage.go",
+    "data_quality.go",
+    "dependency_checker.go",
+    "deploy.go",
+    "dev.yaml.tmpl",
+    "distributed_tracing.go",
+    "entities.go.tmpl",
+    "environment.go",
+    "event_projection.go",
+    "event_replay.go",
+    "event_versioning.go",
+    "execution_engine.go",
+    "exports.go.tmpl",
+    "fields.go",
+    "finetuning_prompt_builder.go",
+    "finetuning_store.go",
+    "generate.go",
+    "glm.go",
+    "go.mod.tmpl",
+    "go_generator.go",
+    "handlers.go",
+    "health_monitor.go",
+    "index.html.tmpl",
+    "indexer.go",
+    "init.go",
+    "knowledge_app_service.go",
+    "knowledge_domain_service.go",
+    "knowledge_graph.go",
+    "knowledge_store.go",
+    "levels.go",
+    "lib.rs.tmpl",
+    "llm_interface.go",
+    "logging.go",
+    "main.tsx.tmpl",
+    "manifest.json.tmpl",
+    "mcp_app_service.go",
+    "mcp_domain_service.go",
+    "mcp_events_handler.go",
+    "mcp_generation.go",
+    "mcp_grpc_server.go",
+    "mcp_http_handler.go",
+    "memory_consolidation.go",
+    "memory_retrieval.go",
+    "memory_store.go",
+    "metrics_collection.go",
+    "model_deployment.go",
+    "monitor.go",
+    "monitoring_app_service.go",
+    "monitoring_events_handler.go",
+    "monitoring_grpc_server.go",
+    "monitoring_http_handler.go",
+    "multi_level_cache.go",
+    "oauth_provider.go",
+    "package.json.tmpl",
+    "performance.go",
+    "performance_analytics.go",
+    "performance_monitor.go",
+    "performance_profiler.go",
+    "predictive_analytics.go",
+    "project_repository.go",
+    "project_validation.go",
+    "prompt_builder.go",
+    "rate_limit.go",
+    "resource_monitor.go",
+    "resource_tracker.go",
+    "retriever.go",
+    "rollback_manager.go",
+    "rust_generator.go",
+    "schema_migration.go",
+    "secure_storage.go",
+    "semantic_search.go",
+    "service_registry.go",
+    "set.go",
+    "show.go",
+    "start.go",
+    "state_app_service.go",
+    "state_snapshot.go",
+    "state_sync.go",
+    "stop.go",
+    "store.go",
+    "structured_logging.go",
+    "sync.go",
+    "system_events_handler.go",
+    "task_scheduler.go",
+    "technology.go",
+    "template_app_service.go",
+    "template_domain_service.go",
+    "template_dto.go",
+    "template_grpc_server.go",
+    "template_http_handler.go",
+    "template_management.go",
+    "template_registry.go",
+    "test.go",
+    "tinygo_generator.go",
+    "token_manager.go",
+    "tools.go",
+    "usage_analytics.go",
+    "validate.go",
+    "validation.go",
+    "validation_rule.go",
+    "version_comparator.go",
+    "versioning.go",
+    "versioning_app_service.go",
+    "vite.config.ts.tmpl",
+    "web_generator.go"
+  ],
+  "found_similar": [],
+  "found_functional": [
+    "processor.go"
+  ],
+  "not_found": [
+    "directory.go",
+    "go_file.go",
+    "go_mod.go",
+    "text_file.go",
+    "yaml_file.go"
+  ],
+  "analyses": [
+    {
+      "original": "ab_testing.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\versioning\\models\\ab_testing.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "ai.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\interfaces\\cli\\ai.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "ai_app_service.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\services\\ai_app_service.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "ai_assistance.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\application\\use_cases\\ai_assistance.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "ai_domain_service.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\domain\\services\\ai_domain_service.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "ai_dto.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\application\\dtos\\ai_dto.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "ai_events_handler.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\interfaces\\messaging\\ai_events_handler.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "ai_grpc_server.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\interfaces\\grpc\\ai_grpc_server.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "ai_http_handler.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\interfaces\\http\\ai_http_handler.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "ai_port.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\application\\ports\\ai_port.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "alerting.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\core\\metrics\\alerting.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "alerting_system.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\monitoring\\observability\\alerting_system.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "auth.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\interfaces\\http\\middleware\\auth.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "auth_manager.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\security\\auth\\auth_manager.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "base_generator.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\mcp\\generators\\base_generator.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "base_validator.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\mcp\\validators\\base_validator.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "build.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\interfaces\\cli\\ci\\build.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "build.sh",
+      "status": "found_exact",
+      "matches": [
+        "templates\\wasm\\build.sh"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "cache_coherency.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\state\\cache\\cache_coherency.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "cache_distribution.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\state\\cache\\cache_distribution.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "cache_invalidation.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\core\\cache\\cache_invalidation.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "cache_warmer.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\core\\cache\\cache_warmer.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "Cargo.toml.tmpl",
+      "status": "found_exact",
+      "matches": [
+        "templates\\wasm\\Cargo.toml.tmpl"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "clone.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\interfaces\\cli\\repo\\clone.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "config.go.tmpl",
+      "status": "found_exact",
+      "matches": [
+        "templates\\go\\internal\\config\\config.go.tmpl"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "conflict_resolver.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\state\\store\\conflict_resolver.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "cors.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\interfaces\\http\\middleware\\cors.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "cost_analytics.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\monitoring\\analytics\\cost_analytics.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "data_lineage.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\versioning\\data\\data_lineage.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "data_quality.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\versioning\\data\\data_quality.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "dependency_checker.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\monitoring\\health\\dependency_checker.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "deploy.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\interfaces\\cli\\ci\\deploy.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "dev.yaml.tmpl",
+      "status": "found_exact",
+      "matches": [
+        "templates\\mcp-go-premium\\configs\\dev.yaml.tmpl"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "directory.go",
+      "status": "not_found",
+      "matches": [],
+      "notes": [
+        "Arquivo não encontrado no projeto"
+      ]
+    },
+    {
+      "original": "distributed_tracing.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\monitoring\\observability\\distributed_tracing.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "entities.go.tmpl",
+      "status": "found_exact",
+      "matches": [
+        "templates\\go\\internal\\domain\\entities.go.tmpl"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "environment.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\core\\config\\environment.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "event_projection.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\state\\events\\event_projection.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "event_replay.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\state\\events\\event_replay.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "event_versioning.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\state\\events\\event_versioning.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "execution_engine.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\core\\engine\\execution_engine.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "exports.go.tmpl",
+      "status": "found_exact",
+      "matches": [
+        "templates\\tinygo\\wasm\\exports.go.tmpl"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "fields.go",
+      "status": "found_exact",
+      "matches": [
+        "pkg\\logger\\fields.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "finetuning_prompt_builder.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\ai\\finetuning\\finetuning_prompt_builder.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "finetuning_store.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\ai\\finetuning\\finetuning_store.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "generate.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\interfaces\\cli\\generate.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "glm.go",
+      "status": "found_exact",
+      "matches": [
+        "pkg\\glm\\glm.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "go.mod.tmpl",
+      "status": "found_exact",
+      "matches": [
+        "templates\\go\\go.mod.tmpl",
+        "templates\\mcp-go-premium\\go.mod.tmpl",
+        "templates\\tinygo\\go.mod.tmpl"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "go_file.go",
+      "status": "not_found",
+      "matches": [],
+      "notes": [
+        "Arquivo não encontrado no projeto"
+      ]
+    },
+    {
+      "original": "go_generator.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\mcp\\generators\\go_generator.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "go_mod.go",
+      "status": "not_found",
+      "matches": [],
+      "notes": [
+        "Arquivo não encontrado no projeto"
+      ]
+    },
+    {
+      "original": "handlers.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\mcp\\protocol\\handlers.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "health_monitor.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\monitoring\\health\\health_monitor.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "index.html.tmpl",
+      "status": "found_exact",
+      "matches": [
+        "templates\\web\\index.html.tmpl"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "indexer.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\ai\\knowledge\\indexer.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "init.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\interfaces\\cli\\repo\\init.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "knowledge_app_service.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\services\\knowledge_app_service.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "knowledge_domain_service.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\domain\\services\\knowledge_domain_service.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "knowledge_graph.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\ai\\knowledge\\knowledge_graph.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "knowledge_store.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\ai\\knowledge\\knowledge_store.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "levels.go",
+      "status": "found_exact",
+      "matches": [
+        "pkg\\logger\\levels.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "lib.rs.tmpl",
+      "status": "found_exact",
+      "matches": [
+        "templates\\wasm\\src\\lib.rs.tmpl"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "llm_interface.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\ai\\core\\llm_interface.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "logging.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\interfaces\\http\\middleware\\logging.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "main.tsx.tmpl",
+      "status": "found_exact",
+      "matches": [
+        "templates\\web\\src\\main.tsx.tmpl"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "manifest.json.tmpl",
+      "status": "found_exact",
+      "matches": [
+        "templates\\web\\public\\manifest.json.tmpl"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "mcp_app_service.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\services\\mcp_app_service.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "mcp_domain_service.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\domain\\services\\mcp_domain_service.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "mcp_events_handler.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\interfaces\\messaging\\mcp_events_handler.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "mcp_generation.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\application\\use_cases\\mcp_generation.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "mcp_grpc_server.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\interfaces\\grpc\\mcp_grpc_server.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "mcp_http_handler.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\interfaces\\http\\mcp_http_handler.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "memory_consolidation.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\ai\\memory\\memory_consolidation.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "memory_retrieval.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\ai\\memory\\memory_retrieval.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "memory_store.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\ai\\memory\\memory_store.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "metrics_collection.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\monitoring\\observability\\metrics_collection.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "model_deployment.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\versioning\\models\\model_deployment.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "monitor.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\interfaces\\cli\\monitor.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "monitoring_app_service.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\services\\monitoring_app_service.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "monitoring_events_handler.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\interfaces\\messaging\\monitoring_events_handler.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "monitoring_grpc_server.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\interfaces\\grpc\\monitoring_grpc_server.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "monitoring_http_handler.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\interfaces\\http\\monitoring_http_handler.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "multi_level_cache.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\core\\cache\\multi_level_cache.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "oauth_provider.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\security\\auth\\oauth_provider.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "package.json.tmpl",
+      "status": "found_exact",
+      "matches": [
+        "templates\\web\\package.json.tmpl"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "performance.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\interfaces\\cli\\analytics\\performance.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "performance_analytics.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\monitoring\\analytics\\performance_analytics.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "performance_monitor.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\core\\metrics\\performance_monitor.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "performance_profiler.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\monitoring\\health\\performance_profiler.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "predictive_analytics.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\monitoring\\analytics\\predictive_analytics.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "processor.go",
+      "status": "found_functional",
+      "matches": [
+        "internal\\core\\crush\\batch_processor.go",
+        "internal\\core\\crush\\batch_processor.go",
+        "internal\\core\\crush\\batch_processor.go",
+        "internal\\core\\crush\\batch_processor.go",
+        "internal\\core\\crush\\batch_processor.go"
+      ],
+      "notes": [
+        "Arquivos com funcionalidade similar encontrados"
+      ]
+    },
+    {
+      "original": "project_repository.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\domain\\repositories\\project_repository.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "project_validation.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\application\\use_cases\\project_validation.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "prompt_builder.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\ai\\core\\prompt_builder.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "rate_limit.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\interfaces\\http\\middleware\\rate_limit.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "resource_monitor.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\monitoring\\health\\resource_monitor.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "resource_tracker.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\core\\metrics\\resource_tracker.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "retriever.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\ai\\knowledge\\retriever.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "rollback_manager.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\versioning\\knowledge\\rollback_manager.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "rust_generator.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\mcp\\generators\\rust_generator.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "schema_migration.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\versioning\\data\\schema_migration.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "secure_storage.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\security\\encryption\\secure_storage.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "semantic_search.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\ai\\knowledge\\semantic_search.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "service_registry.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\mcp\\registry\\service_registry.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "set.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\interfaces\\cli\\config\\set.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "show.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\interfaces\\cli\\config\\show.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "start.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\interfaces\\cli\\server\\start.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "state_app_service.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\services\\state_app_service.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "state_snapshot.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\state\\store\\state_snapshot.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "state_sync.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\state\\store\\state_sync.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "stop.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\interfaces\\cli\\server\\stop.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "store.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\core\\state\\store.go",
+        "pkg\\knowledge\\store.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "structured_logging.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\monitoring\\observability\\structured_logging.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "sync.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\interfaces\\cli\\repo\\sync.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "system_events_handler.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\interfaces\\messaging\\system_events_handler.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "task_scheduler.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\core\\engine\\task_scheduler.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "technology.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\domain\\value_objects\\technology.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "template_app_service.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\services\\template_app_service.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "template_domain_service.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\domain\\services\\template_domain_service.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "template_dto.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\application\\dtos\\template_dto.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "template_grpc_server.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\interfaces\\grpc\\template_grpc_server.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "template_http_handler.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\interfaces\\http\\template_http_handler.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "template_management.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\application\\use_cases\\template_management.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "template_registry.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\mcp\\registry\\template_registry.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "test.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\interfaces\\cli\\ci\\test.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "text_file.go",
+      "status": "not_found",
+      "matches": [],
+      "notes": [
+        "Arquivo não encontrado no projeto"
+      ]
+    },
+    {
+      "original": "tinygo_generator.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\mcp\\generators\\tinygo_generator.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "token_manager.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\security\\auth\\token_manager.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "tools.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\mcp\\protocol\\tools.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "usage_analytics.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\monitoring\\analytics\\usage_analytics.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "validate.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\interfaces\\cli\\config\\validate.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "validation.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\core\\config\\validation.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "validation_rule.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\domain\\value_objects\\validation_rule.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "version_comparator.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\versioning\\knowledge\\version_comparator.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "versioning.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\ai\\finetuning\\versioning.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "versioning_app_service.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\services\\versioning_app_service.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "vite.config.ts.tmpl",
+      "status": "found_exact",
+      "matches": [
+        "templates\\web\\vite.config.ts.tmpl"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "web_generator.go",
+      "status": "found_exact",
+      "matches": [
+        "internal\\mcp\\generators\\web_generator.go"
+      ],
+      "notes": [
+        "Arquivo encontrado com nome exato"
+      ]
+    },
+    {
+      "original": "yaml_file.go",
+      "status": "not_found",
+      "matches": [],
+      "notes": [
+        "Arquivo não encontrado no projeto"
+      ]
+    }
+  ]
+}

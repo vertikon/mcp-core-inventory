@@ -1,0 +1,1 @@
+# Função: Porta para provedores de IA/LLM

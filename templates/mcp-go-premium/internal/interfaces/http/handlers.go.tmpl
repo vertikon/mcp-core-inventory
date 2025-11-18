@@ -1,0 +1,22 @@
+package http
+
+import (
+	"net/http"
+
+	"github.com/labstack/echo/v4"
+
+	"{{ .ModulePath }}/internal/core/engine"
+)
+
+// Handler exposes human friendly endpoints for UI dashboards.
+func Handler(engineSvc *engine.Engine) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		agent := c.Param("agent")
+		input := c.FormValue("input")
+		resp, err := engineSvc.Execute(c.Request().Context(), agent, input)
+		if err != nil {
+			return c.String(http.StatusBadRequest, err.Error())
+		}
+		return c.JSON(http.StatusOK, map[string]string{"result": resp})
+	}
+}

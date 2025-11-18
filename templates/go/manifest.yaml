@@ -1,0 +1,27 @@
+name: go-premium
+stack: go
+version: 1.0.0
+summary: "Template Go premium baseado em Clean Architecture com Echo + Viper + Zap"
+placeholders:
+  - ServiceName
+  - ModulePath
+  - Description
+  - GoVersion
+  - EntityName
+  - HTTPPort
+  - LogLevel
+  - DatabaseEnabled
+  - CacheEnabled
+  - MonitoringEnabled
+files:
+  - go.mod.tmpl
+  - cmd/server/main.go.tmpl
+  - internal/config/config.go.tmpl
+  - internal/domain/entities.go.tmpl
+  - internal/application/usecases.tmpl
+  - internal/infrastructure/repositories.tmpl
+  - internal/interfaces/handlers.tmpl
+  - Dockerfile.tmpl
+  - docker-compose.yaml.tmpl
+  - README.md.tmpl
+  - CHANGELOG.md.tmpl

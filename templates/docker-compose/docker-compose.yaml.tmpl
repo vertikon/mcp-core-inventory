@@ -1,0 +1,82 @@
+version: '3.8'
+
+services:
+  {{ .ServiceName }}:
+    image: {{ .ImageName }}
+    container_name: {{ .ServiceName }}
+    ports:
+      - "{{ .Port }}:{{ .Port }}"
+    environment:
+      - ENVIRONMENT={{ .Environment }}
+      - PORT={{ .Port }}
+      - DATABASE_URL=postgresql://postgres:password@postgres:5432/{{ .ServiceName }}?sslmode=disable
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      {{- if .DatabaseEnabled }}
+      - postgres
+      {{- end }}
+      {{- if .RedisEnabled }}
+      - redis
+      {{- end }}
+    networks:
+      - app-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:{{ .Port }}/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+{{- if .DatabaseEnabled }}
+  postgres:
+    image: postgres:15-alpine
+    container_name: {{ .ServiceName }}-db
+    environment:
+      - POSTGRES_DB={{ .ServiceName }}
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+    restart: unless-stopped
+{{- end }}
+
+{{- if .RedisEnabled }}
+  redis:
+    image: redis:7-alpine
+    container_name: {{ .ServiceName }}-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - app-network
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+{{- end }}
+
+  nginx:
+    image: nginx:alpine
+    container_name: {{ .ServiceName }}-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./ssl:/etc/nginx/ssl
+    depends_on:
+      - {{ .ServiceName }}
+    networks:
+      - app-network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  app-network:
+    driver: bridge

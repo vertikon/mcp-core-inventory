@@ -1,0 +1,103 @@
+# Production Docker Compose configuration for {{ .ServiceName }}
+version: '3.8'
+
+services:
+  {{ .ServiceName }}:
+    image: {{ .ImageName }}:{{ .Version | default "latest" }}
+    container_name: {{ .ServiceName }}-prod
+    ports:
+      - "{{ .Port }}:{{ .Port }}"
+    environment:
+      - ENVIRONMENT=production
+      - PORT={{ .Port }}
+      - LOG_LEVEL=info
+      - DATABASE_URL=postgresql://postgres:${DB_PASSWORD}@postgres-prod:5432/{{ .ServiceName }}?sslmode=require
+      - REDIS_URL=redis://redis-prod:6379
+      - JWT_SECRET=${JWT_SECRET}
+    depends_on:
+      - postgres-prod
+      - redis-prod
+    networks:
+      - prod-network
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:{{ .Port }}/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  postgres-prod:
+    image: postgres:15-alpine
+    container_name: {{ .ServiceName }}-db-prod
+    environment:
+      - POSTGRES_DB={{ .ServiceName }}
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - postgres_prod_data:/var/lib/postgresql/data
+      - ./backups:/backups
+    networks:
+      - prod-network
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 1G
+        reservations:
+          cpus: '0.25'
+          memory: 512M
+
+  redis-prod:
+    image: redis:7-alpine
+    container_name: {{ .ServiceName }}-redis-prod
+    volumes:
+      - redis_prod_data:/data
+    networks:
+      - prod-network
+    restart: unless-stopped
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD}
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 256M
+        reservations:
+          cpus: '0.125'
+          memory: 128M
+
+  nginx:
+    image: nginx:alpine
+    container_name: {{ .ServiceName }}-nginx-prod
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.prod.conf:/etc/nginx/nginx.conf
+      - ./ssl:/etc/nginx/ssl
+      - ./logs/nginx:/var/log/nginx
+    depends_on:
+      - {{ .ServiceName }}
+    networks:
+      - prod-network
+    restart: unless-stopped
+
+volumes:
+  postgres_prod_data:
+  redis_prod_data:
+
+networks:
+  prod-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

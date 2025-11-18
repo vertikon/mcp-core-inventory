@@ -1,0 +1,1 @@
+# Função: Análise de dependências (vulnerabilidades, PRL)

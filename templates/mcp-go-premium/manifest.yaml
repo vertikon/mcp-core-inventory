@@ -1,0 +1,28 @@
+name: mcp-go-premium
+stack: go
+version: 1.0.0
+summary: "Stack completa com AI, cache, state, monitoring e interfaces"
+placeholders:
+  - ServiceName
+  - Description
+  - ModulePath
+  - GoVersion
+  - HTTPPort
+  - NATSURL
+  - AIProvider
+  - AIModel
+  - TelemetryEndpoint
+files:
+  - go.mod.tmpl
+  - Makefile
+  - configs/dev.yaml.tmpl
+  - cmd/main.go.tmpl
+  - internal/ai/agents/agent.go.tmpl
+  - internal/ai/core/orchestrator.go.tmpl
+  - internal/ai/rag/ingestion.go.tmpl
+  - internal/core/cache/cache.go.tmpl
+  - internal/core/engine/engine.go.tmpl
+  - internal/infrastructure/http/server.go.tmpl
+  - internal/interfaces/http/handlers.go.tmpl
+  - internal/monitoring/telemetry.go.tmpl
+  - internal/state/store.go.tmpl

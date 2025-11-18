@@ -1,0 +1,61 @@
+# Development Docker Compose configuration for {{ .ServiceName }}
+version: '3.8'
+
+services:
+  {{ .ServiceName }}:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: {{ .ServiceName }}-dev
+    ports:
+      - "{{ .Port }}:{{ .Port }}"
+    environment:
+      - ENVIRONMENT=development
+      - PORT={{ .Port }}
+      - LOG_LEVEL=debug
+      - DATABASE_URL=postgresql://postgres:password@postgres-dev:5432/{{ .ServiceName }}_dev?sslmode=disable
+      - REDIS_URL=redis://redis-dev:6379
+    depends_on:
+      - postgres-dev
+      - redis-dev
+    networks:
+      - dev-network
+    volumes:
+      - .:/app
+      - /app/vendor
+    restart: unless-stopped
+
+  postgres-dev:
+    image: postgres:15-alpine
+    container_name: {{ .ServiceName }}-db-dev
+    environment:
+      - POSTGRES_DB={{ .ServiceName }}_dev
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_dev_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - dev-network
+    restart: unless-stopped
+
+  redis-dev:
+    image: redis:7-alpine
+    container_name: {{ .ServiceName }}-redis-dev
+    ports:
+      - "6380:6379"
+    volumes:
+      - redis_dev_data:/data
+    networks:
+      - dev-network
+    restart: unless-stopped
+
+volumes:
+  postgres_dev_data:
+  redis_dev_data:
+
+networks:
+  dev-network:
+    driver: bridge

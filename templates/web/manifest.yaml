@@ -1,0 +1,12 @@
+name: web-react-vite
+stack: web
+version: 1.0.0
+summary: "Template React/Vite com dashboards MCP"
+placeholders:
+  - ServiceName
+files:
+  - package.json.tmpl
+  - vite.config.ts.tmpl
+  - src/main.tsx.tmpl
+  - src/App.tsx.tmpl
+  - public/manifest.json.tmpl

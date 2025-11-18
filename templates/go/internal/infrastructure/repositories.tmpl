@@ -1,0 +1,143 @@
+package repositories
+
+import (
+	"context"
+	"database/sql"
+	
+	"github.com/{{ .ModulePath }}/internal/domain"
+)
+
+// postgres{{ .EntityName }}Repository implements {{ .EntityName }}Repository using PostgreSQL
+type postgres{{ .EntityName }}Repository struct {
+	db     *sql.DB
+	logger *zap.Logger
+}
+
+// NewPostgres{{ .EntityName }}Repository creates a new PostgreSQL repository
+func NewPostgres{{ .EntityName }}Repository(db *sql.DB) domain.{{ .EntityName }}Repository {
+	return &postgres{{ .EntityName }}Repository{
+		db:     db,
+		logger: logger.Get(),
+	}
+}
+
+// Create saves a new {{ .EntityName }} to the database
+func (r *postgres{{ .EntityName }}Repository) Create(ctx context.Context, entity *domain.{{ .EntityName }}) error {
+	query := `
+		INSERT INTO {{ .EntityName | lower }} (id, name, created_at, updated_at)
+		VALUES ($1, $2, $3, $4)
+	`
+	
+	_, err := r.db.ExecContext(ctx, query, entity.ID, entity.Name, entity.CreatedAt, entity.UpdatedAt)
+	if err != nil {
+		r.logger.Error("Failed to create {{ .EntityName | lower }}", zap.Error(err))
+		return err
+	}
+	
+	return nil
+}
+
+// GetByID retrieves a {{ .EntityName }} by ID
+func (r *postgres{{ .EntityName }}Repository) GetByID(ctx context.Context, id string) (*domain.{{ .EntityName }}, error) {
+	query := `
+		SELECT id, name, created_at, updated_at
+		FROM {{ .EntityName | lower }}
+		WHERE id = $1
+	`
+	
+	entity := &domain.{{ .EntityName }}{}
+	err := r.db.QueryRowContext(ctx, query, id).Scan(
+		&entity.ID,
+		&entity.Name,
+		&entity.CreatedAt,
+		&entity.UpdatedAt,
+	)
+	
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, domain.Err{{ .EntityName }}NotFound
+		}
+		return nil, err
+	}
+	
+	return entity, nil
+}
+
+// Update updates an existing {{ .EntityName }}
+func (r *postgres{{ .EntityName }}Repository) Update(ctx context.Context, entity *domain.{{ .EntityName }}) error {
+	query := `
+		UPDATE {{ .EntityName | lower }}
+		SET name = $2, updated_at = $3
+		WHERE id = $1
+	`
+	
+	result, err := r.db.ExecContext(ctx, query, entity.ID, entity.Name, entity.UpdatedAt)
+	if err != nil {
+		return err
+	}
+	
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return err
+	}
+	
+	if rowsAffected == 0 {
+		return domain.Err{{ .EntityName }}NotFound
+	}
+	
+	return nil
+}
+
+// Delete removes a {{ .EntityName }} by ID
+func (r *postgres{{ .EntityName }}Repository) Delete(ctx context.Context, id string) error {
+	query := `DELETE FROM {{ .EntityName | lower }} WHERE id = $1`
+	
+	result, err := r.db.ExecContext(ctx, query, id)
+	if err != nil {
+		return err
+	}
+	
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return err
+	}
+	
+	if rowsAffected == 0 {
+		return domain.Err{{ .EntityName }}NotFound
+	}
+	
+	return nil
+}
+
+// List retrieves a list of {{ .EntityName }} entities
+func (r *postgres{{ .EntityName }}Repository) List(ctx context.Context, limit, offset int) ([]*domain.{{ .EntityName }}, error) {
+	query := `
+		SELECT id, name, created_at, updated_at
+		FROM {{ .EntityName | lower }}
+		ORDER BY created_at DESC
+		LIMIT $1 OFFSET $2
+	`
+	
+	rows, err := r.db.QueryContext(ctx, query, limit, offset)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	
+	var entities []*domain.{{ .EntityName }}
+	for rows.Next() {
+		entity := &domain.{{ .EntityName }}{}
+		err := rows.Scan(
+			&entity.ID,
+			&entity.Name,
+			&entity.CreatedAt,
+			&entity.UpdatedAt,
+		)
+		if err != nil {
+			return nil, err
+		}
+		entities = append(entities, entity)
+	}
+	
+	return entities, rows.Err()
+}

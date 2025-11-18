@@ -1,0 +1,1 @@
+# Inferência com TensorRT em GPU local

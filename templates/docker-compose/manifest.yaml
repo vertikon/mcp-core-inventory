@@ -1,0 +1,16 @@
+name: docker-compose
+stack: compose
+version: 1.0.0
+summary: "Templates Docker Compose para desenvolvimento local"
+placeholders:
+  - ServiceName
+  - ImageName
+  - Port
+  - Environment
+  - DatabaseEnabled
+  - RedisEnabled
+files:
+  - docker-compose.yaml.tmpl
+  - docker-compose.dev.yaml.tmpl
+  - docker-compose.prod.yaml.tmpl
+  - .env.example.tmpl

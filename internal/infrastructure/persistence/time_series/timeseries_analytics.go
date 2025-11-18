@@ -1,0 +1,1 @@
+# Função: Analytics de time series

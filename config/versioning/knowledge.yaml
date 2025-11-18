@@ -1,0 +1,55 @@
+# Configuration for Knowledge Versioning
+
+versioning:
+  knowledge:
+    # Retention policy
+    retention:
+      # Number of versions to keep per knowledge base
+      max_versions: 100
+      # Days to keep old versions before soft delete
+      retention_days: 90
+      # Auto-cleanup enabled
+      auto_cleanup: true
+
+    # Versioning strategy
+    strategy:
+      # Auto-increment version numbers
+      auto_increment: true
+      # Version format: "v1", "v1.0.0", etc.
+      format: "incremental"
+
+    # Rollback policy
+    rollback:
+      # Allow rollback to any version
+      allow_rollback: true
+      # Require confirmation for rollback
+      require_confirmation: true
+      # Auto-validate before rollback
+      auto_validate: true
+
+    # Migration settings
+    migration:
+      # Validate integrity after migration
+      validate_integrity: true
+      # Batch size for document migration
+      batch_size: 1000
+      # Timeout for migration operations (seconds)
+      timeout_seconds: 3600
+
+    # Snapshot settings
+    snapshot:
+      # Create snapshots automatically
+      auto_snapshot: true
+      # Snapshot interval (hours)
+      snapshot_interval_hours: 24
+      # Number of snapshots to keep
+      max_snapshots: 10
+
+    # Comparison settings
+    comparison:
+      # Enable semantic comparison
+      semantic_comparison: true
+      # Enable structural comparison
+      structural_comparison: true
+      # Threshold for similarity (0.0 to 1.0)
+      similarity_threshold: 0.8

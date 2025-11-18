@@ -1,0 +1,31 @@
+package state
+
+import "sync"
+
+// Store persists execution history to keep agents contextualised.
+type Store struct {
+	mu      sync.RWMutex
+	records map[string][]Record
+}
+
+// Record represents an execution entry.
+type Record struct {
+	Input  string
+	Output string
+}
+
+func NewStore() *Store {
+	return &Store{records: make(map[string][]Record)}
+}
+
+func (s *Store) Append(agent, input, output string) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	s.records[agent] = append(s.records[agent], Record{Input: input, Output: output})
+}
+
+func (s *Store) History(agent string) []Record {
+	s.mu.RLock()
+	defer s.mu.RUnlock()
+	return append([]Record(nil), s.records[agent]...)
+}

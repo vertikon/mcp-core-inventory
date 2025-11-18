@@ -1,0 +1,19 @@
+package wasm
+
+import "unsafe"
+
+var buffer = make([]byte, 1024)
+
+//export Alloc
+func Alloc(size uint32) *uint8 {
+	if int(size) > len(buffer) {
+		buffer = make([]byte, size)
+	}
+	return &buffer[0]
+}
+
+//export Echo
+func Echo(ptr *uint8, size uint32) {
+	msg := unsafe.Slice(ptr, size)
+	copy(buffer, msg)
+}

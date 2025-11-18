@@ -1,0 +1,33 @@
+package engine
+
+import (
+	"context"
+	"time"
+
+	"go.uber.org/zap"
+
+	"{{ .ModulePath }}/internal/ai/core"
+)
+
+// Engine exposes orchestration APIs to the outside world.
+type Engine struct {
+	orc    *core.Orchestrator
+	logger *zap.Logger
+}
+
+func New(orc *core.Orchestrator, logger *zap.Logger) *Engine {
+	return &Engine{orc: orc, logger: logger}
+}
+
+func (e *Engine) Execute(ctx context.Context, agent, input string) (string, error) {
+	start := time.Now()
+	resp, err := e.orc.Execute(ctx, agent, input)
+	if err != nil {
+		return "", err
+	}
+	e.logger.Info("agent execution",
+		zap.String("agent", agent),
+		zap.Duration("latency", time.Since(start)),
+	)
+	return resp, nil
+}

@@ -1,0 +1,1 @@
+# Arquitetura geral (BLOCOS 1–13)

@@ -1,0 +1,1 @@
+# Função: Definir/alterar configuração

@@ -1,0 +1,12 @@
+# {{ .ServiceName }} · Template Rust WASM
+
+Inclui configuração wasm-bindgen, script wasm-pack e exemplos de funções exportadas (`update_metric`, `ping`).
+
+## Build
+```bash
+wasm-pack build --target bundler
+```
+
+## Placeholders
+- `{{ "{{ .ServiceName }}" }}`: nome exibido
+- `{{ "{{ .PackageName }}" }}`: nome do crate rust

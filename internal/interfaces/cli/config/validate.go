@@ -1,0 +1,1 @@
+# Função: Validar configuração (schema/rules)

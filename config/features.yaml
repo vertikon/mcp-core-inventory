@@ -1,0 +1,7 @@
+# Feature flags (providers, modos, templates, integrações)
+# Enable/disable features without redeploy
+
+features:
+  external_gpu: false    # Enable external GPU compute (RunPod)
+  audit_logging: false   # Enable detailed audit logging
+  beta_generators: false # Enable beta template generators

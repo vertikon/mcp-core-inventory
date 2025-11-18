@@ -1,0 +1,1 @@
+# Função: Monitor de recursos

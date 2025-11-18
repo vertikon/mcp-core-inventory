@@ -1,0 +1,48 @@
+# Exemplo de configuração GitLab CI para validação de árvore
+# Copie para .gitlab-ci.yml e ajuste conforme necessário
+
+stages:
+  - validate
+  - build
+  - test
+
+variables:
+  GO_VERSION: "1.21"
+
+validate_tree:
+  stage: validate
+  image: golang:${GO_VERSION}
+  before_script:
+    - go version
+  script:
+    # Compilar ferramenta de validação
+    - go build -o bin/validate-tree ./tools/validate_tree.go
+    
+    # Executar validação
+    - |
+      ./bin/validate-tree \
+        --original .cursor/MCP-HULK-ARVORE-FULL.md \
+        --commented .cursor/ARVORE-ARQUIVOS-DIRETORIOS-COMENTADA.md \
+        --root . \
+        --format json > validation-report.json
+    
+    # Verificar compliance
+    - |
+      COMPLIANCE=$(cat validation-report.json | grep -o '"compliance_percent":[0-9.]*' | cut -d: -f2)
+      echo "Compliance: ${COMPLIANCE}%"
+      
+      if (( $(echo "$COMPLIANCE < 95.0" | bc -l) )); then
+        echo "❌ Compliance below threshold (95%)"
+        exit 1
+      fi
+  artifacts:
+    paths:
+      - validation-report.json
+    reports:
+      junit: validation-report.json
+    expire_in: 1 week
+  only:
+    - merge_requests
+    - main
+    - master
+

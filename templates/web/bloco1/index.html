@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Bloco-1 Core Platform</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    
+    <style>
+        /* Ocultar barra de rolagem mas manter funcionalidade */
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="root">
+        <div class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+            <div class="max-w-[1400px] mx-auto p-4 md:p-6 space-y-6">
+                
+                <div class="bg-white rounded-2xl shadow-lg p-6 border border-gray-200">
+                    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center">
+                                <i class="ri-cpu-line text-white text-2xl"></i>
+                            </div>
+                            <div>
+                                <h1 class="text-2xl font-bold text-gray-800">BLOCO-1 CORE PLATFORM</h1>
+                                <p class="text-sm text-gray-600">Sistema de Monitoramento em Tempo Real</p>
+                            </div>
+                        </div>
+                        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                            <div class="flex items-center gap-3">
+                                <div class="flex items-center gap-2 bg-green-50 px-3 py-2 rounded-lg border border-green-200">
+                                    <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                                    <span class="text-sm font-semibold text-green-700">CONFORMIDADE: 98.9%</span>
+                                </div>
+                                <div class="flex items-center gap-2 bg-blue-50 px-3 py-2 rounded-lg border border-blue-200">
+                                    <i class="ri-time-line text-blue-600"></i>
+                                    <span class="text-sm font-medium text-blue-700">ÚLTIMA ATUALIZAÇÃO: 17:46:46</span>
+                                </div>
+                            </div>
+                            <button class="flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all bg-green-600 text-white hover:bg-green-700">
+                                <i class="ri-pause-line"></i>Pausar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-2">
+                        <div class="bg-white rounded-2xl shadow-lg p-6 border border-gray-200">
+                            <h2 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+                                <i class="ri-bar-chart-box-line text-blue-600"></i>MÉTRICAS PRINCIPAIS
+                            </h2>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                                <div class="bg-blue-50 rounded-xl p-4 border border-gray-200 hover:shadow-md transition-all">
+                                    <div class="flex items-start justify-between mb-3">
+                                        <div class="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center border border-gray-200">
+                                            <i class="ri-speed-up-line text-blue-600 text-xl"></i>
+                                        </div>
+                                        <div class="text-xs text-gray-500 bg-white px-2 py-1 rounded-md border border-gray-200">Meta: 200-600</div>
+                                    </div>
+                                    <div class="space-y-1">
+                                        <div class="text-xs font-medium text-gray-600 uppercase tracking-wide">Throughput</div>
+                                        <div class="flex items-baseline gap-1">
+                                            <span class="text-3xl font-bold text-blue-600">445.7</span>
+                                            <span class="text-sm font-medium text-gray-500">msgs/s</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bg-green-50 rounded-xl p-4 border border-gray-200 hover:shadow-md transition-all">
+                                    <div class="flex items-start justify-between mb-3">
+                                        <div class="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center border border-gray-200">
+                                            <i class="ri-timer-flash-line text-green-600 text-xl"></i>
+                                        </div>
+                                        <div class="text-xs text-gray-500 bg-white px-2 py-1 rounded-md border border-gray-200">Meta: &lt; 60ms</div>
+                                    </div>
+                                    <div class="space-y-1">
+                                        <div class="text-xs font-medium text-gray-600 uppercase tracking-wide">HTTP P95</div>
+                                        <div class="flex items-baseline gap-1">
+                                            <span class="text-3xl font-bold text-green-600">41.8</span>
+                                            <span class="text-sm font-medium text-gray-500">ms</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bg-purple-50 rounded-xl p-4 border border-gray-200 hover:shadow-md transition-all">
+                                    <div class="flex items-start justify-between mb-3">
+                                        <div class="w-10 h-10 bg-purple-50 rounded-lg flex items-center justify-center border border-gray-200">
+                                            <i class="ri-database-2-line text-purple-600 text-xl"></i>
+                                        </div>
+                                        <div class="text-xs text-gray-500 bg-white px-2 py-1 rounded-md border border-gray-200">Meta: 70-90%</div>
+                                    </div>
+                                    <div class="space-y-1">
+                                        <div class="text-xs font-medium text-gray-600 uppercase tracking-wide">Cache Hit Ratio</div>
+                                        <div class="flex items-baseline gap-1">
+                                            <span class="text-3xl font-bold text-purple-600">84.6</span>
+                                            <span class="text-sm font-medium text-gray-500">%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bg-orange-50 rounded-xl p-4 border border-gray-200 hover:shadow-md transition-all">
+                                    <div class="flex items-start justify-between mb-3">
+                                        <div class="w-10 h-10 bg-orange-50 rounded-lg flex items-center justify-center border border-gray-200">
+                                            <i class="ri-shield-check-line text-orange-600 text-xl"></i>
+                                        </div>
+                                        <div class="text-xs text-gray-500 bg-white px-2 py-1 rounded-md border border-gray-200">Meta: &lt; 2s</div>
+                                    </div>
+                                    <div class="space-y-1">
+                                        <div class="text-xs font-medium text-gray-600 uppercase tracking-wide">Circuit Breaker</div>
+                                        <div class="flex items-baseline gap-1">
+                                            <span class="text-3xl font-bold text-orange-600">1.2</span>
+                                            <span class="text-sm font-medium text-gray-500">s</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bg-teal-50 rounded-xl p-4 border border-gray-200 hover:shadow-md transition-all">
+                                    <div class="flex items-start justify-between mb-3">
+                                        <div class="w-10 h-10 bg-teal-50 rounded-lg flex items-center justify-center border border-gray-200">
+                                            <i class="ri-rocket-line text-teal-600 text-xl"></i>
+                                        </div>
+                                        <div class="text-xs text-gray-500 bg-white px-2 py-1 rounded-md border border-gray-200">Meta: &lt; 4s</div>
+                                    </div>
+                                    <div class="space-y-1">
+                                        <div class="text-xs font-medium text-gray-600 uppercase tracking-wide">Bootstrap Time</div>
+                                        <div class="flex items-baseline gap-1">
+                                            <span class="text-3xl font-bold text-teal-600">3.1</span>
+                                            <span class="text-sm font-medium text-gray-500">s</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div class="bg-white rounded-2xl shadow-lg p-6 border border-gray-200">
+                            <h2 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+                                <i class="ri-shield-check-line text-green-600"></i>STATUS DOS COMPONENTES
+                            </h2>
+                            <div class="space-y-3">
+                                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-200 hover:shadow-md transition-all">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 rounded-lg flex items-center justify-center border text-green-600 bg-green-50 border-green-200">
+                                            <i class="ri-cpu-line text-lg"></i>
+                                        </div>
+                                        <div>
+                                            <div class="font-medium text-gray-800 text-sm">Execution Engine</div>
+                                            <div class="text-xs text-gray-600">Uptime: 99.8%</div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <i class="ri-checkbox-circle-fill text-green-600"></i>
+                                        <span class="text-xs font-medium text-green-700 uppercase">Online</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-200 hover:shadow-md transition-all">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 rounded-lg flex items-center justify-center border text-green-600 bg-green-50 border-green-200">
+                                            <i class="ri-team-line text-lg"></i>
+                                        </div>
+                                        <div>
+                                            <div class="font-medium text-gray-800 text-sm">Worker Pool</div>
+                                            <div class="text-xs text-gray-600">Uptime: 99.8%</div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <i class="ri-checkbox-circle-fill text-green-600"></i>
+                                        <span class="text-xs font-medium text-green-700 uppercase">Online</span>
+                                    </div>
+                                </div>
+                                </div>
+                        </div>
+
+                        <div class="bg-white rounded-2xl shadow-lg p-6 border border-gray-200">
+                            <div class="flex items-center justify-between mb-4">
+                                <h2 class="text-lg font-bold text-gray-800 flex items-center gap-2">
+                                    <i class="ri-alarm-warning-line text-orange-600"></i>ALERTAS DO SISTEMA
+                                </h2>
+                            </div>
+                            <div class="text-center py-8">
+                                <div class="w-16 h-16 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-3 border border-green-200">
+                                    <i class="ri-shield-check-line text-green-600 text-2xl"></i>
+                                </div>
+                                <p class="text-green-700 font-medium">🟢 Sem Alertas</p>
+                                <p class="text-sm text-gray-600 mt-1">Todos os sistemas operando normalmente</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
+                    <div class="border-b border-gray-200 bg-gray-50">
+                        <div class="flex overflow-x-auto scrollbar-hide">
+                            <button class="flex items-center gap-2 px-6 py-4 text-sm font-semibold whitespace-nowrap transition-all border-b-2 border-blue-600 text-blue-600 bg-white">
+                                <i class="ri-cpu-line text-lg"></i>EXECUTION ENGINE
+                            </button>
+                            <button class="flex items-center gap-2 px-6 py-4 text-sm font-semibold whitespace-nowrap transition-all border-b-2 border-transparent text-gray-600 hover:text-gray-800 hover:bg-gray-100">
+                                <i class="ri-database-2-line text-lg"></i>CACHE
+                            </button>
+                            </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="mb-6">
+                            <h3 class="text-xl font-bold text-gray-800 mb-2">Execution Engine</h3>
+                            <p class="text-gray-600 text-sm">Motor de execução principal do sistema</p>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <div class="rounded-xl p-4 border hover:shadow-md transition-all text-green-600 bg-green-50 border-green-200">
+                                <div class="flex items-center gap-3 mb-2">
+                                    <div class="w-10 h-10 rounded-lg flex items-center justify-center border text-green-600 bg-green-50 border-green-200"><i class="ri-play-circle-line text-lg"></i></div>
+                                    <div class="text-xs font-medium uppercase tracking-wide">Status do Motor</div>
+                                </div>
+                                <div class="text-2xl font-bold ml-13">Online</div>
+                            </div>
+                            </div>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <h2 class="text-xl font-bold text-gray-800 flex items-center gap-2">
+                        <i class="ri-line-chart-line text-blue-600"></i>GRÁFICOS DE PERFORMANCE
+                    </h2>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+                        <div class="bg-white rounded-2xl shadow-lg p-6 border border-gray-200">
+                            <h3 class="text-lg font-bold text-gray-800 mb-4">Throughput ao Longo do Tempo</h3>
+                            <div class="relative h-48 bg-gray-50 rounded-xl p-4 overflow-hidden">
+                                <svg class="w-full h-full" viewBox="0 0 400 160">
+                                    <defs><linearGradient id="gradient-#3b82f6" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#3b82f6" stop-opacity="0.3"></stop><stop offset="100%" stop-color="#3b82f6" stop-opacity="0.05"></stop></linearGradient></defs>
+                                    <polyline fill="none" stroke="#3b82f6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" points="0,27 21,52 42,19 63,150 84,128 105,150 126,138 147,45 168,15 189,0 210,33 231,114 252,22 273,160 294,16 315,158 336,150 357,132 378,131 400,46"></polyline>
+                                    <polygon fill="url(#gradient-#3b82f6)" points="0,160 0,27 21,52 42,19 63,150 84,128 105,150 126,138 147,45 168,15 189,0 210,33 231,114 252,22 273,160 294,16 315,158 336,150 357,132 378,131 400,46 400,160"></polygon>
+                                </svg>
+                                <div class="absolute top-4 right-4 bg-white px-3 py-1 rounded-lg border border-gray-200">
+                                    <span class="text-sm font-medium text-gray-600">480 msgs/s</span>
+                                </div>
+                            </div>
+                            <div class="flex justify-between text-xs text-gray-500 mt-2"><span>17:45</span><span>17:46</span></div>
+                        </div>
+
+                        <div class="bg-white rounded-2xl shadow-lg p-6 border border-gray-200">
+                            <h3 class="text-lg font-bold text-gray-800 mb-4">Cache Hit Ratio</h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <div class="flex justify-between text-sm font-medium text-gray-700 mb-2"><span>Cache Geral</span><span>87%</span></div>
+                                    <div class="w-full bg-gray-200 rounded-full h-3">
+                                        <div class="bg-gradient-to-r from-green-500 to-green-600 h-3 rounded-full transition-all duration-500" style="width: 87%;"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-sm font-medium text-gray-700 mb-2"><span>L1 Cache</span><span>95%</span></div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2">
+                                        <div class="bg-gradient-to-r from-blue-500 to-blue-600 h-2 rounded-full transition-all duration-500" style="width: 95%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-lg p-6 border border-gray-200">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+                        <i class="ri-flashlight-line text-yellow-600"></i>AÇÕES RÁPIDAS
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div class="p-4 bg-gray-50 rounded-xl border border-gray-200 cursor-pointer hover:bg-gray-100 transition-colors">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-sm font-medium text-gray-700">Cache Flush</span>
+                                <button class="text-blue-600 hover:text-blue-700"><i class="ri-refresh-line"></i></button>
+                            </div>
+                            <div class="text-xs text-gray-600">Limpa todos os níveis de cache</div>
+                        </div>
+                         <div class="p-4 bg-gray-50 rounded-xl border border-gray-200 cursor-pointer hover:bg-gray-100 transition-colors">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-sm font-medium text-gray-700">Health Check</span>
+                                <button class="text-green-600 hover:text-green-700"><i class="ri-heart-pulse-line"></i></button>
+                            </div>
+                            <div class="text-xs text-gray-600">Executa verificação completa</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>

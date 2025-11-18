@@ -1,0 +1,20 @@
+name: kubernetes-manifests
+stack: kubernetes
+version: 1.0.0
+summary: "Templates para deploy Kubernetes com Helm e manifests"
+placeholders:
+  - ServiceName
+  - Namespace
+  - ImageName
+  - Port
+  - Replicas
+  - Environment
+files:
+  - deployment.yaml.tmpl
+  - service.yaml.tmpl
+  - ingress.yaml.tmpl
+  - configmap.yaml.tmpl
+  - secret.yaml.tmpl
+  - hpa.yaml.tmpl
+  - Chart.yaml.tmpl
+  - values.yaml.tmpl

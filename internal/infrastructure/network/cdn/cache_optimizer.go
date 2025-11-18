@@ -1,0 +1,1 @@
+# Função: Otimizador de cache/headers

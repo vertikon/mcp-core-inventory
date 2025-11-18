@@ -1,0 +1,188 @@
+name: Validate Tree Structure
+
+on:
+  pull_request:
+    branches: [main, master, develop]
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+    inputs:
+      strict_mode:
+        description: 'Enable strict mode (fail on non-compliance)'
+        required: false
+        default: 'true'
+        type: boolean
+
+env:
+  GO_VERSION: '1.21'
+  COMPLIANCE_THRESHOLD: 95.0
+
+jobs:
+  validate-tree:
+    name: Validate Project Tree Structure
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache-dependency-path: go.sum
+      
+      - name: Verify tree files exist
+        run: |
+          if [ ! -f ".cursor/MCP-HULK-ARVORE-FULL.md" ]; then
+            echo "❌ Original tree file not found"
+            exit 1
+          fi
+          if [ ! -f ".cursor/ARVORE-ARQUIVOS-DIRETORIOS-COMENTADA.md" ]; then
+            echo "❌ Commented tree file not found"
+            exit 1
+          fi
+          echo "✅ Tree files verified"
+      
+      - name: Build validate-tree tool
+        run: |
+          echo "🔨 Building validate-tree tool..."
+          go build -o bin/validate-tree ./tools/validate_tree.go
+          chmod +x bin/validate-tree
+          echo "✅ Tool built successfully"
+      
+      - name: Run tree validation
+        id: validate
+        continue-on-error: true
+        run: |
+          STRICT_FLAG=""
+          if [ "${{ github.event.inputs.strict_mode }}" == "true" ] || [ "${{ github.event_name }}" != "workflow_dispatch" ]; then
+            STRICT_FLAG="--strict"
+          fi
+          
+          echo "🔍 Running tree validation..."
+          ./bin/validate-tree \
+            --original .cursor/MCP-HULK-ARVORE-FULL.md \
+            --commented .cursor/ARVORE-ARQUIVOS-DIRETORIOS-COMENTADA.md \
+            --root . \
+            --format markdown \
+            $STRICT_FLAG > validation-report.md 2>&1 || VALIDATION_EXIT=$?
+          
+          if [ -n "$VALIDATION_EXIT" ]; then
+            echo "validation_failed=true" >> $GITHUB_OUTPUT
+            echo "❌ Validation failed with exit code $VALIDATION_EXIT"
+          else
+            echo "validation_failed=false" >> $GITHUB_OUTPUT
+            echo "✅ Validation completed successfully"
+          fi
+      
+      - name: Extract compliance metrics
+        id: metrics
+        if: always()
+        run: |
+          if [ -f "validation-report.md" ]; then
+            # Extract compliance percentage
+            COMPLIANCE=$(grep -oP 'Compliance.*?\K\d+\.\d+' validation-report.md | head -1 || echo "0")
+            echo "compliance=$COMPLIANCE" >> $GITHUB_OUTPUT
+            
+            # Extract missing files count
+            MISSING=$(grep -oP 'Missing Files.*?\K\d+' validation-report.md | head -1 || echo "0")
+            echo "missing_files=$MISSING" >> $GITHUB_OUTPUT
+            
+            # Extract block compliance summary
+            BLOCKS_OK=$(grep -c "✅ Complete" validation-report.md || echo "0")
+            echo "blocks_ok=$BLOCKS_OK" >> $GITHUB_OUTPUT
+            
+            echo "📊 Metrics extracted:"
+            echo "  Compliance: ${COMPLIANCE}%"
+            echo "  Missing Files: ${MISSING}"
+            echo "  Blocks OK: ${BLOCKS_OK}"
+          else
+            echo "compliance=0" >> $GITHUB_OUTPUT
+            echo "missing_files=999" >> $GITHUB_OUTPUT
+            echo "blocks_ok=0" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Check compliance threshold
+        if: always()
+        run: |
+          COMPLIANCE="${{ steps.metrics.outputs.compliance }}"
+          THRESHOLD="${{ env.COMPLIANCE_THRESHOLD }}"
+          
+          echo "📊 Compliance Check:"
+          echo "  Current: ${COMPLIANCE}%"
+          echo "  Threshold: ${THRESHOLD}%"
+          
+          if (( $(echo "$COMPLIANCE < $THRESHOLD" | bc -l) )); then
+            echo "❌ Compliance below threshold"
+            echo "compliance_ok=false" >> $GITHUB_OUTPUT
+            exit 1
+          else
+            echo "✅ Compliance meets threshold"
+            echo "compliance_ok=true" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Upload validation report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tree-validation-report-${{ github.run_number }}
+          path: validation-report.md
+          retention-days: 30
+          if-no-files-found: warn
+      
+      - name: Comment PR with validation results
+        if: github.event_name == 'pull_request' && always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            
+            let reportContent = '## 🔍 Tree Structure Validation Results\n\n';
+            
+            // Add summary metrics
+            const compliance = '${{ steps.metrics.outputs.compliance }}';
+            const missingFiles = '${{ steps.metrics.outputs.missing_files }}';
+            const blocksOk = '${{ steps.metrics.outputs.blocks_ok }}';
+            const complianceOk = '${{ steps.metrics.outputs.compliance_ok }}' === 'true';
+            
+            reportContent += `### 📊 Summary\n\n`;
+            reportContent += `- **Compliance:** ${compliance}%\n`;
+            reportContent += `- **Missing Files:** ${missingFiles}\n`;
+            reportContent += `- **Blocks OK:** ${blocksOk}/14\n`;
+            reportContent += `- **Status:** ${complianceOk ? '✅ Approved' : '❌ Failed'}\n\n`;
+            
+            // Add report content (truncated)
+            if (fs.existsSync('validation-report.md')) {
+              const report = fs.readFileSync('validation-report.md', 'utf8');
+              const truncated = report.length > 3000 ? report.substring(0, 3000) + '\n\n... (truncated)' : report;
+              reportContent += `### 📄 Full Report\n\n\`\`\`\n${truncated}\n\`\`\`\n\n`;
+            }
+            
+            reportContent += `[View Full Report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})\n`;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: reportContent
+            });
+      
+      - name: Fail if validation failed
+        if: steps.validate.outputs.validation_failed == 'true' || steps.metrics.outputs.compliance_ok != 'true'
+        run: |
+          echo "❌ Tree validation failed"
+          echo "Please review the validation report and fix structural issues"
+          exit 1
+      
+      - name: Success summary
+        if: success()
+        run: |
+          echo "✅ Tree validation passed successfully"
+          echo "📊 Compliance: ${{ steps.metrics.outputs.compliance }}%"
+          echo "📁 Missing Files: ${{ steps.metrics.outputs.missing_files }}"
+          echo "🧱 Blocks OK: ${{ steps.metrics.outputs.blocks_ok }}/14"

@@ -1,0 +1,1 @@
+# Função: Gestão de estado de geração/execução

@@ -1,0 +1,1 @@
+# Função: Análise de qualidade (lint, padrões, cobertura)

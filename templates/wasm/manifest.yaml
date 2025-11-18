@@ -1,0 +1,11 @@
+name: rust-wasm
+stack: wasm
+version: 1.0.0
+summary: "Template Rust WASM com wasm-bindgen"
+placeholders:
+  - ServiceName
+  - PackageName
+files:
+  - Cargo.toml.tmpl
+  - src/lib.rs.tmpl
+  - build.sh

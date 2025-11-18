@@ -1,0 +1,142 @@
+# Azure Pipelines for {{ .ServiceName }}
+
+trigger:
+  branches:
+    include:
+    - main
+    - develop
+  paths:
+    exclude:
+    - docs/*
+    - README.md
+
+pr:
+  branches:
+    include:
+    - main
+
+variables:
+  - group: {{ .ServiceName }}-variables
+  - name: imageName
+    value: '{{ .ServiceName }}'
+  - name: containerRegistry
+    value: '{{ .Registry | default "yourregistry.azurecr.io" }}'
+
+stages:
+- stage: Validate
+  displayName: 'Validate and Test'
+  jobs:
+  - job: Test
+    displayName: 'Run Tests'
+    pool:
+      vmImage: 'ubuntu-latest'
+    strategy:
+      matrix:
+        Go119:
+          goVersion: '1.19'
+        Go120:
+          goVersion: '1.20'
+        Go121:
+          goVersion: '1.21'
+    
+    steps:
+    - task: GoTool@0
+      inputs:
+        version: $(goVersion)
+    
+    - task: Go@0
+      inputs:
+        command: 'mod'
+        arguments: 'download'
+    
+    - task: Go@0
+      inputs:
+        command: 'test'
+        arguments: '-v -race -coverprofile=coverage.out ./...'
+    
+    - task: PublishCodeCoverageResults@1
+      inputs:
+        codeCoverageTool: Cobertura
+        summaryFileLocation: '$(Agent.TempDirectory)/**/coverage.cobertura.xml'
+    
+    - task: Golangci-lint@0
+      inputs:
+        version: 'latest'
+
+- stage: Build
+  displayName: 'Build and Scan'
+  dependsOn: Validate
+  condition: succeeded()
+  jobs:
+  - job: Build
+    displayName: 'Build Container'
+    pool:
+      vmImage: 'ubuntu-latest'
+    
+    steps:
+    - task: Docker@2
+      displayName: 'Build and push image'
+      inputs:
+        containerRegistry: '$(containerRegistryConnection)'
+        repository: '$(imageName)'
+        command: 'buildAndPush'
+        Dockerfile: 'Dockerfile'
+        tags: |
+          $(Build.BuildNumber)
+          latest
+    
+    - task: TrivySecurity@1
+      displayName: 'Security Scan'
+      inputs:
+        image: '$(containerRegistry)/$(imageName):$(Build.BuildNumber)'
+        exitCode: '0'
+
+- stage: DeployStaging
+  displayName: 'Deploy to Staging'
+  dependsOn: Build
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
+  jobs:
+  - deployment: DeployToStaging
+    displayName: 'Deploy to Staging'
+    environment: 'staging'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: KubernetesManifest@0
+            inputs:
+              action: 'deploy'
+              kubernetesServiceConnection: 'staging-k8s'
+              namespace: 'staging'
+              manifests: 'k8s/**/*.yaml'
+              containers: '$(containerRegistry)/$(imageName):$(Build.BuildNumber)'
+
+- stage: DeployProduction
+  displayName: 'Deploy to Production'
+  dependsOn: Build
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+  jobs:
+  - deployment: DeployToProduction
+    displayName: 'Deploy to Production'
+    environment: 'production'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: KubernetesManifest@0
+            inputs:
+              action: 'deploy'
+              kubernetesServiceConnection: 'production-k8s'
+              namespace: 'production'
+              manifests: 'k8s/**/*.yaml'
+              containers: '$(containerRegistry)/$(imageName):$(Build.BuildNumber)'
+          
+          - task: Kubernetes@1
+            displayName: 'Verify Deployment'
+            inputs:
+              connectionType: 'Kubernetes Service Connection'
+              kubernetesServiceEndpoint: 'production-k8s'
+              namespace: 'production'
+              command: 'rollout'
+              arguments: 'status deployment/$(imageName)'
+              checkRollingStatus: true

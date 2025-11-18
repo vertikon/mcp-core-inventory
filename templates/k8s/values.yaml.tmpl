@@ -1,0 +1,71 @@
+# Default values for {{ .ServiceName }}.
+replicaCount: {{ .Replicas | default "3" }}
+
+image:
+  repository: {{ .ImageRepository | default "nginx" }}
+  pullPolicy: IfNotPresent
+  tag: "{{ .ImageTag | default "latest" }}"
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext:
+  fsGroup: 2000
+
+securityContext:
+  allowPrivilegeEscalation: false
+  runAsNonRoot: true
+  runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: {{ .ServicePort | default "80" }}
+
+ingress:
+  enabled: {{ .IngressEnabled | default "true" }}
+  className: ""
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+  hosts:
+    - host: {{ .ServiceName }}.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: {{ .ServiceName }}-tls
+      hosts:
+        - {{ .ServiceName }}.example.com
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 128Mi
+  requests:
+    cpu: 250m
+    memory: 64Mi
+
+autoscaling:
+  enabled: {{ .AutoscalingEnabled | default "true" }}
+  minReplicas: {{ .MinReplicas | default "2" }}
+  maxReplicas: {{ .MaxReplicas | default "10" }}
+  targetCPUUtilizationPercentage: 70
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+config:
+  environment: {{ .Environment | default "production" }}
+  logLevel: {{ .LogLevel | default "info" }}
+  features:
+    monitoring: {{ .MonitoringEnabled | default "true" }}
+    tracing: {{ .TracingEnabled | default "true" }}

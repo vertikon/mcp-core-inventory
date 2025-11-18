@@ -1,0 +1,1 @@
+# Gerenciador AWS Lambda (ou similar)

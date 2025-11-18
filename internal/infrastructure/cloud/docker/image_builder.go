@@ -1,0 +1,1 @@
+# Função: Construtor de imagens

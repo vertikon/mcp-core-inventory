@@ -1,0 +1,22 @@
+# {{ .ServiceName }} · Template Go Premium
+
+Este template gera um serviço Go opinativo com Echo, Zap e configuração centralizada.
+
+## Estrutura
+- `cmd/server`: ponto de entrada HTTP
+- `internal/config`: carregamento de configuração e defaults
+- `internal/domain`: entidades e regras ricas
+- `Dockerfile.tmpl`: pipeline de build multi-stage
+
+## Variáveis
+| Placeholder | Descrição |
+| --- | --- |
+| `{{ "{{ .ServiceName }}" }}` | Nome do serviço e binário |
+| `{{ "{{ .ModulePath }}" }}` | Caminho do módulo Go |
+| `{{ "{{ .EntityName }}" }}` | Nome da entidade primária |
+| `{{ "{{ .GoVersion }}" }}` | Versão Go usada no build |
+
+## Próximos Passos
+1. Renderize com o Bloco-11.
+2. Rode `go test ./...`.
+3. Publique a imagem construída pelo Dockerfile.

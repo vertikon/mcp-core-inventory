@@ -1,0 +1,14 @@
+service:
+  name: {{ .ServiceName }}
+  version: 0.1.0
+  description: {{ .Description }}
+http:
+  port: {{ .HTTPPort }}
+nats:
+  url: {{ .NATSURL }}
+telemetry:
+  exporter: jaeger
+  endpoint: {{ .TelemetryEndpoint }}
+ai:
+  provider: {{ .AIProvider }}
+  model: {{ .AIModel }}

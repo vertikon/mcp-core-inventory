@@ -1,0 +1,63 @@
+# Configuration for Data Versioning
+
+versioning:
+  data:
+    # Versioning settings
+    versioning:
+      # Auto-create versions
+      auto_version: true
+      # Version format
+      format: "incremental"
+      # Require schema version
+      require_schema_version: true
+
+    # Snapshot settings
+    snapshot:
+      # Auto-create snapshots
+      auto_snapshot: true
+      # Snapshot type: full, incremental, differential
+      default_type: "full"
+      # Snapshot interval (hours)
+      interval_hours: 24
+      # Maximum snapshots per version
+      max_snapshots: 10
+
+    # Schema migration settings
+    schema_migration:
+      # Validate before migration
+      validate_before: true
+      # Validate after migration
+      validate_after: true
+      # Allow destructive changes
+      allow_destructive: false
+      # Require backup before migration
+      require_backup: true
+      # Timeout for migration (seconds)
+      timeout_seconds: 3600
+
+    # Data lineage settings
+    lineage:
+      # Track lineage automatically
+      auto_track: true
+      # Track transformations
+      track_transformations: true
+      # Maximum depth for tracing
+      max_trace_depth: 10
+
+    # Data quality settings
+    quality:
+      # Run quality checks automatically
+      auto_check: true
+      # Check types to run
+      check_types:
+        - type_safety
+        - null_safety
+        - schema_compliance
+        - data_completeness
+        - data_consistency
+      # Minimum quality score (0.0 to 1.0)
+      min_score: 0.8
+      # Fail on critical issues
+      fail_on_critical: true
+      # Quality check interval (hours)
+      check_interval_hours: 24

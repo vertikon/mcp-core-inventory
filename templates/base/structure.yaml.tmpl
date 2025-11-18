@@ -1,0 +1,27 @@
+root: {{ .ServiceName }}
+directories:
+  - path: cmd/{{ .ServiceName }}
+    files:
+      - name: main.go
+        template: |
+          package main
+
+          func main() {
+          }
+  - path: internal/application
+  - path: internal/domain
+  - path: internal/infrastructure
+  - path: configs
+  - path: scripts
+files:
+  - path: README.md
+    template: |
+      # {{ .ServiceName }}
+
+      {{ .Description }}
+  - path: configs/config.yaml
+    template: |
+      service:
+        name: {{ .ServiceName }}
+        description: {{ .Description }}
+        version: {{ .Version }}

@@ -1,0 +1,16 @@
+# {{ .ServiceName }} · Template MCP Go Premium
+
+Stack completa integrando AI, cache distribuído, NATS e observabilidade pronta para produção.
+
+## Componentes
+- `internal/ai`: agentes e orquestrador
+- `internal/core`: engine/pipeline
+- `internal/monitoring`: OpenTelemetry pré-configurado
+- `internal/state`: store in-memory com histórico
+- `configs/dev.yaml.tmpl`: configuração multiproduto
+
+## Fluxo Sugerido
+1. Renderize o template.
+2. Configure secrets (NATS, AI provider).
+3. Inicie `make run`.
+4. Monitore traces com `make telemetry`.

@@ -1,0 +1,63 @@
+# Configs de autenticação (JWT, OAuth/SSO, expirations)
+
+# JWT Configuration
+jwt:
+  secret_key: "${MCP_HULK_JWT_SECRET_KEY:change-me-in-production}"
+  signing_method: "HS256"  # HS256 or RS256
+  token_ttl: "1h"
+  refresh_ttl: "24h"
+
+# Session Configuration
+session:
+  ttl: "24h"
+  max_sessions_per_user: 5
+
+# OAuth Providers Configuration
+oauth:
+  # Auth0 Configuration
+  auth0:
+    enabled: ${MCP_HULK_OAUTH_AUTH0_ENABLED:false}
+    domain: "${MCP_HULK_OAUTH_AUTH0_DOMAIN:dev-vertikon.us.auth0.com}"
+    client_id: "${MCP_HULK_OAUTH_AUTH0_CLIENT_ID:}"
+    client_secret: "${MCP_HULK_OAUTH_AUTH0_CLIENT_SECRET:}"
+    redirect_url: "${MCP_HULK_OAUTH_AUTH0_REDIRECT_URL:http://localhost:8080/auth/callback/auth0}"
+    scopes:
+      - "openid"
+      - "profile"
+      - "email"
+    # URLs are auto-generated from domain if not specified
+    # auth_url: "https://dev-vertikon.us.auth0.com/authorize"
+    # token_url: "https://dev-vertikon.us.auth0.com/oauth/token"
+    # userinfo_url: "https://dev-vertikon.us.auth0.com/userinfo"
+
+  # Google OAuth Configuration
+  google:
+    enabled: ${MCP_HULK_OAUTH_GOOGLE_ENABLED:false}
+    client_id: "${MCP_HULK_OAUTH_GOOGLE_CLIENT_ID:}"
+    client_secret: "${MCP_HULK_OAUTH_GOOGLE_CLIENT_SECRET:}"
+    redirect_url: "${MCP_HULK_OAUTH_GOOGLE_REDIRECT_URL:http://localhost:8080/auth/callback/google}"
+    scopes:
+      - "openid"
+      - "email"
+      - "profile"
+
+  # GitHub OAuth Configuration
+  github:
+    enabled: ${MCP_HULK_OAUTH_GITHUB_ENABLED:false}
+    client_id: "${MCP_HULK_OAUTH_GITHUB_CLIENT_ID:}"
+    client_secret: "${MCP_HULK_OAUTH_GITHUB_CLIENT_SECRET:}"
+    redirect_url: "${MCP_HULK_OAUTH_GITHUB_REDIRECT_URL:http://localhost:8080/auth/callback/github}"
+    scopes:
+      - "user:email"
+
+  # Azure AD OAuth Configuration
+  azuread:
+    enabled: ${MCP_HULK_OAUTH_AZUREAD_ENABLED:false}
+    tenant_id: "${MCP_HULK_OAUTH_AZUREAD_TENANT_ID:}"
+    client_id: "${MCP_HULK_OAUTH_AZUREAD_CLIENT_ID:}"
+    client_secret: "${MCP_HULK_OAUTH_AZUREAD_CLIENT_SECRET:}"
+    redirect_url: "${MCP_HULK_OAUTH_AZUREAD_REDIRECT_URL:http://localhost:8080/auth/callback/azuread}"
+    scopes:
+      - "openid"
+      - "profile"
+      - "email"

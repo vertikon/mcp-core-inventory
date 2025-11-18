@@ -1,0 +1,1 @@
+# Função: Web Application Firewall (integra c/ LB/API Gateway)

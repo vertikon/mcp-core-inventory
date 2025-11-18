@@ -1,0 +1,1 @@
+# Função: Análise de performance (benchmarks, load tests)

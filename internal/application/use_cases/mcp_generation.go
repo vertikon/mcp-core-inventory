@@ -1,0 +1,1 @@
+# Função: Geração de MCPs (a partir de templates/inputs)

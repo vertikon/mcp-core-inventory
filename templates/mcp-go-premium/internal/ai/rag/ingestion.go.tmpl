@@ -1,0 +1,14 @@
+package rag
+
+import "context"
+
+// Pipeline describes a simple retrieval augmented generation ingest.
+type Pipeline struct{}
+
+func NewPipeline() *Pipeline { return &Pipeline{} }
+
+func (p *Pipeline) Ingest(ctx context.Context, content string) error {
+	_ = ctx
+	_ = content
+	return nil
+}

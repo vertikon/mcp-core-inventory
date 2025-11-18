@@ -1,0 +1,1 @@
+# Função: Rate Limiter (token bucket, leaky bucket, etc.)

@@ -1,0 +1,1 @@
+# Função: Integração Google Cloud Functions

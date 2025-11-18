@@ -1,0 +1,1 @@
+# Segurança total (App + Infra + Compute externo)

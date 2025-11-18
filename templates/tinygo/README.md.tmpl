@@ -1,0 +1,12 @@
+# {{ .ServiceName }} · Template TinyGo
+
+Este blueprint cria um módulo TinyGo focado em exportação WASM para edge, navegadores ou MCP Agents.
+
+## Conteúdo
+- `main.go.tmpl`: funções `SetMetric`/`GetMetric`
+- `cmd/__NAME__/main.go`: runner de testes locais
+- `wasm/exports.go.tmpl`: utilitários de memória/echo
+
+## Como usar
+1. `tinygo build -o module.wasm -target=wasi ./...`
+2. Consuma os exports `Alloc`, `SetMetric`, `GetMetric`.

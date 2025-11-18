@@ -1,0 +1,23 @@
+# Configuração de staging/homologação
+server:
+  port: 8080
+  host: "0.0.0.0"
+
+database:
+  host: "postgres-staging"
+  port: 5432
+  database: "mcp_hulk_staging"
+  ssl_mode: "require"
+
+ai:
+  provider: "glm"
+  model: "glm-4.6-z.ai"
+  temperature: 0.3
+
+logging:
+  level: "info"
+  format: "json"
+
+features:
+  audit_logging: true  # Enable audit in staging
+  beta_generators: false

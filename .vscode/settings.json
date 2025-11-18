@@ -1,0 +1,6 @@
+{
+    "editor.experimental.treeSitterTelemetry": true,
+    "editor.experimental.preferTreeSitter.typescript": true,
+    "editor.experimentalGpuAcceleration": "on",
+    "editor.codeActions.triggerOnFocusChange": true
+}

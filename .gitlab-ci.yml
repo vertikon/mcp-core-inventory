@@ -1,0 +1,125 @@
+# GitLab CI Configuration for MCP-HULK
+# Validates tree structure on merge requests and main branch
+
+stages:
+  - validate
+  - build
+  - test
+
+variables:
+  GO_VERSION: "1.21"
+  COMPLIANCE_THRESHOLD: "95.0"
+
+# Cache Go modules
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - .go/pkg/mod/
+
+validate_tree:
+  stage: validate
+  image: golang:${GO_VERSION}
+  before_script:
+    - go version
+    - |
+      if [ ! -f ".cursor/MCP-HULK-ARVORE-FULL.md" ]; then
+        echo "❌ Original tree file not found"
+        exit 1
+      fi
+      if [ ! -f ".cursor/ARVORE-ARQUIVOS-DIRETORIOS-COMENTADA.md" ]; then
+        echo "❌ Commented tree file not found"
+        exit 1
+      fi
+      echo "✅ Tree files verified"
+  script:
+    # Build validation tool
+    - echo "🔨 Building validate-tree tool..."
+    - go build -o bin/validate-tree ./tools/validate_tree.go
+    - chmod +x bin/validate-tree
+    - echo "✅ Tool built successfully"
+    
+    # Run validation
+    - echo "🔍 Running tree validation..."
+    - |
+      ./bin/validate-tree \
+        --original .cursor/MCP-HULK-ARVORE-FULL.md \
+        --commented .cursor/ARVORE-ARQUIVOS-DIRETORIOS-COMENTADA.md \
+        --root . \
+        --format json > validation-report.json || VALIDATION_EXIT=$?
+    
+    # Extract metrics
+    - |
+      if [ -f "validation-report.json" ]; then
+        COMPLIANCE=$(cat validation-report.json | grep -o '"compliance_percent":[0-9.]*' | cut -d: -f2 || echo "0")
+        MISSING=$(cat validation-report.json | grep -o '"missing_count":[0-9]*' | cut -d: -f2 || echo "0")
+        
+        echo "📊 Validation Metrics:"
+        echo "  Compliance: ${COMPLIANCE}%"
+        echo "  Missing Files: ${MISSING}"
+        
+        # Check threshold
+        if (( $(echo "$COMPLIANCE < $COMPLIANCE_THRESHOLD" | bc -l) )); then
+          echo "❌ Compliance below threshold (${COMPLIANCE_THRESHOLD}%)"
+          exit 1
+        else
+          echo "✅ Compliance meets threshold"
+        fi
+        
+        # Fail if missing files > 0
+        if [ "$MISSING" -gt "0" ]; then
+          echo "❌ Missing files detected: ${MISSING}"
+          exit 1
+        fi
+      else
+        echo "❌ Validation report not generated"
+        exit 1
+      fi
+  artifacts:
+    paths:
+      - validation-report.json
+    reports:
+      junit: validation-report.json
+    expire_in: 1 week
+    when: always
+  only:
+    - merge_requests
+    - main
+    - master
+    - develop
+  allow_failure: false
+
+# Build job (runs after validation passes)
+build:
+  stage: build
+  image: golang:${GO_VERSION}
+  script:
+    - echo "🔨 Building project..."
+    - go build ./...
+  only:
+    - merge_requests
+    - main
+    - master
+  dependencies:
+    - validate_tree
+
+# Test job (runs after build)
+test:
+  stage: test
+  image: golang:${GO_VERSION}
+  script:
+    - echo "🧪 Running tests..."
+    - go test ./... -v -coverprofile=coverage.out
+    - go tool cover -func=coverage.out
+  coverage: '/total:\s+\(statements\)\s+\d+\.\d+%/'
+  artifacts:
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage.out
+  only:
+    - merge_requests
+    - main
+    - master
+  dependencies:
+    - build
+

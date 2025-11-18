@@ -1,0 +1,16 @@
+name: cicd-pipeline
+stack: ci-cd
+version: 1.0.0
+summary: "Templates CI/CD para GitHub Actions, GitLab CI e Azure Pipelines"
+placeholders:
+  - ServiceName
+  - Language
+  - Registry
+  - Environment
+  - TestEnabled
+files:
+  - .github/workflows/ci.yaml.tmpl
+  - .github/workflows/deploy.yaml.tmpl
+  - .gitlab-ci.yml.tmpl
+  - azure-pipelines.yml.tmpl
+  - Jenkinsfile.tmpl

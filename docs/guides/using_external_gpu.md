@@ -1,0 +1,1 @@
+# Guia principal para trabalhar sem GPU local

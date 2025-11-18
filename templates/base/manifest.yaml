@@ -1,0 +1,10 @@
+name: clean-architecture-base
+stack: base
+version: 1.0.0
+summary: "Estrutura canônica mínima do Hulk para qualquer stack"
+placeholders:
+  - ServiceName
+  - Description
+  - Version
+files:
+  - structure.yaml.tmpl

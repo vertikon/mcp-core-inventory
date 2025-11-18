@@ -1,0 +1,1 @@
+# Função: Inicializar repositório Hulk

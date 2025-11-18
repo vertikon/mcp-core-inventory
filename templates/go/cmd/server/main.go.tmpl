@@ -1,0 +1,60 @@
+package main
+
+import (
+	"context"
+	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
+	"time"
+
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
+	"go.uber.org/zap"
+
+	"{{ .ModulePath }}/internal/config"
+)
+
+func main() {
+	logger, _ := zap.NewProduction()
+	defer logger.Sync()
+
+	cfg := config.MustLoad()
+
+	e := echo.New()
+	e.HideBanner = true
+	e.Use(middleware.Recover())
+	e.Use(middleware.RequestID())
+	e.Use(middleware.Logger())
+
+	registerRoutes(e, cfg)
+
+	serverCtx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
+	defer stop()
+
+	go func() {
+		if err := e.Start(cfg.HTTP.Address()); err != nil && err != http.ErrServerClosed {
+			logger.Fatal("server failed", zap.Error(err))
+		}
+	}()
+
+	<-serverCtx.Done()
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	if err := e.Shutdown(ctx); err != nil {
+		logger.Error("graceful shutdown failed", zap.Error(err))
+	}
+}
+
+func registerRoutes(e *echo.Echo, cfg *config.Config) {
+	e.GET("/healthz", func(c echo.Context) error {
+		return c.JSON(http.StatusOK, map[string]any{
+			"service":     cfg.Service.Name,
+			"environment": cfg.Service.Environment,
+			"version":     cfg.Service.Version,
+			"timestamp":   time.Now().UTC().Format(time.RFC3339),
+		})
+	})
+}

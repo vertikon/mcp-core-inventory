@@ -1,0 +1,76 @@
+package config
+
+import (
+	"fmt"
+	"strings"
+
+	"github.com/spf13/viper"
+)
+
+// Config represents the runtime configuration rendered from templates.
+type Config struct {
+	Service ServiceConfig `mapstructure:"service"`
+	HTTP    HTTPConfig    `mapstructure:"http"`
+	Logger  LoggerConfig  `mapstructure:"logger"`
+}
+
+// ServiceConfig describes metadata that generators inject.
+type ServiceConfig struct {
+	Name        string `mapstructure:"name"`
+	Description string `mapstructure:"description"`
+	Version     string `mapstructure:"version"`
+	Environment string `mapstructure:"environment"`
+}
+
+// HTTPConfig controls the embedded HTTP server.
+type HTTPConfig struct {
+	Host string `mapstructure:"host"`
+	Port int    `mapstructure:"port"`
+}
+
+// LoggerConfig centralises logging preferences.
+type LoggerConfig struct {
+	Level string `mapstructure:"level"`
+	JSON  bool   `mapstructure:"json"`
+}
+
+// Address returns a host:port combination understood by Echo.
+func (c HTTPConfig) Address() string {
+	if c.Host == "" {
+		return fmt.Sprintf(":%d", c.Port)
+	}
+	return fmt.Sprintf("%s:%d", c.Host, c.Port)
+}
+
+// MustLoad loads configuration from environment variables or panics.
+func MustLoad() *Config {
+	v := viper.New()
+	v.SetConfigName("config")
+	v.AddConfigPath(".")
+	v.AddConfigPath("./configs")
+	v.SetEnvPrefix(strings.ReplaceAll("{{ .ServiceName }}", "-", "_"))
+	v.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
+	v.AutomaticEnv()
+
+	v.SetDefault("service.name", "{{ .ServiceName }}")
+	v.SetDefault("service.description", "{{ .Description }}")
+	v.SetDefault("service.version", "0.1.0")
+	v.SetDefault("service.environment", "development")
+	v.SetDefault("http.host", "")
+	v.SetDefault("http.port", 8080)
+	v.SetDefault("logger.level", "info")
+	v.SetDefault("logger.json", true)
+
+	var cfg Config
+	if err := v.ReadInConfig(); err == nil {
+		if err := v.Unmarshal(&cfg); err != nil {
+			panic(err)
+		}
+		return &cfg
+	}
+
+	if err := v.Unmarshal(&cfg); err != nil {
+		panic(err)
+	}
+	return &cfg
+}

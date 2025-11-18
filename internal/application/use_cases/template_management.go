@@ -1,0 +1,1 @@
+# Função: Gerenciamento de templates

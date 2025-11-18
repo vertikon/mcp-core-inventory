@@ -1,0 +1,64 @@
+package main
+
+import (
+	"context"
+	"os/signal"
+	"syscall"
+	"time"
+
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
+	"github.com/nats-io/nats.go"
+	"go.uber.org/zap"
+
+	"{{ .ModulePath }}/internal/ai/core"
+	"{{ .ModulePath }}/internal/core/cache"
+	"{{ .ModulePath }}/internal/core/engine"
+	infrahttp "{{ .ModulePath }}/internal/infrastructure/http"
+	"{{ .ModulePath }}/internal/monitoring"
+	"{{ .ModulePath }}/internal/state"
+)
+
+func main() {
+	logger, _ := zap.NewProduction()
+	defer logger.Sync()
+
+	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
+	defer stop()
+
+	tel := monitoring.MustInit(ctx, logger)
+	defer tel.Shutdown(ctx)
+
+	nc, err := nats.Connect("{{ .NATSURL }}")
+	if err != nil {
+		logger.Fatal("nats connect failed", zap.Error(err))
+	}
+	defer nc.Drain()
+
+	store := state.NewStore()
+	cacheSvc := cache.NewCache()
+	coordinator := core.NewOrchestrator(logger, cacheSvc, store)
+
+	e := echo.New()
+	e.HideBanner = true
+	e.Use(middleware.RequestID())
+	e.Use(middleware.Recover())
+	e.Use(middleware.Logger())
+
+	infrahttp.RegisterRoutes(e, engine.New(coordinator, logger))
+
+	go func() {
+		if err := e.Start(":{{ .HTTPPort }}"); err != nil {
+			logger.Fatal("http server", zap.Error(err))
+		}
+	}()
+
+	<-ctx.Done()
+
+	shutdownCtx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
+	defer cancel()
+
+	if err := e.Shutdown(shutdownCtx); err != nil {
+		logger.Error("graceful shutdown failed", zap.Error(err))
+	}
+}

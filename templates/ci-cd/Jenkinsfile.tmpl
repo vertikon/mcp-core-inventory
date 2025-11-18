@@ -1,0 +1,144 @@
+pipeline {
+    agent any
+    
+    environment {
+        REGISTRY = '{{ .Registry | default "your-registry.com" }}'
+        IMAGE_NAME = '{{ .ServiceName }}'
+        DOCKER_CREDENTIALS = credentials('docker-registry-creds')
+    }
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/your-org/{{ .ServiceName }}.git'
+            }
+        }
+        
+{{- if .TestEnabled }}
+        stage('Test') {
+            parallel {
+                stage('Unit Tests') {
+                    steps {
+                        sh '''
+                            go version
+                            go mod download
+                            go test -v -race -coverprofile=coverage.out ./...
+                            go tool cover -html=coverage.out -o coverage.html
+                        '''
+                    }
+                    post {
+                        always {
+                            publishHTML([
+                                allowMissing: false,
+                                alwaysLinkToLastBuild: true,
+                                keepAll: true,
+                                reportDir: '.',
+                                reportFiles: 'coverage.html',
+                                reportName: 'Coverage Report'
+                            ])
+                        }
+                    }
+                }
+                
+                stage('Linting') {
+                    steps {
+                        sh 'golangci-lint run --out-format junit > lint-report.xml'
+                        publishTestResults testResultsPattern: 'lint-report.xml'
+                    }
+                }
+                
+                stage('Security Scan') {
+                    steps {
+                        sh '''
+                            go install github.com/securecodewarrior/github-action-gosec@latest
+                            gosec -fmt json -out gosec-report.json ./...
+                        '''
+                        archiveArtifacts artifacts: 'gosec-report.json', fingerprint: true
+                    }
+                }
+            }
+        }
+{{- end }}
+        
+        stage('Build') {
+            steps {
+                script {
+                    def image = docker.build("${env.REGISTRY}/${env.IMAGE_NAME}:${env.BUILD_NUMBER}")
+                    
+                    withDockerRegistry([url: "https://${env.REGISTRY}", credentialsId: 'docker-registry-creds']) {
+                        image.push()
+                        image.push('latest')
+                    }
+                }
+            }
+        }
+        
+        stage('Deploy Staging') {
+            when {
+                branch 'develop'
+            }
+            steps {
+                sshagent(['staging-ssh-key']) {
+                    sh '''
+                        ssh -o StrictHostKeyChecking=no user@staging-server "
+                            cd /opt/${env.IMAGE_NAME} &&
+                            docker-compose pull &&
+                            docker-compose up -d
+                        "
+                    '''
+                }
+            }
+        }
+        
+        stage('Deploy Production') {
+            when {
+                branch 'main'
+            }
+            input {
+                message "Deploy to production?"
+                ok "Deploy"
+            }
+            steps {
+                script {
+                    try {
+                        sh '''
+                            kubectl config use-context production-cluster
+                            helm upgrade --install ${env.IMAGE_NAME} ./k8s \\
+                                --namespace production \\
+                                --set image.tag=${env.BUILD_NUMBER} \\
+                                --set environment=production \\
+                                --wait --timeout=10m
+                        '''
+                        
+                        sh '''
+                            kubectl rollout status deployment/${env.IMAGE_NAME} -n production --timeout=300s
+                        '''
+                    } catch (Exception e) {
+                        currentBuild.result = 'FAILURE'
+                        sh '''
+                            helm rollback ${env.IMAGE_NAME} -n production
+                        '''
+                        error "Deployment failed, rolled back successfully"
+                    }
+                }
+            }
+        }
+    }
+    
+    post {
+        success {
+            slackSend(
+                channel: '#deployments',
+                color: 'good',
+                message: "✅ ${env.JOB_NAME} - ${env.BUILD_DISPLAY_NAME} succeeded"
+            )
+        }
+        failure {
+            slackSend(
+                channel: '#deployments',
+                color: 'danger',
+                message: "❌ ${env.JOB_NAME} - ${env.BUILD_DISPLAY_NAME} failed"
+            )
+        }
+    }
+}

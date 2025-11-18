@@ -1,0 +1,1 @@
+# Função: Deployer híbrido (combina K8s + Serverless + Docker)

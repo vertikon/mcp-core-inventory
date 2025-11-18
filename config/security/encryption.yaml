@@ -1,0 +1,45 @@
+# Configs de criptografia/KMS (algoritmos, rotação de chaves)
+
+# Encryption Algorithm
+algorithm: "AES-256-GCM"
+
+# Key Rotation Configuration
+key_rotation_ttl: "720h"  # 30 days
+
+# RSA Key Configuration
+rsa_key_size: 2048  # 2048 or 4096
+
+# Certificate Configuration
+certificate_ttl: "8760h"  # 1 year
+
+# KMS Configuration (optional)
+# Uncomment and configure if using external KMS
+# kms:
+#   provider: "aws"  # aws, gcp, vault, none
+#   config:
+#     region: "us-east-1"
+#     key_id: "arn:aws:kms:us-east-1:123456789012:key/12345678-1234-1234-1234-123456789012"
+#     endpoint: ""  # Optional: custom endpoint
+
+# Example for GCP KMS:
+# kms:
+#   provider: "gcp"
+#   config:
+#     project_id: "my-project"
+#     location: "us-east1"
+#     key_ring: "my-key-ring"
+#     key_name: "my-key"
+
+# Example for HashiCorp Vault:
+# kms:
+#   provider: "vault"
+#   config:
+#     address: "https://vault.example.com:8200"
+#     token: "${VAULT_TOKEN}"
+#     mount_path: "secret"
+#     key_path: "encryption-keys"
+
+# Default: no external KMS (use local key management)
+kms:
+  provider: "none"
+  config: {}

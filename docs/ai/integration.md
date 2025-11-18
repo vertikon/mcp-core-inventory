@@ -1,0 +1,1 @@
+# Integração IA (OpenAI/Gemini/GLM)

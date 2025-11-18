@@ -1,0 +1,112 @@
+# Configs de roles, permissões e políticas (por tenant/produto)
+
+# Roles Definition
+roles:
+  - id: "admin"
+    name: "Administrator"
+    description: "Full system access"
+    permissions:
+      - resource: "*"
+        action: "*"
+  
+  - id: "user"
+    name: "User"
+    description: "Standard user with basic permissions"
+    permissions:
+      - resource: "mcp"
+        action: "read"
+      - resource: "mcp"
+        action: "create"
+      - resource: "mcp"
+        action: "update"
+      - resource: "template"
+        action: "read"
+      - resource: "template"
+        action: "create"
+  
+  - id: "viewer"
+    name: "Viewer"
+    description: "Read-only access"
+    permissions:
+      - resource: "mcp"
+        action: "read"
+      - resource: "template"
+        action: "read"
+      - resource: "project"
+        action: "read"
+
+# Policies Definition
+policies:
+  - id: "admin-only-delete-mcp"
+    name: "Admin Only Delete MCP"
+    description: "Only administrators can delete MCP instances"
+    priority: 100
+    rules:
+      - condition: "require_role"
+        params:
+          roles: ["admin"]
+        effect: "allow"
+      - condition: "default"
+        params: {}
+        effect: "deny"
+  
+  - id: "user-can-only-update-own-mcp"
+    name: "User Can Only Update Own MCP"
+    description: "Users can only update MCPs they own"
+    priority: 50
+    rules:
+      - resource: "mcp"
+        action: "update"
+        condition: "attribute_equals"
+        params:
+          attribute: "owner_id"
+          value: "${user_id}"
+        effect: "allow"
+        description: "Users can update own MCPs"
+      - resource: "mcp"
+        action: "update"
+        condition: "require_role"
+        params:
+          roles: ["admin"]
+        effect: "allow"
+        description: "Admins can update any MCP"
+      - resource: "*"
+        action: "*"
+        condition: "default"
+        effect: "deny"
+        description: "Default deny"
+  
+  - id: "rate-limit-create-mcp"
+    name: "Rate Limit Create MCP"
+    description: "Limit MCP creation rate per user"
+    priority: 30
+    rules:
+      - resource: "mcp"
+        action: "create"
+        condition: "rate_limit"
+        params:
+          limit: 10
+          window: "1h"
+        effect: "allow"
+        description: "Rate limited create"
+      - resource: "*"
+        action: "*"
+        condition: "default"
+        effect: "deny"
+        description: "Default deny"
+
+# Permission Overrides
+overrides:
+  - id: "allow-public-read-templates"
+    resource: "template"
+    action: "read"
+    condition:
+      public: true
+    effect: "allow"
+  
+  - id: "deny-delete-production-mcp"
+    resource: "mcp"
+    action: "delete"
+    condition:
+      environment: "production"
+    effect: "deny"

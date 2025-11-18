@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .ServiceName }}
+  namespace: {{ .Namespace }}
+  labels:
+    app: {{ .ServiceName }}
+    version: {{ .Environment }}
+spec:
+  replicas: {{ .Replicas }}
+  selector:
+    matchLabels:
+      app: {{ .ServiceName }}
+  template:
+    metadata:
+      labels:
+        app: {{ .ServiceName }}
+        version: {{ .Environment }}
+    spec:
+      containers:
+      - name: {{ .ServiceName }}
+        image: {{ .ImageName }}
+        ports:
+        - containerPort: {{ .Port }}
+          name: http
+        env:
+        - name: ENVIRONMENT
+          value: "{{ .Environment }}"
+        - name: PORT
+          value: "{{ .Port }}"
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: {{ .Port }}
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: {{ .Port }}
+          initialDelaySeconds: 5
+          periodSeconds: 5

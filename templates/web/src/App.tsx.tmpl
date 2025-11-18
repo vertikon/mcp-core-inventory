@@ -1,0 +1,84 @@
+import React from 'react'
+import { useMetrics } from './hooks/useMetrics'
+import { Header } from './components/layouts/Header'
+import { MetricsSection } from './components/sections/MetricsSection'
+import { ComponentStatusSection } from './components/sections/ComponentStatusSection'
+import { AlertsSection } from './components/sections/AlertsSection'
+import { ComponentTabs } from './components/sections/ComponentTabs'
+import { PerformanceCharts } from './components/sections/PerformanceCharts'
+import { QuickControls } from './components/sections/QuickControls'
+
+function App() {
+  const {
+    metrics,
+    components,
+    componentDetails,
+    alerts,
+    cacheStats,
+    isPaused,
+    loading,
+    error,
+    togglePause,
+    fetchComponentDetails,
+  } = useMetrics()
+
+  if (loading && !metrics) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-600">Carregando dashboard...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
+        <div className="text-center">
+          <i className="ri-error-warning-line text-red-600 text-4xl mb-4"></i>
+          <p className="text-red-600 font-medium">{error}</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (!metrics) {
+    return null
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+      <div className="max-w-[1400px] mx-auto p-4 md:p-6 space-y-6">
+        <Header
+          conformity={metrics.conformity}
+          lastUpdate={metrics.lastUpdate}
+          isPaused={isPaused}
+          onPauseToggle={togglePause}
+        />
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2">
+            <MetricsSection metrics={metrics} />
+          </div>
+          <div className="space-y-6">
+            <ComponentStatusSection components={components} />
+            <AlertsSection alerts={alerts} />
+          </div>
+        </div>
+
+        <ComponentTabs
+          componentDetails={componentDetails}
+          onComponentSelect={fetchComponentDetails}
+        />
+
+        <PerformanceCharts cacheStats={cacheStats} />
+
+        <QuickControls />
+      </div>
+    </div>
+  )
+}
+
+export default App

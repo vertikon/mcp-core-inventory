@@ -1,0 +1,33 @@
+# Configuração de produção
+server:
+  port: 8080
+  host: "0.0.0.0"
+
+database:
+  host: "postgres-prod"
+  port: 5432
+  database: "mcp_hulk_prod"
+  ssl_mode: "require"
+  max_conns: 50
+  min_conns: 10
+
+ai:
+  provider: "glm"
+  model: "glm-4.6-z.ai"
+  temperature: 0.2  # More deterministic in prod
+  max_tokens: 8000
+
+logging:
+  level: "warn"
+  format: "json"
+
+telemetry:
+  tracing:
+    enabled: true
+  metrics:
+    enabled: true
+
+features:
+  audit_logging: true
+  external_gpu: true  # Enable GPU in production
+  beta_generators: false

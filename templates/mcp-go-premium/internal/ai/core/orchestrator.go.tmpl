@@ -1,0 +1,56 @@
+package core
+
+import (
+	"context"
+	"errors"
+
+	"go.uber.org/zap"
+
+	"{{ .ModulePath }}/internal/ai/agents"
+	"{{ .ModulePath }}/internal/core/cache"
+	"{{ .ModulePath }}/internal/state"
+)
+
+var ErrAgentNotFound = errors.New("agent not found")
+
+// Orchestrator coordinates AI agents, cache and persistent state.
+type Orchestrator struct {
+	logger *zap.Logger
+	cache  *cache.Cache
+	store  *state.Store
+	agents *agents.Registry
+}
+
+func NewOrchestrator(logger *zap.Logger, cache *cache.Cache, store *state.Store) *Orchestrator {
+	return &Orchestrator{
+		logger: logger,
+		cache:  cache,
+		store:  store,
+		agents: agents.NewRegistry(),
+	}
+}
+
+func (o *Orchestrator) Register(agent agents.Agent) {
+	o.agents.Register(agent)
+}
+
+func (o *Orchestrator) Execute(ctx context.Context, agentName, input string) (string, error) {
+	if cached, ok := o.cache.Get(agentName, input); ok {
+		return cached, nil
+	}
+
+	agent, ok := o.agents.Get(agentName)
+	if !ok {
+		return "", ErrAgentNotFound
+	}
+
+	resp, err := agent.Handle(ctx, input)
+	if err != nil {
+		return "", err
+	}
+
+	o.cache.Put(agentName, input, resp)
+	o.store.Append(agentName, input, resp)
+
+	return resp, nil
+}

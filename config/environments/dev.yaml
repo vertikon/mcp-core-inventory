@@ -1,0 +1,22 @@
+# Configuração de desenvolvimento
+server:
+  port: 8080
+  host: "localhost"
+
+database:
+  host: "localhost"
+  port: 5432
+  database: "mcp_hulk_dev"
+  ssl_mode: "disable"
+
+ai:
+  provider: "glm"
+  model: "glm-4.6-z.ai"
+  temperature: 0.7  # More creative in dev
+
+logging:
+  level: "debug"
+  format: "console"
+
+features:
+  beta_generators: true  # Enable beta features in dev

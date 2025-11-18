@@ -1,0 +1,1 @@
+# Decisão de execução (CPU local → GPU remota)

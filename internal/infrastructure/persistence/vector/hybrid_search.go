@@ -1,0 +1,1 @@
+# Função: Busca híbrida (vector + outros sinais)

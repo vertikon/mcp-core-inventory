@@ -1,0 +1,1 @@
+# Fine-tuning usando **GPU EXTERNA** (RunPod)

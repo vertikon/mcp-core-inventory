@@ -1,0 +1,1 @@
+# Estado distribuído

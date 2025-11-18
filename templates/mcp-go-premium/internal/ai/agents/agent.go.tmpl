@@ -1,0 +1,27 @@
+package agents
+
+import "context"
+
+// Agent defines a contract for domain-specific AI capabilities.
+type Agent interface {
+	Name() string
+	Handle(ctx context.Context, input string) (string, error)
+}
+
+// Registry keeps registered agents discoverable by orchestrator.
+type Registry struct {
+	agents map[string]Agent
+}
+
+func NewRegistry() *Registry {
+	return &Registry{agents: make(map[string]Agent)}
+}
+
+func (r *Registry) Register(agent Agent) {
+	r.agents[agent.Name()] = agent
+}
+
+func (r *Registry) Get(name string) (Agent, bool) {
+	agent, ok := r.agents[name]
+	return agent, ok
+}

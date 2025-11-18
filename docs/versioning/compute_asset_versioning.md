@@ -1,0 +1,1 @@
+# Versionamento de artefatos vindos da GPU remota

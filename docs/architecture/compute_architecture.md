@@ -1,0 +1,1 @@
+# Arquitetura de compute (CPU local + GPU externa)

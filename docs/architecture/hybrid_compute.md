@@ -1,0 +1,1 @@
+# Execução híbrida (local CPU + RunPod GPU)

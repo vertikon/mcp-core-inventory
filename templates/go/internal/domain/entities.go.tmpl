@@ -1,0 +1,35 @@
+package domain
+
+import "time"
+
+// {{ .EntityName }} represents a canonical domain entity used across the generated service.
+type {{ .EntityName }} struct {
+	ID        string                 `json:"id"`
+	Name      string                 `json:"name"`
+	Metadata  map[string]any         `json:"metadata,omitempty"`
+	CreatedAt time.Time              `json:"created_at"`
+	UpdatedAt time.Time              `json:"updated_at"`
+	State     {{ .EntityName }}State `json:"state"`
+}
+
+// {{ .EntityName }}State enumerates supported lifecycle states.
+type {{ .EntityName }}State string
+
+const (
+	StateDraft     {{ .EntityName }}State = "draft"
+	StateActive    {{ .EntityName }}State = "active"
+	StateArchived  {{ .EntityName }}State = "archived"
+)
+
+// New{{ .EntityName }} bootstrapper pre-populates bookkeeping fields.
+func New{{ .EntityName }}(id, name string) *{{ .EntityName }} {
+	now := time.Now().UTC()
+	return &{{ .EntityName }}{
+		ID:        id,
+		Name:      name,
+		Metadata:  map[string]any{},
+		CreatedAt: now,
+		UpdatedAt: now,
+		State:     StateDraft,
+	}
+}

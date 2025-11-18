@@ -1,0 +1,1 @@
+# Função: Validação de dependências

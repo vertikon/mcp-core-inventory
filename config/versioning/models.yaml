@@ -1,0 +1,63 @@
+# Configuration for Model Versioning
+
+versioning:
+  models:
+    # Registry settings
+    registry:
+      # Auto-generate fingerprints
+      auto_fingerprint: true
+      # Require metadata
+      require_metadata: false
+
+    # Versioning strategy
+    strategy:
+      # Default strategy: semantic, incremental, timestamp
+      default: "incremental"
+      # Auto-increment versions
+      auto_increment: true
+
+    # A/B Testing settings
+    ab_testing:
+      # Default traffic split
+      default_split:
+        version_a_percent: 0.5
+        version_b_percent: 0.5
+      # Minimum requests for evaluation
+      min_requests: 1000
+      # Minimum score for promotion
+      min_score: 0.8
+      # Maximum error rate
+      max_error_rate: 0.05
+      # Maximum latency (ms)
+      max_latency_ms: 1000
+      # Minimum improvement percentage
+      min_improvement: 5.0
+
+    # Deployment settings
+    deployment:
+      # Default deployment strategy
+      default_strategy: "canary"
+      # Canary percentage
+      canary_percent: 0.1
+      # Health check settings
+      health_check:
+        enabled: true
+        interval_seconds: 30
+        timeout_seconds: 5
+        max_failures: 3
+        success_threshold: 0.95
+      # Rollback policy
+      rollback:
+        auto_rollback: true
+        max_error_rate: 0.1
+        max_latency_ms: 2000
+        min_success_rate: 0.9
+
+    # Promotion settings
+    promotion:
+      # Require A/B test for promotion
+      require_ab_test: false
+      # Auto-promote on criteria met
+      auto_promote: false
+      # Require manual approval
+      require_approval: true

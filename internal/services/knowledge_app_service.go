@@ -1,0 +1,1 @@
+# Função: Orquestra acesso a conhecimento/contexto

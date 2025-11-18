@@ -1,0 +1,1 @@
+# Função: Consistência de cache (invalidação, TTL, etc.)

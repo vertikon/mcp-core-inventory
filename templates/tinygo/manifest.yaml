@@ -1,0 +1,13 @@
+name: tinygo-wasm
+stack: tinygo
+version: 1.0.0
+summary: "Template TinyGo para módulos WASM exportáveis"
+placeholders:
+  - ServiceName
+  - ModulePath
+  - GoVersion
+files:
+  - go.mod.tmpl
+  - main.go.tmpl
+  - cmd/__NAME__/main.go
+  - wasm/exports.go.tmpl

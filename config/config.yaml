@@ -1,0 +1,60 @@
+server:
+  port: 8080
+  host: "0.0.0.0"
+  read_timeout: 30s
+  write_timeout: 30s
+
+database:
+  url: ""  # Override with HULK_DATABASE_URL env var
+  host: "localhost"
+  port: 5432
+  user: "postgres"
+  password: ""  # Set via HULK_DATABASE_PASSWORD env var
+  database: "mcp_hulk"
+  ssl_mode: "disable"
+  max_conns: 25
+  min_conns: 5
+
+ai:
+  provider: "glm"  # openai, gemini, glm
+  model: "glm-4.6-z.ai"
+  api_key: ""  # Set via HULK_AI_API_KEY env var
+  endpoint: "https://api.z.ai/v1"
+  temperature: 0.3
+  max_tokens: 4000
+  timeout: "60s"
+
+paths:
+  templates: "./templates"
+  output: "./output"
+  data: "./data"
+  cache: "./data/cache"
+
+engine:
+  workers: "auto"  # auto = NumCPU*2
+  queue_size: 2000
+  timeout: 20s
+
+cache:
+  l1_size: 5000
+  l2_ttl: 1h
+  l3_path: "data/cache"
+
+nats:
+  urls:
+    - "nats://localhost:4222"
+  user: ""
+  pass: ""
+
+logging:
+  level: "info"
+  format: "json"
+
+telemetry:
+  tracing:
+    enabled: true
+    exporter: "jaeger"
+    endpoint: "http://localhost:4318/v1/traces"
+  metrics:
+    enabled: true
+

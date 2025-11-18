@@ -1,0 +1,24 @@
+package main
+
+import "unsafe"
+
+var state = map[string]uint64{}
+
+//export SetMetric
+func SetMetric(keyPtr *uint8, keyLen uint32, value uint64) {
+	key := readString(keyPtr, keyLen)
+	state[key] = value
+}
+
+//export GetMetric
+func GetMetric(keyPtr *uint8, keyLen uint32) uint64 {
+	key := readString(keyPtr, keyLen)
+	return state[key]
+}
+
+func readString(ptr *uint8, len uint32) string {
+	s := unsafe.Slice(ptr, len)
+	return string(s)
+}
+
+func main() {}

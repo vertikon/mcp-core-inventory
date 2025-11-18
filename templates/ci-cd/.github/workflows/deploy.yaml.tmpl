@@ -1,0 +1,84 @@
+name: Deploy {{ .ServiceName }}
+
+on:
+  push:
+    branches: [ main ]
+  workflow_run:
+    workflows: ["CI Pipeline for {{ .ServiceName }}"]
+    types:
+      - completed
+
+env:
+  REGISTRY: {{ .Registry | default "ghcr.io" }}
+  IMAGE_NAME: {{ .ServiceName }}
+
+jobs:
+  deploy-staging:
+    runs-on: ubuntu-latest
+    environment: staging
+    if: github.ref == 'refs/heads/develop'
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Deploy to staging
+      run: |
+        echo "Deploying to staging environment"
+        # Add staging deployment commands here
+
+    - name: Run integration tests
+      run: |
+        echo "Running integration tests on staging"
+        # Add integration test commands here
+
+  deploy-production:
+    runs-on: ubuntu-latest
+    environment: production
+    if: github.ref == 'refs/heads/main'
+    needs: deploy-staging
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Deploy to production
+      run: |
+        echo "Deploying to production environment"
+        # Add production deployment commands here
+
+    - name: Health check
+      run: |
+        echo "Performing health check"
+        # Add health check commands here
+
+    - name: Rollback on failure
+      if: failure()
+      run: |
+        echo "Rolling back deployment"
+        # Add rollback commands here
+
+  deploy-kubernetes:
+    runs-on: ubuntu-latest
+    environment: production
+    if: github.ref == 'refs/heads/main'
+    needs: deploy-production
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Configure kubectl
+      uses: azure/k8s-set-context@v3
+      with:
+        method: kubeconfig
+        kubeconfig: ${{ secrets.KUBE_CONFIG }}
+
+    - name: Deploy to Kubernetes
+      run: |
+        helm upgrade --install {{ .ServiceName }} ./k8s \
+          --namespace {{ .Environment | default "production" }} \
+          --set image.tag=${{ github.sha }} \
+          --set environment=production
+
+    - name: Verify deployment
+      run: |
+        kubectl rollout status deployment/{{ .ServiceName }} -n production
+        kubectl get pods -n production -l app={{ .ServiceName }}
