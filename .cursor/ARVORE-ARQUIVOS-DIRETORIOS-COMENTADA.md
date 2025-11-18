@@ -1308,7 +1308,8 @@ mcp-hulk/                                    # Raiz do projeto MCP-HULK
 │   │   ├── 📄 setup_monitoring.sh          # Setup de monitoramento (Prometheus, OTLP, Jaeger)
 │   │   ├── 📄 setup_security.sh            # Setup de segurança (Auth, RBAC, KMS)
 │   │   ├── 📄 setup_state_management.sh    # Setup de gerenciamento de estado
-│   │   └── 📄 setup_versioning.sh           # Setup de versionamento
+│   │   ├── 📄 setup_versioning.sh           # Setup de versionamento
+│   │   └── 📄 pre-commit-install.sh         # Instalação de hooks Git para validação de estrutura
 │   │
 │   ├── 📁 deployment/                       # Scripts de deployment
 │   │   │                                    # Deploy para diferentes plataformas
@@ -1333,7 +1334,8 @@ mcp-hulk/                                    # Raiz do projeto MCP-HULK
 │   │   ├── 📄 validate_template.sh          # Validar template
 │   │   ├── 📄 validate_config.sh           # Validar configuração
 │   │   ├── 📄 validate_infrastructure.sh   # Validar infraestrutura
-│   │   └── 📄 validate_security.sh          # Validar segurança
+│   │   ├── 📄 validate_security.sh          # Validar segurança
+│   │   └── 📄 validate_project_structure.sh # Validar estrutura do projeto
 │   │
 │   ├── 📁 optimization/                     # Scripts de otimização
 │   │   │                                    # Otimização de performance, cache, DB, rede, IA
@@ -1365,12 +1367,16 @@ mcp-hulk/                                    # Raiz do projeto MCP-HULK
 ├── 📁 config/                               # BLOCO-12: Configuration
 │   │                                        # Arquivos de configuração centralizados (YAML)
 │   │                                        # Ordem de precedência: ENV > env.yaml > features.yaml > config.yaml > defaults
+│   │                                        # Ver também: .env.example na raiz do projeto
 │   │
 │   ├── 📄 config.yaml                       # Configuração principal do sistema
 │   │                                        # Configurações gerais: server, engine, logging, telemetry
 │   │
 │   ├── 📄 features.yaml                     # Feature flags
 │   │                                        # Flags de funcionalidades (external_gpu, audit_logging, etc.)
+│   │
+│   ├── 📄 README.md                         # Documentação de configuração
+│   │                                        # Instruções de uso e referência de variáveis
 │   │
 │   ├── 📁 environments/                     # Configurações por ambiente
 │   │   │                                    # Configurações específicas de cada ambiente
@@ -1599,6 +1605,10 @@ mcp-hulk/                                    # Raiz do projeto MCP-HULK
 ├── 📄 Makefile                              # Makefile com comandos de build, test, lint
 │                                            # Comandos: make build, make test, make lint, etc.
 │
+├── 📄 .env.example                          # Template de variáveis de ambiente (BLOCO-12)
+│                                            # Template com todas as variáveis HULK_* documentadas
+│                                            # Copiar para .env e preencher valores (não vai para Git)
+│
 ├── 📄 README.md                             # README principal do projeto
 │                                            # Visão geral, features, estrutura, quick start
 │
@@ -1642,7 +1652,7 @@ mcp-hulk/                                    # Raiz do projeto MCP-HULK
 - **cmd/**: 8 executáveis principais
 - **internal/**: ~300 arquivos Go (código privado)
 - **pkg/**: ~15 arquivos Go (bibliotecas públicas)
-- **scripts/**: 37 scripts de automação
+- **scripts/**: 39 scripts de automação
 - **templates/**: ~50 templates de geração
 - **tools/**: ~20 ferramentas Go
 - **config/**: ~30 arquivos de configuração
