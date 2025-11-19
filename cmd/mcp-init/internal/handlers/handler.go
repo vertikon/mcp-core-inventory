@@ -5,7 +5,7 @@ package handlers
 import (
 	"os"
 
-	"github.com/vertikon/mcp-hulk/cmd/mcp-init/internal/config"
+	"github.com/vertikon/mcp-core-inventory/cmd/mcp-init/internal/config"
 )
 
 // Handler defines the interface for all file handlers

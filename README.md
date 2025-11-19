@@ -53,8 +53,8 @@ The project follows a **Clean Architecture** pattern with 14 main blocks:
 
 ```bash
 # Clone the repository
-git clone https://github.com/vertikon/mcp-hulk.git
-cd mcp-hulk
+git clone https://github.com/vertikon/mcp-core-inventory.git
+cd mcp-core-inventory
 
 # Install dependencies
 make deps
@@ -195,7 +195,7 @@ Enterprise-grade security features:
 make docker
 
 # Run container
-docker run -p 8080:8080 -e HULK_ENV=prod mcp-hulk:latest
+docker run -p 8080:8080 -e HULK_ENV=prod mcp-core-inventory:latest
 ```
 
 ### Kubernetes
@@ -205,7 +205,7 @@ docker run -p 8080:8080 -e HULK_ENV=prod mcp-hulk:latest
 kubectl apply -f deployments/k8s/
 
 # Check deployment status
-kubectl get pods -l app=mcp-hulk
+kubectl get pods -l app=mcp-core-inventory
 ```
 
 ### Serverless
@@ -250,9 +250,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🆘 Support
 
-- **Issues**: [GitHub Issues](https://github.com/vertikon/mcp-hulk/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/vertikon/mcp-hulk/discussions)
-- **Documentation**: [Project Docs](https://docs.vertikon.com/mcp-hulk)
+- **Issues**: [GitHub Issues](https://github.com/vertikon/mcp-core-inventory/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/vertikon/mcp-core-inventory/discussions)
+- **Documentation**: [Project Docs](https://docs.vertikon.com/mcp-core-inventory)
 
 ## 🙏 Acknowledgments
 

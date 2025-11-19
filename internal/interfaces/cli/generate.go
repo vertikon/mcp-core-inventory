@@ -4,8 +4,8 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
-	"github.com/vertikon/mcp-hulk/internal/services"
-	"github.com/vertikon/mcp-hulk/pkg/logger"
+	"github.com/vertikon/mcp-core-inventory/internal/services"
+	"github.com/vertikon/mcp-core-inventory/pkg/logger"
 	"go.uber.org/zap"
 )
 

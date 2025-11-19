@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
-	"github.com/vertikon/mcp-hulk/pkg/logger"
+	"github.com/vertikon/mcp-core-inventory/pkg/logger"
 	"go.uber.org/zap"
 )
 
@@ -91,7 +91,7 @@ func (m *TokenManagerImpl) Generate(ctx context.Context, userID, email string, r
 			IssuedAt:  jwt.NewNumericDate(now),
 			ExpiresAt: jwt.NewNumericDate(now.Add(m.tokenTTL)),
 			NotBefore: jwt.NewNumericDate(now),
-			Issuer:    "mcp-hulk",
+			Issuer:    "mcp-core-inventory",
 			Subject:   userID,
 		},
 	}

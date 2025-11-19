@@ -3,10 +3,10 @@ package services
 import (
 	"context"
 
-	"github.com/vertikon/mcp-hulk/internal/versioning/data"
-	"github.com/vertikon/mcp-hulk/internal/versioning/knowledge"
-	"github.com/vertikon/mcp-hulk/internal/versioning/models"
-	"github.com/vertikon/mcp-hulk/pkg/logger"
+	"github.com/vertikon/mcp-core-inventory/internal/versioning/data"
+	"github.com/vertikon/mcp-core-inventory/internal/versioning/knowledge"
+	"github.com/vertikon/mcp-core-inventory/internal/versioning/models"
+	"github.com/vertikon/mcp-core-inventory/pkg/logger"
 	"go.uber.org/zap"
 )
 

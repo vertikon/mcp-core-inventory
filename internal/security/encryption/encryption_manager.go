@@ -10,7 +10,7 @@ import (
 	"errors"
 	"io"
 
-	"github.com/vertikon/mcp-hulk/pkg/logger"
+	"github.com/vertikon/mcp-core-inventory/pkg/logger"
 	"go.uber.org/zap"
 	"golang.org/x/crypto/argon2"
 	"golang.org/x/crypto/bcrypt"

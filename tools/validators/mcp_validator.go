@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/vertikon/mcp-hulk/internal/mcp/validators"
-	"github.com/vertikon/mcp-hulk/pkg/logger"
+	"github.com/vertikon/mcp-core-inventory/internal/mcp/validators"
+	"github.com/vertikon/mcp-core-inventory/pkg/logger"
 	"go.uber.org/zap"
 )
 

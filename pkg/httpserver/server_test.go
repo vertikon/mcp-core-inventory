@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/labstack/echo/v4"
-	"github.com/vertikon/mcp-hulk/internal/observability"
+	"github.com/vertikon/mcp-core-inventory/internal/observability"
 )
 
 func TestNewServer(t *testing.T) {

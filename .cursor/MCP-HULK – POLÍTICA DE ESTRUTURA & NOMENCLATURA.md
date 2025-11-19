@@ -2,12 +2,12 @@
 
 STATUS: **CONGELADO v1.0**
 
-Este documento define as **regras obrigatórias** de estrutura de diretórios, nomes de arquivos e pontos de extensão do projeto **mcp-hulk**.
+Este documento define as **regras obrigatórias** de estrutura de diretórios, nomes de arquivos e pontos de extensão do projeto **mcp-core-inventory**.
 
 A árvore oficial do projeto está em:
 
 - `MCP-HULK-ARVORE-FULL.md`  
-- Local: `E:\vertikon\.templates\mcp-hulk\`  
+- Local: `E:\vertikon\.templates\mcp-core-inventory\`  
 
 Essa árvore é a **fonte única da verdade** da estrutura de arquivos do template. :contentReference[oaicite:1]{index=1}  
 
@@ -118,7 +118,7 @@ Para adaptar o template ao contexto de um cliente/produto:
 
 Não é permitido:
 
-- “hacking manual” na estrutura base do `mcp-hulk` dentro de `E:\vertikon\.templates\mcp-hulk\`.
+- “hacking manual” na estrutura base do `mcp-core-inventory` dentro de `E:\vertikon\.templates\mcp-core-inventory\`.
 - renomear pastas como `internal/ai`, `internal/mcp`, `internal/infrastructure`, `templates/base`, etc.
 
 ---

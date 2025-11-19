@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/vertikon/mcp-hulk/internal/domain/entities"
+	"github.com/vertikon/mcp-core-inventory/internal/domain/entities"
 )
 
 // KnowledgeStore manages knowledge storage and retrieval for RAG

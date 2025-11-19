@@ -3,8 +3,8 @@ package grpc
 import (
 	"context"
 
-	"github.com/vertikon/mcp-hulk/internal/services"
-	"github.com/vertikon/mcp-hulk/pkg/logger"
+	"github.com/vertikon/mcp-core-inventory/internal/services"
+	"github.com/vertikon/mcp-core-inventory/pkg/logger"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 )
