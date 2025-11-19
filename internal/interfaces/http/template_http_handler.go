@@ -4,9 +4,9 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
-	"github.com/vertikon/mcp-hulk/internal/application/dtos"
-	"github.com/vertikon/mcp-hulk/internal/services"
-	"github.com/vertikon/mcp-hulk/pkg/logger"
+	"github.com/vertikon/mcp-core-inventory/internal/application/dtos"
+	"github.com/vertikon/mcp-core-inventory/internal/services"
+	"github.com/vertikon/mcp-core-inventory/pkg/logger"
 	"go.uber.org/zap"
 )
 

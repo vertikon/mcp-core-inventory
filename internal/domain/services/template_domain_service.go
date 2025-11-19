@@ -4,7 +4,7 @@ package services
 import (
 	"fmt"
 
-	"github.com/vertikon/mcp-hulk/internal/domain/entities"
+	"github.com/vertikon/mcp-core-inventory/internal/domain/entities"
 )
 
 // TemplateDomainService provides domain logic for Template operations

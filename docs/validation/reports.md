@@ -97,7 +97,7 @@ package main
 
 import (
     "context"
-    "github.com/vertikon/mcp-hulk/tools/validators"
+    "github.com/vertikon/mcp-core-inventory/tools/validators"
 )
 
 func main() {

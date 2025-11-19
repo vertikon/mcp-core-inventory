@@ -4,7 +4,7 @@ package repositories
 import (
 	"context"
 
-	"github.com/vertikon/mcp-hulk/internal/domain/entities"
+	"github.com/vertikon/mcp-core-inventory/internal/domain/entities"
 )
 
 // KnowledgeRepository defines the interface for Knowledge persistence

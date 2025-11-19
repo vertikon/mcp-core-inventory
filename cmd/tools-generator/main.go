@@ -8,7 +8,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/vertikon/mcp-hulk/tools/generators"
+	"github.com/vertikon/mcp-core-inventory/tools/generators"
 )
 
 func main() {

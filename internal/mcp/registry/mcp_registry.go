@@ -9,7 +9,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/vertikon/mcp-hulk/pkg/logger"
+	"github.com/vertikon/mcp-core-inventory/pkg/logger"
 	"go.uber.org/zap"
 )
 
@@ -224,7 +224,7 @@ func (r *MCPRegistry) initializeDefaultTemplates() {
 			Features:     []string{"clean-architecture", "docker", "testing"},
 			Author:       "MCP-Hulk Team",
 			License:      "MIT",
-			Repository:   "https://github.com/vertikon/mcp-hulk",
+			Repository:   "https://github.com/vertikon/mcp-core-inventory",
 			TemplateDir:  "go",
 			Status:       "active",
 			Downloads:    0,
@@ -242,7 +242,7 @@ func (r *MCPRegistry) initializeDefaultTemplates() {
 			Features:     []string{"typescript", "vite", "testing"},
 			Author:       "MCP-Hulk Team",
 			License:      "MIT",
-			Repository:   "https://github.com/vertikon/mcp-hulk",
+			Repository:   "https://github.com/vertikon/mcp-core-inventory",
 			TemplateDir:  "web",
 			Status:       "active",
 			Downloads:    0,
@@ -260,7 +260,7 @@ func (r *MCPRegistry) initializeDefaultTemplates() {
 			Features:     []string{"wasm", "embedded", "testing"},
 			Author:       "MCP-Hulk Team",
 			License:      "MIT",
-			Repository:   "https://github.com/vertikon/mcp-hulk",
+			Repository:   "https://github.com/vertikon/mcp-core-inventory",
 			TemplateDir:  "tinygo",
 			Status:       "active",
 			Downloads:    0,
