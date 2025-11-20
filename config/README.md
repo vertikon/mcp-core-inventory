@@ -1,6 +1,6 @@
-# Configuração do MCP-HULK
+# Configuração do mcp-core-inventory
 
-Esta pasta contém todos os arquivos de configuração do MCP-HULK.
+Esta pasta contém todos os arquivos de configuração do mcp-core-inventory.
 
 ## Estrutura
 

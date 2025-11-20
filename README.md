@@ -1,6 +1,6 @@
-# MCP-HULK
+# mcp-core-inventory
 
-MCP-HULK is a comprehensive Model Context Protocol (MCP) template and generation engine for building high-performance, scalable MCP implementations.
+mcp-core-inventory is a comprehensive Model Context Protocol (MCP) template and generation engine for building high-performance, scalable MCP implementations.
 
 ## 🚀 Features
 
@@ -77,7 +77,7 @@ go run ./cmd/main.go
 
 ### CLI Commands
 
-The MCP-Hulk CLI provides comprehensive commands for managing MCPs and templates:
+The mcp-core-inventory CLI provides comprehensive commands for managing MCPs and templates:
 
 ```bash
 # Generate a new MCP
@@ -137,7 +137,7 @@ export HULK_CONFIG_PATH=/path/to/config
 
 ## 🤖 AI Integration
 
-MCP-HULK integrates with multiple AI providers:
+mcp-core-inventory integrates with multiple AI providers:
 
 ### Supported Providers
 
@@ -258,7 +258,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - The **Model Context Protocol (MCP)** community
 - Anthropic for the MCP specification
-- All contributors and users of MCP-HULK
+- All contributors and users of mcp-core-inventory
 
 ---
 

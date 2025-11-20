@@ -1,6 +1,6 @@
 # MCP Schema
 
-Este documento descreve o schema do protocolo MCP (Model Context Protocol) usado no MCP-HULK.
+Este documento descreve o schema do protocolo MCP (Model Context Protocol) usado no mcp-core-inventory.
 
 ## Estrutura do Schema
 

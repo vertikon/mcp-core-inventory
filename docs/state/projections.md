@@ -1,6 +1,6 @@
 # Projections (Projeções)
 
-Este documento descreve o sistema de projeções (projections) do MCP-HULK para event sourcing.
+Este documento descreve o sistema de projeções (projections) do mcp-core-inventory para event sourcing.
 
 ## Visão Geral
 

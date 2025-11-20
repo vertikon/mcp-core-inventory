@@ -1,10 +1,10 @@
 # AsyncAPI Documentation
 
-Este documento descreve a documentação AsyncAPI do MCP-HULK para eventos assíncronos.
+Este documento descreve a documentação AsyncAPI do mcp-core-inventory para eventos assíncronos.
 
 ## Visão Geral
 
-O MCP-HULK usa eventos assíncronos para comunicação entre serviços, documentados usando AsyncAPI 2.0.
+O mcp-core-inventory usa eventos assíncronos para comunicação entre serviços, documentados usando AsyncAPI 2.0.
 
 ## Especificação
 

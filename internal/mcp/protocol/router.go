@@ -126,7 +126,7 @@ func (r *ToolRouter) handleInitialize(ctx context.Context, request *JSONRPCReque
 			},
 		},
 		ServerInfo: map[string]interface{}{
-			"name":    "MCP-Hulk",
+			"name":    "mcp-core-inventory",
 			"version": "1.0.0",
 		},
 	}
@@ -139,7 +139,7 @@ func (r *ToolRouter) handlePing(ctx context.Context, request *JSONRPCRequest) *J
 	result := map[string]interface{}{
 		"message": "pong",
 		"status":  "healthy",
-		"server":  "MCP-Hulk",
+		"server":  "mcp-core-inventory",
 	}
 
 	return NewSuccessResponse(request.ID, result)

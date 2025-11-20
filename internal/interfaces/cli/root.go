@@ -19,8 +19,8 @@ var (
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "hulk",
-	Short: "MCP-Hulk CLI - Generate and manage MCP projects",
-	Long: `MCP-Hulk is a powerful CLI tool for generating and managing
+	Short: "mcp-core-inventory CLI - Generate and manage MCP projects",
+	Long: `mcp-core-inventory is a powerful CLI tool for generating and managing
 Model Context Protocol (MCP) projects.`,
 	Version: fmt.Sprintf("%s (built %s)", Version, BuildDate),
 }
