@@ -1,0 +1,9 @@
+# github.com/vertikon/mcp-core-inventory/internal/ai/knowledge
+# [github.com/vertikon/mcp-core-inventory/internal/ai/knowledge]
+vet.exe: internal\ai\knowledge\indexer_test.go:68:51: cannot use 1000 (constant of type int) as Embedder value in argument to NewIndexer: int does not implement Embedder (missing method Embed)
+# github.com/vertikon/mcp-core-inventory/internal/interfaces/cli
+vet.exe: internal\interfaces\cli\registration.go:8:2: "go.uber.org/zap" imported and not used
+# github.com/vertikon/mcp-core-inventory/pkg/httpserver
+# [github.com/vertikon/mcp-core-inventory/pkg/httpserver]
+pkg\httpserver\server_test.go:217:5: comparison of function healthHandler == nil is always false
+pkg\httpserver\server_test.go:225:5: comparison of function readyHandler == nil is always false

@@ -1,4 +1,4 @@
-package registry
+package validators
 
 import (
 	"fmt"
@@ -22,13 +22,6 @@ func NewTemplateValidator() *TemplateValidator {
 	return &TemplateValidator{
 		logger: logger.GetLogger(),
 	}
-}
-
-// ValidationResult represents the result of template validation
-type ValidationResult struct {
-	Valid  bool     `json:"valid"`
-	Errors []string `json:"errors"`
-	Warnings []string `json:"warnings"`
 }
 
 // ValidateTemplate validates a complete template directory
@@ -250,7 +243,7 @@ func (tv *TemplateValidator) validateFilePlaceholders(filePath string, allowedPl
 	}
 
 	content := string(data)
-	
+
 	// Find all placeholders using regex pattern
 	placeholderRegex := regexp.MustCompile(`\{\{\s*\.\s*([A-Za-z][A-Za-z0-9_]*)\s*\}\}`)
 	matches := placeholderRegex.FindAllStringSubmatch(content, -1)
@@ -288,7 +281,7 @@ func (tv *TemplateValidator) ValidateAllTemplates(basePath string) map[string]*V
 		if !info.IsDir() && info.Name() == "manifest.yaml" {
 			templateDir := filepath.Dir(path)
 			templateName := filepath.Base(templateDir)
-			
+
 			results[templateName] = tv.ValidateTemplate(templateDir)
 		}
 
@@ -299,8 +292,8 @@ func (tv *TemplateValidator) ValidateAllTemplates(basePath string) map[string]*V
 		tv.logger.Error("Failed to walk templates directory", zap.Error(err))
 		// Add a general error result
 		results["general"] = &ValidationResult{
-			Valid:  false,
-			Errors: []string{fmt.Sprintf("Failed to scan templates: %v", err)},
+			Valid:    false,
+			Errors:   []string{fmt.Sprintf("Failed to scan templates: %v", err)},
 			Warnings: []string{},
 		}
 	}

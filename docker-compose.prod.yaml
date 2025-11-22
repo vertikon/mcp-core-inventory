@@ -1,0 +1,288 @@
+# Production Docker Compose configuration for mcp-core-inventory
+# Alinhado com o BLOCO-1 Blueprint - Core Inventory (Ledger ACID)
+version: '3.8'
+
+services:
+  # Serviço Principal: mcp-core-inventory (Ledger Contábil ACID)
+  mcp-core-inventory:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: vertikon/mcp-core-inventory:latest
+    container_name: mcp-core-inventory-prod
+    ports:
+      - "8080:8080"
+    environment:
+      - ENVIRONMENT=production
+      - PORT=8080
+      - LOG_LEVEL=info
+      - DATABASE_URL=postgresql://postgres:${DB_PASSWORD}@postgres-prod:5432/mcp_core_inventory?sslmode=require
+      - REDIS_URL=redis://redis-prod:6379
+      - NATS_URLS=nats://nats-prod:4222
+      - JWT_SECRET=${JWT_SECRET}
+      - AI_API_KEY=${AI_API_KEY}
+      - TELEMETRY_TRACING_ENDPOINT=http://jaeger-prod:14268/api/traces
+      # Configurações específicas do BLOCO-1
+      - INVENTORY_RESERVATION_TTL=300
+      - INVENTORY_MAX_CONCURRENT_RESERVATIONS=1000
+      - INVENTORY_ENABLE_RACE_CONDITION_DETECTION=true
+      - INVENTORY_LOCK_TIMEOUT=5000
+    depends_on:
+      postgres-prod:
+        condition: service_healthy
+      redis-prod:
+        condition: service_started
+      nats-prod:
+        condition: service_started
+    networks:
+      - bloco-1-network
+    restart: unless-stopped
+    deploy:
+      replicas: 2
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    volumes:
+      - ./config:/app/config:ro
+      - ./logs:/app/logs
+    labels:
+      - "vertikon.bloco=1"
+      - "vertikon.service=core-inventory"
+      - "vertikon.type=ledger"
+
+  # PostgreSQL Database - Persistência ACID do Ledger
+  postgres-prod:
+    image: postgres:15-alpine
+    container_name: mcp-core-inventory-db-prod
+    environment:
+      - POSTGRES_DB=mcp_core_inventory
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_INITDB_ARGS=--encoding=UTF-8 --lc-collate=C --lc-ctype=C
+    volumes:
+      - postgres_prod_data:/var/lib/postgresql/data
+      - ./backups:/backups
+      - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql:ro
+    networks:
+      - bloco-1-network
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2G
+        reservations:
+          cpus: '0.5'
+          memory: 1G
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d mcp_core_inventory"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    labels:
+      - "vertikon.bloco=1"
+      - "vertikon.service=postgres"
+      - "vertikon.type=database"
+
+  # Redis Cache - Locks Distribuídos e Cache de Saldo
+  redis-prod:
+    image: redis:7-alpine
+    container_name: mcp-core-inventory-redis-prod
+    volumes:
+      - redis_prod_data:/data
+      - ./config/redis.conf:/usr/local/etc/redis/redis.conf:ro
+    networks:
+      - bloco-1-network
+    restart: unless-stopped
+    command: redis-server /usr/local/etc/redis/redis.conf --appendonly yes --requirepass ${REDIS_PASSWORD}
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    labels:
+      - "vertikon.bloco=1"
+      - "vertikon.service=redis"
+      - "vertikon.type=cache"
+
+  # NATS Message Broker - Eventos do BLOCO-1
+  nats-prod:
+    image: nats:2.10-alpine
+    container_name: mcp-core-inventory-nats-prod
+    volumes:
+      - nats_prod_data:/data
+      - ./config/nats.conf:/etc/nats/nats.conf:ro
+    networks:
+      - bloco-1-network
+    restart: unless-stopped
+    command: ["nats-server", "-c", "/etc/nats/nats.conf"]
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8222/varz"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    labels:
+      - "vertikon.bloco=1"
+      - "vertikon.service=nats"
+      - "vertikon.type=messaging"
+
+  # Jaeger Tracing - Observabilidade Distribuída
+  jaeger-prod:
+    image: jaegertracing/all-in-one:latest
+    container_name: mcp-core-inventory-jaeger-prod
+    ports:
+      - "16686:16686"  # Jaeger UI
+      - "14268:14268"  # HTTP collector
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+      - SPAN_STORAGE_TYPE=memory
+      - MEMORY_MAX_TRACES=50000
+    networks:
+      - bloco-1-network
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+    labels:
+      - "vertikon.bloco=1"
+      - "vertikon.service=jaeger"
+      - "vertikon.type=tracing"
+
+  # Prometheus Metrics - Métricas do BLOCO-1
+  prometheus-prod:
+    image: prom/prometheus:latest
+    container_name: mcp-core-inventory-prometheus-prod
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./config/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_prod_data:/prometheus
+    networks:
+      - bloco-1-network
+    restart: unless-stopped
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 1G
+        reservations:
+          cpus: '0.25'
+          memory: 512M
+    labels:
+      - "vertikon.bloco=1"
+      - "vertikon.service=prometheus"
+      - "vertikon.type=metrics"
+
+  # Nginx Reverse Proxy - Gateway do BLOCO-1
+  nginx:
+    image: nginx:alpine
+    container_name: mcp-core-inventory-nginx-prod
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./config/nginx.prod.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+      - ./logs/nginx:/var/log/nginx
+    depends_on:
+      - mcp-core-inventory
+    networks:
+      - bloco-1-network
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 256M
+        reservations:
+          cpus: '0.125'
+          memory: 128M
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/health"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+    labels:
+      - "vertikon.bloco=1"
+      - "vertikon.service=nginx"
+      - "vertikon.type=gateway"
+
+volumes:
+  postgres_prod_data:
+    driver: local
+    labels:
+      - "vertikon.bloco=1"
+      - "vertikon.service=postgres"
+      - "vertikon.type=database"
+  redis_prod_data:
+    driver: local
+    labels:
+      - "vertikon.bloco=1"
+      - "vertikon.service=redis"
+      - "vertikon.type=cache"
+  nats_prod_data:
+    driver: local
+    labels:
+      - "vertikon.bloco=1"
+      - "vertikon.service=nats"
+      - "vertikon.type=messaging"
+  prometheus_prod_data:
+    driver: local
+    labels:
+      - "vertikon.bloco=1"
+      - "vertikon.service=prometheus"
+      - "vertikon.type=metrics"
+
+networks:
+  bloco-1-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+    labels:
+      - "vertikon.bloco=1"
+      - "vertikon.type=network"

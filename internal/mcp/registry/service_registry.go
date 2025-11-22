@@ -21,7 +21,7 @@ type ServiceRegistry struct {
 func NewServiceRegistry() *ServiceRegistry {
 	return &ServiceRegistry{
 		services: make(map[string]*ServiceInfo),
-		logger:   logger.GetLogger(),
+		logger:   logger.Get(),
 	}
 }
 
@@ -32,12 +32,12 @@ func (sr *ServiceRegistry) RegisterService(ctx context.Context, service *Service
 
 	service.LastChecked = time.Now()
 	sr.services[service.ID] = service
-	
+
 	sr.logger.Info("Service registered",
 		zap.String("id", service.ID),
 		zap.String("name", service.Name),
 		zap.String("type", service.Type))
-	
+
 	return nil
 }
 
@@ -52,7 +52,7 @@ func (sr *ServiceRegistry) UnregisterService(ctx context.Context, serviceID stri
 
 	delete(sr.services, serviceID)
 	sr.logger.Info("Service unregistered", zap.String("id", serviceID))
-	
+
 	return nil
 }
 
@@ -94,10 +94,10 @@ func (sr *ServiceRegistry) UpdateServiceStatus(ctx context.Context, serviceID, s
 
 	service.Status = status
 	service.LastChecked = time.Now()
-	
+
 	sr.logger.Info("Service status updated",
 		zap.String("id", serviceID),
 		zap.String("status", status))
-	
+
 	return nil
 }

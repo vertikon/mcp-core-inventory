@@ -1,0 +1,18 @@
+{
+  "test-update": {
+    "id": "project-test-update-1763847756",
+    "name": "test-update",
+    "stack": "go",
+    "path": "/tmp/test-update",
+    "features": [
+      "feature2",
+      "feature1"
+    ],
+    "config": null,
+    "status": "active",
+    "created_at": "2025-11-22T18:42:36.7316323-03:00",
+    "updated_at": "2025-11-22T18:42:36.7321673-03:00",
+    "size": 0,
+    "files": 0
+  }
+}

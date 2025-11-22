@@ -29,13 +29,6 @@ var aiChatCmd = &cobra.Command{
 	},
 }
 
-func init() {
-	rootCmd.AddCommand(aiCmd)
-	aiCmd.AddCommand(aiChatCmd)
-	aiChatCmd.Flags().StringP("message", "m", "", "Message to send")
-	aiChatCmd.MarkFlagRequired("message")
-}
-
 // SetAIService sets the AI service
 func SetAIService(service *services.AIAppService) {
 	aiService = service

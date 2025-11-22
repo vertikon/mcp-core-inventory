@@ -64,7 +64,7 @@ func LoadAndInitializeAuth(loader *Loader, userStore auth.UserStore) (auth.AuthM
 
 	// Initialize OAuth Manager
 	oauthManager := auth.NewOAuthManager()
-	
+
 	// Register OAuth providers if enabled
 	if cfg.OAuth.Auth0.Enabled {
 		auth0Config := auth.OAuthProviderConfig{
@@ -183,8 +183,8 @@ func LoadAndInitializeRBAC(loader *Loader) (rbac.RBACManager, error) {
 		}
 		override := rbac.PermissionOverride{
 			ResourcePattern: overrideCfg.Resource,
-			ActionPattern:    overrideCfg.Action,
-			Effect:           effect,
+			ActionPattern:   overrideCfg.Action,
+			Effect:          effect,
 		}
 		permissionChecker.RegisterOverride(override)
 	}
@@ -210,12 +210,16 @@ func LoadAndInitializeRBAC(loader *Loader) (rbac.RBACManager, error) {
 			if ruleCfg.Effect == "deny" {
 				effect = rbac.EffectDeny
 			}
-			
+
+			resource, _ := ruleCfg.Params["resource"].(string)
+			action, _ := ruleCfg.Params["action"].(string)
+			description := ruleCfg.Condition
+
 			rule := rbac.PolicyRule{
-				Resource:    ruleCfg.Resource,
-				Action:      ruleCfg.Action,
+				Resource:    resource,
+				Action:      action,
 				Effect:      effect,
-				Description: ruleCfg.Description,
+				Description: description,
 				// Conditions would need to be constructed from ruleCfg.Condition and ruleCfg.Params
 				// For now, we'll leave it empty - full implementation would parse conditions
 				Conditions: []rbac.PolicyCondition{},
@@ -274,4 +278,3 @@ func LoadAndInitializeEncryption(loader *Loader) (encryption.EncryptionManager, 
 
 	return encryptionManager, keyManager, nil
 }
-

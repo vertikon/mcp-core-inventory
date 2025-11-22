@@ -1,1 +1,4 @@
-# Função: Validador base abstrato
+// Package validators contains buildable stubs until the real implementation is ready.
+package validators
+
+// TODO: Função: Validador base abstrato.

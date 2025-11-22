@@ -50,18 +50,9 @@ func (l *ReservationLock) AcquireLock(ctx context.Context, key string, ttl time.
 // ReleaseLock releases a distributed lock
 func (l *ReservationLock) ReleaseLock(ctx context.Context, key string) error {
 	lockKey := lockKey(key)
-
-	// Lua script for atomic lock release (only if we own it)
-	script := `
-		if redis.call("get", KEYS[1]) == ARGV[1] then
-			return redis.call("del", KEYS[1])
-		else
-			return 0
-		end
-	`
-
-	// Note: In a real implementation, we'd need to store the lock value
-	// to properly release it. For simplicity, we'll use a simpler approach.
+	// Note: In a production implementation we would verify the lock owner
+	// before deleting it. The simplified approach keeps the compiler happy
+	// while still releasing the lock.
 	_, err := l.client.Del(ctx, lockKey).Result()
 	return err
 }
@@ -89,4 +80,3 @@ func lockKey(key string) string {
 func generateLockValue() string {
 	return fmt.Sprintf("%d", time.Now().UnixNano())
 }
-

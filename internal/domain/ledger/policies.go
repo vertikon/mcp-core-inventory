@@ -63,4 +63,3 @@ func (p *Policy) ValidateRelease(reservation *Reservation) error {
 	}
 	return nil
 }
-

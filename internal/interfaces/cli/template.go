@@ -41,14 +41,6 @@ var templateCreateCmd = &cobra.Command{
 	},
 }
 
-func init() {
-	rootCmd.AddCommand(templateCmd)
-	templateCmd.AddCommand(templateListCmd)
-	templateCmd.AddCommand(templateCreateCmd)
-	templateCreateCmd.Flags().StringP("name", "n", "", "Template name")
-	templateCreateCmd.MarkFlagRequired("name")
-}
-
 // SetTemplateService sets the template service
 func SetTemplateService(service *services.TemplateAppService) {
 	templateService = service

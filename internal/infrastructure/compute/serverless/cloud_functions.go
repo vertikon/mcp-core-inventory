@@ -16,3 +16,11 @@ type CloudFunctions interface {
 	// DeleteFunction deletes a cloud function
 	DeleteFunction(ctx context.Context, functionName string) error
 }
+
+// FunctionConfig provides a minimal configuration required to create a cloud function.
+type FunctionConfig struct {
+	Name    string
+	Runtime string
+	Source  string
+	Timeout int
+}

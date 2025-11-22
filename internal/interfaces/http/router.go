@@ -28,7 +28,7 @@ func NewRouter(
 	if m, ok := metrics.(*observability.InventoryMetrics); ok {
 		inventoryMetrics = m
 	}
-	
+
 	handlers := NewReservationHandlers(
 		reserveUseCase,
 		confirmUseCase,
@@ -81,4 +81,3 @@ func (r *Router) healthCheck(w http.ResponseWriter, req *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte(`{"status":"ok"}`))
 }
-

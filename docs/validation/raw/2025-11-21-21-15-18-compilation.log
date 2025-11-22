@@ -1,0 +1,110 @@
+# github.com/vertikon/mcp-core-inventory/internal/mcp/protocol
+internal\mcp\protocol\router.go:6:2: "strings" imported and not used
+internal\mcp\protocol\router.go:215:6: parseParams redeclared in this block
+	internal\mcp\protocol\handlers.go:779:6: other declaration of parseParams
+internal\mcp\protocol\tools.go:358:64: undefined: protocol
+internal\mcp\protocol\handlers.go:8:2: "strings" imported and not used
+internal\mcp\protocol\handlers.go:345:4: h.parseParams undefined (type *ListTemplatesHandler has no field or method parseParams)
+internal\mcp\protocol\handlers.go:447:4: h.parseParams undefined (type *ListProjectsHandler has no field or method parseParams)
+# github.com/vertikon/mcp-core-inventory/tools/generators
+tools\generators\mcp_generator.go:6:2: "path/filepath" imported and not used
+# github.com/vertikon/mcp-core-inventory/cmd/core-inventory
+cmd\core-inventory\main.go:17:2: nats redeclared in this block
+	cmd\core-inventory\main.go:16:2: other declaration of nats
+cmd\core-inventory\main.go:19:2: redis redeclared in this block
+	cmd\core-inventory\main.go:14:2: other declaration of redis
+cmd\core-inventory\main.go:21:2: http redeclared in this block
+	cmd\core-inventory\main.go:8:2: other declaration of http
+cmd\core-inventory\main.go:90:22: undefined: redis.NewStockCache
+cmd\core-inventory\main.go:91:27: undefined: redis.NewReservationLock
+cmd\core-inventory\main.go:92:19: undefined: nats.NewEventPublisher
+cmd\core-inventory\main.go:104:3: cannot use ledgerRepo (variable of type *postgres.LedgerRepository) as app.ReservationRepository value in argument to app.NewConfirmReservationUseCase: *postgres.LedgerRepository does not implement app.ReservationRepository (wrong type for method Save)
+		have Save(context.Context, *ledger.StockLedger) error
+		want Save(context.Context, *ledger.Reservation) error
+cmd\core-inventory\main.go:111:3: cannot use ledgerRepo (variable of type *postgres.LedgerRepository) as app.ReservationRepository value in argument to app.NewReleaseReservationUseCase: *postgres.LedgerRepository does not implement app.ReservationRepository (wrong type for method Save)
+		have Save(context.Context, *ledger.StockLedger) error
+		want Save(context.Context, *ledger.Reservation) error
+cmd\core-inventory\main.go:117:3: cannot use ledgerRepo (variable of type *postgres.LedgerRepository) as app.MovementRepository value in argument to app.NewAdjustStockUseCase: *postgres.LedgerRepository does not implement app.MovementRepository (wrong type for method Save)
+		have Save(context.Context, *ledger.StockLedger) error
+		want Save(context.Context, *ledger.StockMovement) error
+cmd\core-inventory\main.go:143:17: undefined: http.NewRouter
+cmd\core-inventory\main.go:143:17: too many errors
+# github.com/vertikon/mcp-core-inventory/internal/core/crush
+internal\core\crush\parallel_processor.go:625:6: min redeclared in this block
+	internal\core\crush\batch_processor.go:796:6: other declaration of min
+internal\core\crush\parallel_processor.go:632:6: max redeclared in this block
+	internal\core\crush\batch_processor.go:803:6: other declaration of max
+internal\core\crush\batch_processor.go:269:19: undefined: runtime
+internal\core\crush\batch_processor.go:427:6: declared and not used: id
+internal\core\crush\batch_processor.go:560:18: cannot use &bp.stats.TotalProcessingTime (value of type *time.Duration) as *int64 value in argument to atomic.AddInt64
+internal\core\crush\batch_processor.go:584:42: cannot use &bp.stats.TotalProcessingTime (value of type *time.Duration) as *int64 value in argument to atomic.LoadInt64
+internal\core\crush\batch_processor.go:781:15: undefined: NewWorkerPool
+internal\core\crush\batch_processor.go:792:23: too many arguments in call to abp.workerPool.Start
+	have (context.Context)
+	want ()
+internal\core\crush\memory_optimizer.go:494:20: cannot use &mo.stats.TotalMemoryMB (value of type *float64) as *int64 value in argument to atomic.StoreInt64
+internal\core\crush\memory_optimizer.go:495:20: cannot use &mo.stats.UsedMemoryMB (value of type *float64) as *int64 value in argument to atomic.StoreInt64
+internal\core\crush\memory_optimizer.go:495:20: too many errors
+# github.com/vertikon/mcp-core-inventory/internal/core/state
+internal\core\state\distributed_store.go:543:22: invalid operation: cannot take address of dss.stats.LockWaitTime.Nanoseconds() (value of type int64)
+internal\core\state\distributed_store.go:649:31: invalid operation: cannot take address of dss.stats.AvgReadLatency.Nanoseconds() (value of type int64)
+internal\core\state\distributed_store.go:651:21: invalid operation: cannot take address of dss.stats.AvgReadLatency.Nanoseconds() (value of type int64)
+internal\core\state\distributed_store.go:656:31: invalid operation: cannot take address of dss.stats.AvgWriteLatency.Nanoseconds() (value of type int64)
+internal\core\state\distributed_store.go:658:21: invalid operation: cannot take address of dss.stats.AvgWriteLatency.Nanoseconds() (value of type int64)
+internal\core\state\store.go:10:2: "github.com/vertikon/mcp-core-inventory/pkg/logger" imported and not used
+internal\core\state\store.go:11:2: "go.uber.org/zap" imported and not used
+# github.com/vertikon/mcp-core-inventory/internal/core/transformer
+internal\core\transformer\feedforward.go:194:21: ffn.router undefined (type *FeedForwardNetwork has no field or method router)
+internal\core\transformer\transformer.go:152:38: not enough arguments in call to t.embeddings.Forward
+	have (*Tensor)
+	want (context.Context, *Tensor)
+internal\core\transformer\transformer.go:209:79: cannot use attentionMask (variable of type *Tensor) as *AttentionMask value in argument to l.attention.Forward
+internal\core\transformer\transformer.go:215:28: cannot use attnOutput (variable of type *AttentionResult) as *Tensor value in argument to t.add
+internal\core\transformer\transformer.go:249:65: cannot use ln.eps (variable of type float64) as *Tensor value in argument to t.add
+internal\core\transformer\positional_encoding.go:6:2: "fmt" imported and not used
+# github.com/vertikon/mcp-core-inventory/internal/infrastructure/persistence/relational
+internal\infrastructure\persistence\relational\postgres_knowledge_repository.go:198:2: declared and not used: knowledge
+internal\infrastructure\persistence\relational\postgres_knowledge_repository.go:203:9: undefined: knowledgePtr
+# github.com/vertikon/mcp-core-inventory/internal/state/cache
+internal\state\cache\cache_coherency.go:162:11: cm.cache.Delete undefined (type *StateCache is pointer to interface, not interface)
+internal\state\cache\cache_coherency.go:217:11: cm.stats.TotalUpdates undefined (type *InvalidationStats has no field or method TotalUpdates)
+internal\state\cache\cache_coherency.go:253:34: cm.stats.TotalUpdates undefined (type *InvalidationStats has no field or method TotalUpdates)
+internal\state\cache\cache_coherency.go:342:11: cm.cache.Delete undefined (type *StateCache is pointer to interface, not interface)
+# github.com/vertikon/mcp-core-inventory/internal/security/encryption
+internal\security\encryption\encryption_manager.go:56:6: Manager redeclared in this block
+	internal\security\encryption\certificate_manager.go:42:6: other declaration of Manager
+internal\security\encryption\encryption_manager.go:64:3: unknown field keyManager in struct literal of type Manager
+internal\security\encryption\encryption_manager.go:71:16: m.keyManager undefined (type *Manager has no field or method keyManager)
+internal\security\encryption\encryption_manager.go:81:16: m.keyManager undefined (type *Manager has no field or method keyManager)
+internal\security\encryption\key_manager.go:52:6: Manager redeclared in this block
+	internal\security\encryption\certificate_manager.go:42:6: other declaration of Manager
+internal\security\encryption\key_manager.go:72:3: unknown field keyVersion in struct literal of type Manager
+internal\security\encryption\key_manager.go:82:6: km.encryptionKey undefined (type *Manager has no field or method encryptionKey)
+internal\security\encryption\key_manager.go:96:4: m.mu undefined (type *Manager has no field or method mu)
+internal\security\encryption\key_manager.go:97:10: m.mu undefined (type *Manager has no field or method mu)
+internal\security\encryption\key_manager.go:99:7: m.encryptionKey undefined (type *Manager has no field or method encryptionKey)
+internal\security\encryption\key_manager.go:99:7: too many errors
+# github.com/vertikon/mcp-core-inventory/internal/state/store
+internal\state\store\conflict_resolver.go:236:10: not enough return values
+	have (*VersionedState)
+	want (*VersionedState, error)
+internal\state\store\conflict_resolver.go:238:10: not enough return values
+	have (*VersionedState)
+	want (*VersionedState, error)
+internal\state\store\conflict_resolver.go:251:2: declared and not used: localTime
+internal\state\store\conflict_resolver.go:252:2: declared and not used: remoteTime
+internal\state\store\conflict_resolver.go:283:51: too many arguments in call to r.isMergeableValue
+	have (interface{}, interface{})
+	want (interface{})
+internal\state\store\conflict_resolver.go:396:9: v declared and not used
+internal\state\store\conflict_resolver.go:415:13: r.mergeMaps undefined (type map[string]interface{} has no field or method mergeMaps)
+internal\state\store\conflict_resolver.go:419:13: r.mergeArrays undefined (type []interface{} has no field or method mergeArrays)
+internal\state\store\conflict_resolver.go:516:35: cannot use localTS (variable of struct type time.Time) as uint64 value in argument to max
+internal\state\store\conflict_resolver.go:622:6: max redeclared in this block
+	internal\state\store\conflict_resolver.go:615:6: other declaration of max
+internal\state\store\conflict_resolver.go:516:35: too many errors
+# github.com/vertikon/mcp-core-inventory/internal/state/events
+internal\state\events\event_replay.go:249:2: declared and not used: snapshot
+internal\state\events\event_replay.go:290:2: declared and not used: events
+internal\state\events\event_versioning.go:140:4: invalid operation: cannot call copy (variable of struct type VersionInfo): VersionInfo is not a function
+internal\state\events\event_versioning.go:216:30: ev.resolveVersionConflict undefined (type *EventVersioningImpl has no field or method resolveVersionConflict, but does have method ResolveVersionConflict)

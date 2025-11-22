@@ -109,4 +109,3 @@ func (b *Batch) Consume(quantity int64) error {
 	b.updatedAt = time.Now()
 	return nil
 }
-

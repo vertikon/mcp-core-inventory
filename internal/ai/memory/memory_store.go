@@ -53,11 +53,7 @@ func (ms *MemoryStore) SaveEpisodic(ctx context.Context, memory *entities.Episod
 
 	// Cache episodic memory
 	if ms.cache != nil {
-		cacheKey := ms.episodicCacheKey(memory.SessionID())
-		if err := ms.cache.Set(ctx, cacheKey, memory, ms.ttl); err != nil {
-			// Log error but don't fail
-			_ = err
-		}
+		ms.cacheEpisodicMemory(ctx, memory)
 	}
 
 	return nil
@@ -96,8 +92,11 @@ func (ms *MemoryStore) GetEpisodic(ctx context.Context, sessionID string) ([]*en
 	if ms.cache != nil {
 		cacheKey := ms.episodicCacheKey(sessionID)
 		if cached, err := ms.cache.Get(ctx, cacheKey); err == nil {
-			if memories, ok := cached.([]*entities.EpisodicMemory); ok {
-				return memories, nil
+			switch value := cached.(type) {
+			case []*entities.EpisodicMemory:
+				return value, nil
+			case *entities.EpisodicMemory:
+				return []*entities.EpisodicMemory{value}, nil
 			}
 		}
 	}
@@ -176,6 +175,35 @@ func (ms *MemoryStore) DeleteEpisodic(ctx context.Context, sessionID string) err
 	}
 
 	return nil
+}
+
+// cacheEpisodicMemory upserts episodic memories in cache
+func (ms *MemoryStore) cacheEpisodicMemory(ctx context.Context, memory *entities.EpisodicMemory) {
+	cacheKey := ms.episodicCacheKey(memory.SessionID())
+
+	memories := []*entities.EpisodicMemory{}
+	if cached, err := ms.cache.Get(ctx, cacheKey); err == nil {
+		switch value := cached.(type) {
+		case []*entities.EpisodicMemory:
+			memories = value
+		case *entities.EpisodicMemory:
+			memories = []*entities.EpisodicMemory{value}
+		}
+	}
+
+	replaced := false
+	for i, mem := range memories {
+		if mem.ID() == memory.ID() {
+			memories[i] = memory
+			replaced = true
+			break
+		}
+	}
+	if !replaced {
+		memories = append(memories, memory)
+	}
+
+	_ = ms.cache.Set(ctx, cacheKey, memories, ms.ttl)
 }
 
 // DeleteWorking deletes working memory

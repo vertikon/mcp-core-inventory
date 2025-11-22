@@ -8,46 +8,46 @@ import (
 // InventoryMetrics provides inventory-specific metrics
 type InventoryMetrics struct {
 	// Stock reservation metrics
-	stockReservationTotal      *prometheus.CounterVec
-	stockReservationErrors     *prometheus.CounterVec
-	stockReservationDuration   *prometheus.HistogramVec
-	
+	stockReservationTotal    *prometheus.CounterVec
+	stockReservationErrors   *prometheus.CounterVec
+	stockReservationDuration *prometheus.HistogramVec
+
 	// Stock confirmation metrics
-	stockConfirmationTotal     *prometheus.CounterVec
-	stockConfirmationErrors    *prometheus.CounterVec
-	stockConfirmationDuration  *prometheus.HistogramVec
-	
+	stockConfirmationTotal    *prometheus.CounterVec
+	stockConfirmationErrors   *prometheus.CounterVec
+	stockConfirmationDuration *prometheus.HistogramVec
+
 	// Stock release metrics
-	stockReleaseTotal          *prometheus.CounterVec
-	stockReleaseErrors         *prometheus.CounterVec
-	
+	stockReleaseTotal  *prometheus.CounterVec
+	stockReleaseErrors *prometheus.CounterVec
+
 	// Stock adjustment metrics
-	stockAdjustmentTotal       *prometheus.CounterVec
-	stockAdjustmentErrors      *prometheus.CounterVec
-	
+	stockAdjustmentTotal  *prometheus.CounterVec
+	stockAdjustmentErrors *prometheus.CounterVec
+
 	// Stock query metrics
-	stockQueryTotal            *prometheus.CounterVec
-	stockQueryDuration         *prometheus.HistogramVec
-	
+	stockQueryTotal    *prometheus.CounterVec
+	stockQueryDuration *prometheus.HistogramVec
+
 	// Race condition incidents (CRITICAL)
-	raceConditionIncidents     prometheus.Counter
-	
+	raceConditionIncidents prometheus.Counter
+
 	// Redis metrics
 	redisLatencyMs             *prometheus.HistogramVec
 	redisLockAcquisitionTotal  *prometheus.CounterVec
 	redisLockAcquisitionErrors *prometheus.CounterVec
-	
+
 	// Postgres metrics
-	postgresLockWaitMs         *prometheus.HistogramVec
-	postgresQueryDuration      *prometheus.HistogramVec
-	
+	postgresLockWaitMs    *prometheus.HistogramVec
+	postgresQueryDuration *prometheus.HistogramVec
+
 	// Reservation TTL metrics
 	reservationsTTLExpiredTotal prometheus.Counter
 	reservationsActive          prometheus.Gauge
-	
+
 	// Idempotency metrics
-	idempotencyHitsTotal       prometheus.Counter
-	idempotencyMissesTotal     prometheus.Counter
+	idempotencyHitsTotal   prometheus.Counter
+	idempotencyMissesTotal prometheus.Counter
 }
 
 // NewInventoryMetrics creates new inventory-specific metrics
@@ -76,7 +76,7 @@ func NewInventoryMetrics() *InventoryMetrics {
 			},
 			[]string{"sku", "location"},
 		),
-		
+
 		// Stock confirmation metrics
 		stockConfirmationTotal: prometheus.NewCounterVec(
 			prometheus.CounterOpts{
@@ -100,7 +100,7 @@ func NewInventoryMetrics() *InventoryMetrics {
 			},
 			[]string{"sku", "location"},
 		),
-		
+
 		// Stock release metrics
 		stockReleaseTotal: prometheus.NewCounterVec(
 			prometheus.CounterOpts{
@@ -116,7 +116,7 @@ func NewInventoryMetrics() *InventoryMetrics {
 			},
 			[]string{"sku", "location", "error_type"},
 		),
-		
+
 		// Stock adjustment metrics
 		stockAdjustmentTotal: prometheus.NewCounterVec(
 			prometheus.CounterOpts{
@@ -132,7 +132,7 @@ func NewInventoryMetrics() *InventoryMetrics {
 			},
 			[]string{"sku", "location", "error_type"},
 		),
-		
+
 		// Stock query metrics
 		stockQueryTotal: prometheus.NewCounterVec(
 			prometheus.CounterOpts{
@@ -149,7 +149,7 @@ func NewInventoryMetrics() *InventoryMetrics {
 			},
 			[]string{"sku", "location", "cache_hit"},
 		),
-		
+
 		// Race condition incidents (CRITICAL - P0 alert)
 		raceConditionIncidents: prometheus.NewCounter(
 			prometheus.CounterOpts{
@@ -157,7 +157,7 @@ func NewInventoryMetrics() *InventoryMetrics {
 				Help: "Total number of race condition incidents detected (P0 alert if > 0)",
 			},
 		),
-		
+
 		// Redis metrics
 		redisLatencyMs: prometheus.NewHistogramVec(
 			prometheus.HistogramOpts{
@@ -181,7 +181,7 @@ func NewInventoryMetrics() *InventoryMetrics {
 			},
 			[]string{"error_type"},
 		),
-		
+
 		// Postgres metrics
 		postgresLockWaitMs: prometheus.NewHistogramVec(
 			prometheus.HistogramOpts{
@@ -199,7 +199,7 @@ func NewInventoryMetrics() *InventoryMetrics {
 			},
 			[]string{"operation"},
 		),
-		
+
 		// Reservation TTL metrics
 		reservationsTTLExpiredTotal: prometheus.NewCounter(
 			prometheus.CounterOpts{
@@ -213,7 +213,7 @@ func NewInventoryMetrics() *InventoryMetrics {
 				Help: "Current number of active reservations",
 			},
 		),
-		
+
 		// Idempotency metrics
 		idempotencyHitsTotal: prometheus.NewCounter(
 			prometheus.CounterOpts{
@@ -228,7 +228,7 @@ func NewInventoryMetrics() *InventoryMetrics {
 			},
 		),
 	}
-	
+
 	// Register all metrics
 	prometheus.MustRegister(
 		m.stockReservationTotal,
@@ -254,7 +254,7 @@ func NewInventoryMetrics() *InventoryMetrics {
 		m.idempotencyHitsTotal,
 		m.idempotencyMissesTotal,
 	)
-	
+
 	return m
 }
 
@@ -360,4 +360,3 @@ func (m *InventoryMetrics) RecordIdempotencyHit() {
 func (m *InventoryMetrics) RecordIdempotencyMiss() {
 	m.idempotencyMissesTotal.Inc()
 }
-

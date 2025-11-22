@@ -1,9 +1,6 @@
 package generators
 
-import (
-	"fmt"
-	"path/filepath"
-)
+import "fmt"
 
 // RustGenerator generates Rust projects
 type RustGenerator struct {

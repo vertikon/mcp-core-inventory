@@ -1,0 +1,145 @@
+# Configuração Prometheus para BLOCO-1 - Core Inventory
+global:
+  scrape_interval: 5s # Agressivo para ver realtime durante testes
+  evaluation_interval: 5s
+  external_labels:
+    cluster: 'production'
+    bloco: '1'
+    service: 'core-inventory'
+
+rule_files:
+  - "/etc/prometheus/rules/*.yaml"
+
+scrape_configs:
+  # Core Inventory Service
+  - job_name: 'mcp-core-inventory'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['mcp-core-inventory:8080']
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        replacement: 'bloco-1-core'
+      - source_labels: [__address__]
+        target_label: service
+        replacement: 'core-inventory'
+      - source_labels: [__address__]
+        target_label: bloco
+        replacement: '1'
+    scrape_interval: 5s
+    scrape_timeout: 3s
+    metrics_path: /metrics
+    scheme: http
+
+  # PostgreSQL Exporter
+  - job_name: 'postgres-bloco1'
+    static_configs:
+      - targets: ['postgres-exporter:9187']
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        replacement: 'bloco-1-postgres'
+      - source_labels: [__address__]
+        target_label: service
+        replacement: 'postgres'
+      - source_labels: [__address__]
+        target_label: bloco
+        replacement: '1'
+    scrape_interval: 10s
+    scrape_timeout: 5s
+
+  # Redis Exporter
+  - job_name: 'redis-bloco1'
+    static_configs:
+      - targets: ['redis-exporter:9121']
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        replacement: 'bloco-1-redis'
+      - source_labels: [__address__]
+        target_label: service
+        replacement: 'redis'
+      - source_labels: [__address__]
+        target_label: bloco
+        replacement: '1'
+    scrape_interval: 10s
+    scrape_timeout: 5s
+
+  # NATS Exporter
+  - job_name: 'nats-bloco1'
+    static_configs:
+      - targets: ['nats-exporter:7777']
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        replacement: 'bloco-1-nats'
+      - source_labels: [__address__]
+        target_label: service
+        replacement: 'nats'
+      - source_labels: [__address__]
+        target_label: bloco
+        replacement: '1'
+    scrape_interval: 10s
+    scrape_timeout: 5s
+
+  # Node Exporter (se aplicável)
+  - job_name: 'node-bloco1'
+    static_configs:
+      - targets: ['node-exporter:9100']
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        replacement: 'bloco-1-node'
+      - source_labels: [__address__]
+        target_label: service
+        replacement: 'node'
+      - source_labels: [__address__]
+        target_label: bloco
+        replacement: '1'
+    scrape_interval: 30s
+    scrape_timeout: 10s
+
+  # Docker Container Metrics
+  - job_name: 'cadvisor-bloco1'
+    static_configs:
+      - targets: ['cadvisor:8080']
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        replacement: 'bloco-1-docker'
+      - source_labels: [__address__]
+        target_label: service
+        replacement: 'cadvisor'
+      - source_labels: [__address__]
+        target_label: bloco
+        replacement: '1'
+    scrape_interval: 30s
+    scrape_timeout: 10s
+    metrics_path: /metrics
+    scheme: http
+
+# Configuração de Storage
+storage:
+  tsdb:
+    path: /prometheus
+    retention.time: 200h
+    retention.size: 10GB
+
+# Configuração de Alerting
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          - alertmanager:9093
+
+# Configuração de Logging
+log:
+  level: info
+  format: json
+
+# Configuração de Segurança
+web:
+  enable_admin_api: false
+  page_title: "Prometheus - BLOCO-1"
+  cors:
+    origins: ['http://localhost:3000']

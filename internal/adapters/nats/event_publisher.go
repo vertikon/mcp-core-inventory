@@ -28,11 +28,11 @@ func NewEventPublisher(js nats.JetStreamContext, logger *zap.Logger) *EventPubli
 // PublishReserveRequest publishes an inventory.reserve.request event
 func (p *EventPublisher) PublishReserveRequest(ctx context.Context, req app.ReserveStockRequest, reservationID string) error {
 	event := ReserveRequestEvent{
-		ReservationID:   reservationID,
+		ReservationID:  reservationID,
 		IdempotencyKey: req.IdempotencyKey,
 		SKU:            req.SKU,
 		Location:       req.Location,
-		Quantity:      req.Quantity,
+		Quantity:       req.Quantity,
 		Timestamp:      fmt.Sprintf("%d", ctx.Value("timestamp").(int64)),
 	}
 
@@ -86,12 +86,12 @@ func (p *EventPublisher) PublishReserveConfirmed(ctx context.Context, reservatio
 
 // ReserveRequestEvent represents the inventory.reserve.request event
 type ReserveRequestEvent struct {
-	ReservationID   string `json:"reservation_id"`
+	ReservationID  string `json:"reservation_id"`
 	IdempotencyKey string `json:"idempotency_key"`
-	SKU             string `json:"sku"`
-	Location        string `json:"location"`
-	Quantity        int64  `json:"quantity"`
-	Timestamp       string `json:"timestamp"`
+	SKU            string `json:"sku"`
+	Location       string `json:"location"`
+	Quantity       int64  `json:"quantity"`
+	Timestamp      string `json:"timestamp"`
 }
 
 // ReserveConfirmedEvent represents the inventory.reserve.confirmed event
@@ -103,4 +103,3 @@ type ReserveConfirmedEvent struct {
 	ConfirmedAt   string `json:"confirmed_at"`
 	Timestamp     string `json:"timestamp"`
 }
-

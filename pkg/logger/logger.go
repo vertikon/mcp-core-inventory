@@ -5,9 +5,9 @@ import (
 	"context"
 	"os"
 
+	"go.opentelemetry.io/otel/trace"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
-	"go.opentelemetry.io/otel/trace"
 )
 
 var (
@@ -121,6 +121,11 @@ func Get() *zap.Logger {
 		return zap.NewNop()
 	}
 	return globalLogger
+}
+
+// GetLogger is a backward-compatible alias for Get.
+func GetLogger() *zap.Logger {
+	return Get()
 }
 
 // Sync flushes any buffered log entries

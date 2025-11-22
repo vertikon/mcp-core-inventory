@@ -66,7 +66,7 @@ func (v *ValidationRule) Validate(value interface{}) error {
 	switch v.ruleType {
 	case ValidationRuleTypeRequired:
 		if value == nil || value == "" {
-			return fmt.Errorf(v.message)
+			return fmt.Errorf("value is required")
 		}
 	case ValidationRuleTypeMin:
 		// Type-specific validation would go here

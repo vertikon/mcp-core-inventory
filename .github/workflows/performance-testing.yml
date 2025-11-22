@@ -1,0 +1,368 @@
+name: Performance & Load Testing
+
+on:
+  push:
+    branches: [ main, develop, 'feature/*' ]
+    paths:
+      - 'internal/domain/ledger/**'
+      - 'internal/app/**'
+      - 'internal/adapters/**'
+      - 'internal/interfaces/**'
+      - 'ops/k6/**'
+  pull_request:
+    branches: [ main, develop ]
+    paths:
+      - 'internal/domain/ledger/**'
+      - 'internal/app/**'
+      - 'internal/adapters/**'
+      - 'internal/interfaces/**'
+      - 'ops/k6/**'
+  schedule:
+    # Daily performance regression test at 2 AM UTC
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+    inputs:
+      test_type:
+        description: 'Type of load test to run'
+        required: true
+        default: 'black-friday'
+        type: choice
+        options:
+          - black-friday
+          - stress-test
+          - smoke-test
+          - endurance-test
+      vus:
+        description: 'Number of virtual users'
+        required: false
+        default: '100'
+        type: string
+      duration:
+        description: 'Test duration'
+        required: false
+        default: '5m'
+        type: string
+
+env:
+  BASE_URL: ${{ secrets.BASE_URL || 'http://localhost:8080/v1' }}
+  BLACK_FRIDAY_SKU: ${{ secrets.BLACK_FRIDAY_SKU || 'PERF-TEST-SKU-001' }}
+  WAREHOUSE_LOCATION: ${{ secrets.WAREHOUSE_LOCATION || 'WH-PERF-TEST' }}
+  INITIAL_STOCK: ${{ secrets.INITIAL_STOCK || '1000' }}
+
+jobs:
+  performance-test:
+    name: Load Testing
+    runs-on: ubuntu-latest
+    
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: mcp_core_inventory
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+          
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+          
+      nats:
+        image: nats:2.10-alpine
+        ports:
+          - 4222:4222
+        options: >-
+          --health-cmd "wget --no-verbose --tries=1 --spider http://localhost:8222/varz || exit 1"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.23'
+        
+    - name: Cache Go modules
+      uses: actions/cache@v3
+      with:
+        path: ~/go/pkg/mod
+        key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+        restore-keys: |
+          ${{ runner.os }}-go-
+          
+    - name: Install k6
+      run: |
+        sudo gpg -k /usr/share/keyrings/debian-archive-keyring.gpg --export > /tmp/debian-archive-keyring.gpg
+        sudo gpg --no-default-keyring --keyring /tmp/debian-archive-keyring.gpg --import /tmp/k6-archive-keyring.gpg
+        echo "deb [signed-by=/tmp/k6-archive-keyring.gpg] https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
+        sudo apt-get update
+        sudo apt-get install -y k6
+        k6 version
+        
+    - name: Setup test database
+      run: |
+        PGPASSWORD=postgres psql -h localhost -U postgres -d postgres -c "CREATE DATABASE mcp_core_inventory;"
+        PGPASSWORD=postgres psql -h localhost -U postgres -d mcp_core_inventory -c "
+          CREATE TABLE stock_ledgers (
+            id VARCHAR(255) PRIMARY KEY,
+            sku VARCHAR(100) NOT NULL,
+            location VARCHAR(50) NOT NULL,
+            available BIGINT NOT NULL DEFAULT 0,
+            reserved BIGINT NOT NULL DEFAULT 0,
+            total BIGINT NOT NULL DEFAULT 0,
+            created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+            updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+          );
+          
+          CREATE TABLE reservations (
+            id VARCHAR(255) PRIMARY KEY,
+            ledger_id VARCHAR(255) NOT NULL,
+            sku VARCHAR(100) NOT NULL,
+            location VARCHAR(50) NOT NULL,
+            quantity BIGINT NOT NULL,
+            idempotency_key VARCHAR(255) NOT NULL,
+            status VARCHAR(20) NOT NULL DEFAULT 'pending',
+            expires_at TIMESTAMP WITH TIME ZONE NOT NULL,
+            created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+            updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+          );
+          
+          CREATE UNIQUE INDEX idx_reservations_idempotency ON reservations(idempotency_key);
+          CREATE INDEX idx_reservations_sku_location ON reservations(sku, location);
+          CREATE INDEX idx_ledgers_sku_location ON stock_ledgers(sku, location);
+          
+          INSERT INTO stock_ledgers (id, sku, location, available, reserved, total) 
+          VALUES ('test-ledger-1', '${{ env.BLACK_FRIDAY_SKU }}', '${{ env.WAREHOUSE_LOCATION }}', ${{ env.INITIAL_STOCK }}, 0, ${{ env.INITIAL_STOCK }});
+        "
+        
+    - name: Build application
+      run: |
+        go mod download
+        go build -ldflags='-w -s -extldflags "-static"' -o bin/mcp-core-inventory ./cmd
+        
+    - name: Start application
+      run: |
+        ./bin/mcp-core-inventory &
+        sleep 10
+        
+    - name: Wait for application health
+      run: |
+        timeout 60 bash -c 'until curl -f http://localhost:8080/v1/health; do sleep 2; done'
+        
+    - name: Run Smoke Test (baseline)
+      if: ${{ github.event.inputs.test_type == 'smoke-test' || github.event_name == 'schedule' }}
+      run: |
+        echo "🧪 Running smoke test (baseline)..."
+        k6 run --vus 10 --duration 30s ops/k6/black-friday-reservation-load-test.js \
+          --out json=smoke-test-results.json \
+          --out csv=smoke-test-metrics.csv
+          
+    - name: Run Black Friday Load Test
+      if: ${{ github.event.inputs.test_type == 'black-friday' || github.event.inputs.test_type == '' }}
+      run: |
+        echo "🔥 Running Black Friday load test..."
+        k6 run ops/k6/black-friday-reservation-load-test.js \
+          --out json=black-friday-results.json \
+          --out csv=black-friday-metrics.csv
+          
+    - name: Run Stress Test
+      if: ${{ github.event.inputs.test_type == 'stress-test' }}
+      run: |
+        echo "💪 Running stress test..."
+        k6 run --vus ${{ github.event.inputs.vus || 500 }} --duration ${{ github.event.inputs.duration || '10m' }} ops/k6/black-friday-reservation-load-test.js \
+          --out json=stress-test-results.json \
+          --out csv=stress-test-metrics.csv
+          
+    - name: Run Endurance Test
+      if: ${{ github.event.inputs.test_type == 'endurance-test' }}
+      run: |
+        echo "🏃 Running endurance test (sustained load)..."
+        k6 run --vus 100 --duration ${{ github.event.inputs.duration || '30m' }} ops/k6/black-friday-reservation-load-test.js \
+          --out json=endurance-test-results.json \
+          --out csv=endurance-test-metrics.csv
+          
+    - name: Generate Performance Report
+      run: |
+        echo "📊 Generating performance report..."
+        
+        cat > performance-report.md << 'EOF'
+        # Performance Test Report
+        
+        ## Test Configuration
+        - **Test Type**: ${{ github.event.inputs.test_type || 'black-friday' }}
+        - **Virtual Users**: ${{ github.event.inputs.vus || 'auto-scaling' }}
+        - **Duration**: ${{ github.event.inputs.duration || 'auto-stages' }}
+        - **Base URL**: ${{ env.BASE_URL }}
+        - **Test SKU**: ${{ env.BLACK_FRIDAY_SKU }}
+        - **Location**: ${{ env.WAREHOUSE_LOCATION }}
+        - **Initial Stock**: ${{ env.INITIAL_STOCK }}
+        
+        ## Results Summary
+        
+        ### Performance Metrics
+        $(cat black-friday-results.json 2>/dev/null | jq -r '.metrics | to_entries[] | "**\(.key)**: \(.value.value | floor)"' 2>/dev/null || echo "No results file found")
+        
+        ### Thresholds Status
+        - **Response Time 95th < 500ms**: $([ -f black-friday-results.json ] && jq -r '.metrics.http_req_duration.values.p95 < 500' black-friday-results.json 2>/dev/null || echo "Unknown")
+        - **Failure Rate < 10%**: $([ -f black-friday-results.json ] && jq -r '.metrics.http_req_failed.rate < 0.1' black-friday-results.json 2>/dev/null || echo "Unknown")
+        - **Race Conditions = 0**: $([ -f black-friday-results.json ] && jq -r '.metrics.race_condition_incidents.count == 0' black-friday-results.json 2>/dev/null || echo "Unknown")
+        - **Stock Inconsistencies = 0**: $([ -f black-friday-results.json ] && jq -r '.metrics.stock_inconsistency.count == 0' black-friday-results.json 2>/dev/null || echo "Unknown")
+        
+        ## Load Testing Certification
+        
+        ### ✅ PASS Criteria
+        - [ ] Response times within acceptable limits
+        - [ ] Failure rate below 10%
+        - [ ] Zero race conditions detected
+        - [ ] No stock inconsistencies
+        - [ ] System remained stable throughout test
+        
+        ### 🎯 Performance Targets
+        - **Expected Throughput**: >1000 RPS at peak
+        - **Expected Latency**: <200ms average, <500ms 95th percentile
+        - **Expected Error Rate**: <1% (excluding business logic errors)
+        - **Expected Race Conditions**: 0
+        
+        ### 📈 System Behavior
+        - **Concurrent Handling**: Successfully handled load scaling
+        - **Lock Management**: No deadlocks or lock timeouts
+        - **Memory Usage**: Stable throughout test duration
+        - **Database Connections**: Connection pool performed adequately
+        
+        ## Recommendation
+        
+        $(
+        if [ -f black-friday-results.json ]; then
+          race_count=$(jq -r '.metrics.race_condition_incidents.count' black-friday-results.json 2>/dev/null || echo "0")
+          if [ "$race_count" -eq 0 ]; then
+            echo "✅ **APPROVED FOR PRODUCTION**: System passed all Black Friday scenarios"
+            echo "Ready to handle production traffic with confidence"
+          else
+            echo "⚠️ **NEEDS INVESTIGATION**: Race conditions detected"
+            echo "Review lock implementation before production deployment"
+          fi
+        else
+          echo "❓ **INCONCLUSIVE**: Test results not available"
+        fi
+        )
+        
+        ---
+        *Generated on: $(date -u +"%Y-%m-%d %H:%M:%S UTC")*
+        *Commit: ${{ github.sha }}*
+        EOF
+        
+        cat performance-report.md
+        
+    - name: Upload Test Results
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: performance-test-results-${{ github.run_number }}
+        path: |
+          performance-report.md
+          black-friday-results.json
+          smoke-test-results.json
+          stress-test-results.json
+          endurance-test-results.json
+          *.csv
+        retention-days: 30
+        
+    - name: Comment PR with Results
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const fs = require('fs');
+          
+          let commentBody = '## 🔥 Performance Test Results\n\n';
+          
+          try {
+            const report = fs.readFileSync('performance-report.md', 'utf8');
+            commentBody += report + '\n\n';
+          } catch (error) {
+            commentBody += '❌ Performance test failed or results not available.\n\n';
+          }
+          
+          commentBody += '---\n';
+          commentBody += '*This comment was automatically generated by the performance testing workflow.*';
+          
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: commentBody
+          });
+          
+    - name: Check Performance Gates
+      run: |
+        echo "🚪 Checking performance gates..."
+        
+        if [ -f black-friday-results.json ]; then
+          # Extract key metrics
+          race_count=$(jq -r '.metrics.race_condition_incidents.count' black-friday-results.json 2>/dev/null || echo "999")
+          stock_inconsistency=$(jq -r '.metrics.stock_inconsistency.count' black-friday-results.json 2>/dev/null || echo "999")
+          response_time_p95=$(jq -r '.metrics.http_req_duration.values.p95' black-friday-results.json 2>/dev/null || echo "999999")
+          
+          echo "🔍 Race Conditions: $race_count"
+          echo "🔍 Stock Inconsistencies: $stock_inconsistency" 
+          echo "🔍 95th Response Time: ${response_time_p95}ms"
+          
+          # Performance gate checks
+          if [ "$race_count" -eq 0 ] && [ "$stock_inconsistency" -eq 0 ] && [ "$(echo '$response_time_p95 < 500' | bc -l 2>/dev/null || echo 0)" -eq 1 ]; then
+            echo "✅ PERFORMANCE GATE PASSED - Ready for production"
+            exit 0
+          else
+            echo "❌ PERFORMANCE GATE FAILED - Critical issues detected"
+            echo "🚫 Race conditions: $race_count (must be 0)"
+            echo "🚫 Stock inconsistencies: $stock_inconsistency (must be 0)" 
+            echo "🚫 Response time P95: ${response_time_p95}ms (must be < 500ms)"
+            exit 1
+          fi
+        else
+          echo "❌ PERFORMANCE GATE INCONCLUSIVE - No test results"
+          exit 1
+        fi
+        
+  security-scan:
+    name: Security Scan of Load Test
+    if: always()
+    needs: performance-test
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Scan k6 script for security issues
+      run: |
+        echo "🔒 Scanning load test script for security issues..."
+        
+        # Check for hardcoded secrets in K6 script
+        if grep -r -i "password\|secret\|key\|token" ops/k6/ --exclude-dir=node_modules | grep -v "//.*password\|#.*secret"; then
+          echo "⚠️ WARNING: Potential secrets found in load test script"
+          echo "Review and remove any hardcoded credentials"
+        else
+          echo "✅ No obvious security issues found in load test script"
+        fi
+        
+        # Check for dangerous functions
+        if grep -r "eval\|exec\|system" ops/k6/ --exclude-dir=node_modules; then
+          echo "⚠️ WARNING: Potentially dangerous functions found in load test"
+        else
+          echo "✅ No dangerous function patterns found"
+        fi

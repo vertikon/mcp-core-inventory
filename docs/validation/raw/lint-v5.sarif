@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+  "runs": [
+    {
+      "results": [
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "vet.exe: internal/ai/knowledge/indexer_test.go"
+                },
+                "region": {
+                  "startColumn": 51,
+                  "startLine": 68
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "cannot use 1000 (constant of type int) as Embedder value in argument to NewIndexer: int does not implement Embedder (missing method Embed)"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "vet.exe: internal/interfaces/cli/registration.go"
+                },
+                "region": {
+                  "startColumn": 2,
+                  "startLine": 8
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "\"go.uber.org/zap\" imported and not used"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "pkg/httpserver/server_test.go"
+                },
+                "region": {
+                  "startColumn": 5,
+                  "startLine": 217
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "comparison of function healthHandler == nil is always false"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "pkg/httpserver/server_test.go"
+                },
+                "region": {
+                  "startColumn": 5,
+                  "startLine": 225
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "comparison of function readyHandler == nil is always false"
+          },
+          "ruleId": "govet"
+        }
+      ],
+      "tool": {
+        "driver": {
+          "informationUri": "https://github.com/vertikon/mcp-validator",
+          "name": "MCP Validator V9.1",
+          "version": "9.4"
+        }
+      }
+    }
+  ],
+  "version": "2.1.0"
+}

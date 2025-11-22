@@ -105,4 +105,3 @@ func cacheKey(sku, location string) string {
 func infoCacheKey(sku, location string) string {
 	return fmt.Sprintf("stock:info:%s:%s", sku, location)
 }
-

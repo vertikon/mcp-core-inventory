@@ -27,23 +27,17 @@ Model Context Protocol (MCP) projects.`,
 
 // Execute adds all child commands to the root command and sets flags appropriately
 func Execute() {
+	RegisterCommands(rootCmd)
 	if err := rootCmd.Execute(); err != nil {
 		logger.Error("Command execution failed", zap.Error(err))
 		os.Exit(1)
 	}
 }
 
-// init initializes the CLI
-func init() {
-	rootCmd.PersistentFlags().BoolP("verbose", "v", false, "verbose output")
-	rootCmd.PersistentFlags().String("config", "", "config file (default is $HOME/.hulk/config.yaml)")
-	
-	// Add subcommand groups
-	rootCmd.AddCommand(analytics.AnalyticsCmd)
-	rootCmd.AddCommand(ci.CICmd)
-}
+// init initializes CLI - MOVED TO registration.go to avoid conflicts
+// All command registration is now centralized in registration.go
 
-// GetRootCmd returns the root command (for testing)
+// GetRootCmd returns root command (for testing)
 func GetRootCmd() *cobra.Command {
 	return rootCmd
 }

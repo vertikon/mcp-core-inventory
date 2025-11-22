@@ -21,11 +21,9 @@ var monitorCmd = &cobra.Command{
 	},
 }
 
-func init() {
-	rootCmd.AddCommand(monitorCmd)
-}
+// Command registration moved to registration.go to avoid init() conflicts
 
-// SetMonitoringService sets the monitoring service
+// SetMonitoringService sets monitoring service
 func SetMonitoringService(service *services.MonitoringAppService) {
 	monitoringService = service
 }

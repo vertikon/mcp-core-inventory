@@ -1,0 +1,758 @@
+{
+  "linter_report_version": 2,
+  "modules": [
+    {
+      "module_path": "E:\\vertikon\\.endurance\\internal\\services\\bloco-1-core\\mcp-core-inventory",
+      "module_name": "github.com/vertikon/gera-treina\ngithub.com/vertikon/model-router\ngithub.com/vertikon/claude-desktop-agent\ngithub.com/vertikon/mcp-go-architect-sdk-custom\ngithub.com/vertikon/mcp-core-inventory\ngithub.com/vertikon/mcp-fulfillment-ops\ngithub.com/vertikon/mcp-hulk\ngithub.com/vertikon/mcp-wa-auth\ngithub.com/docker/compose/v2\ngithub.com/vertikon/mcp-gateway-providers-ai",
+      "linter_results": [
+        {
+          "tool": "golangci-lint",
+          "exit_code": 3,
+          "issues": [],
+          "fail_count": 0,
+          "warn_count": 0,
+          "info_count": 0,
+          "raw_log_path": "E:\\vertikon\\.endurance\\internal\\services\\bloco-1-core\\mcp-core-inventory\\docs\\validation\\raw\\lint-temp.json"
+        },
+        {
+          "tool": "govet",
+          "exit_code": 1,
+          "issues": [
+            {
+              "tool": "govet",
+              "file": "internal/core/scheduler/scheduler.go",
+              "line": 62,
+              "col": 19,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "undefined: nats.ErrStreamNameExist",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/adapters/postgres/ledger_repository.go",
+              "line": 103,
+              "col": 8,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "res.id undefined (type ledger.Reservation has no field or method id)",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/adapters/postgres/ledger_repository.go",
+              "line": 103,
+              "col": 17,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "res.ledgerID undefined (type ledger.Reservation has no field or method ledgerID, but does have method LedgerID)",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/adapters/postgres/ledger_repository.go",
+              "line": 103,
+              "col": 32,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "res.sku undefined (type ledger.Reservation has no field or method sku)",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/adapters/postgres/ledger_repository.go",
+              "line": 103,
+              "col": 42,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "res.location undefined (type ledger.Reservation has no field or method location, but does have method Location)",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/adapters/postgres/ledger_repository.go",
+              "line": 103,
+              "col": 57,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "res.quantity undefined (type ledger.Reservation has no field or method quantity, but does have method Quantity)",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/adapters/postgres/ledger_repository.go",
+              "line": 104,
+              "col": 8,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "res.idempotencyKey undefined (type ledger.Reservation has no field or method idempotencyKey, but does have method IdempotencyKey)",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/adapters/postgres/ledger_repository.go",
+              "line": 114,
+              "col": 6,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "res.status undefined (type ledger.Reservation has no field or method status, but does have method Status)",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/adapters/postgres/ledger_repository.go",
+              "line": 115,
+              "col": 6,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "res.expiresAt undefined (type ledger.Reservation has no field or method expiresAt, but does have method ExpiresAt)",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/adapters/postgres/ledger_repository.go",
+              "line": 116,
+              "col": 6,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "res.createdAt undefined (type ledger.Reservation has no field or method createdAt, but does have method CreatedAt)",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/adapters/postgres/ledger_repository.go",
+              "line": 117,
+              "col": 6,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "res.updatedAt undefined (type ledger.Reservation has no field or method updatedAt, but does have method UpdatedAt)",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/adapters/postgres/ledger_repository.go",
+              "line": 117,
+              "col": 6,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "too many errors",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/app/query_available.go",
+              "line": 7,
+              "col": 2,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "\"github.com/vertikon/mcp-core-inventory/internal/domain/ledger\" imported and not used",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/adapters/redis/reservation_lock.go",
+              "line": 55,
+              "col": 2,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "declared and not used: script",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/mcp/generators/generator_factory.go",
+              "line": 317,
+              "col": 32,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "req.Stack undefined (type GenerateRequest has no field or method Stack)",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/mcp/generators/generator_factory.go",
+              "line": 319,
+              "col": 50,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "req.Stack undefined (type GenerateRequest has no field or method Stack)",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/mcp/generators/generator_factory.go",
+              "line": 323,
+              "col": 54,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "req.Stack undefined (type GenerateRequest has no field or method Stack)",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/mcp/generators/generator_factory.go",
+              "line": 334,
+              "col": 75,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "req.Stack undefined (type GenerateRequest has no field or method Stack)",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/mcp/generators/generator_factory.go",
+              "line": 350,
+              "col": 39,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "req.Stack undefined (type GenerateRequest has no field or method Stack)",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/mcp/generators/tinygo_generator.go",
+              "line": 324,
+              "col": 3,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "cannot use \"project\" (untyped string constant) as zap.Field value in argument to g.logger.Info",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/mcp/generators/tinygo_generator.go",
+              "line": 324,
+              "col": 14,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "cannot use req.Name (variable of type string) as zap.Field value in argument to g.logger.Info",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/mcp/generators/tinygo_generator.go",
+              "line": 325,
+              "col": 3,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "cannot use \"language\" (untyped string constant) as zap.Field value in argument to g.logger.Info",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/mcp/generators/tinygo_generator.go",
+              "line": 325,
+              "col": 15,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "cannot use g.language (variable of type string) as zap.Field value in argument to g.logger.Info",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/mcp/generators/tinygo_generator.go",
+              "line": 326,
+              "col": 3,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "cannot use \"features\" (untyped string constant) as zap.Field value in argument to g.logger.Info",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/mcp/generators/tinygo_generator.go",
+              "line": 326,
+              "col": 3,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "too many errors",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/mcp/registry/template_registry.go",
+              "line": 17,
+              "col": 6,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "TemplateInfo redeclared in this block",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/mcp/registry/mcp_registry.go",
+              "line": 301,
+              "col": 6,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "other declaration of TemplateInfo",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/mcp/registry/template_registry.go",
+              "line": 75,
+              "col": 17,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "templateInfo.Path undefined (type *TemplateInfo has no field or method Path)",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/mcp/registry/template_registry.go",
+              "line": 124,
+              "col": 3,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "unknown field Summary in struct literal of type TemplateInfo",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/mcp/registry/template_registry.go",
+              "line": 125,
+              "col": 3,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "unknown field Placeholders in struct literal of type TemplateInfo",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/mcp/registry/discovery.go",
+              "line": 21,
+              "col": 13,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "undefined: logger",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/mcp/registry/discovery.go",
+              "line": 27,
+              "col": 5,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "sd.mu undefined (type *ServiceDiscovery has no field or method mu)",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/mcp/registry/discovery.go",
+              "line": 28,
+              "col": 11,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "sd.mu undefined (type *ServiceDiscovery has no field or method mu)",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/mcp/registry/discovery.go",
+              "line": 51,
+              "col": 11,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "service.Description undefined (type *ServiceInfo has no field or method Description)",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/mcp/registry/service_registry.go",
+              "line": 33,
+              "col": 10,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "service.LastChecked undefined (type *ServiceInfo has no field or method LastChecked)",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/mcp/registry/service_registry.go",
+              "line": 96,
+              "col": 10,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "service.LastChecked undefined (type *ServiceInfo has no field or method LastChecked)",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/mcp/registry/template_registry.go",
+              "line": 125,
+              "col": 3,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "too many errors",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "tools/deployers/hybrid_deployer.go",
+              "line": 10,
+              "col": 2,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "\"github.com/vertikon/mcp-core-inventory/internal/infrastructure/cloud/kubernetes\" imported and not used",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "vet.exe: internal/core/crush/memory_optimizer.go",
+              "line": 31,
+              "col": 2,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "PolicyLRU redeclared in this block",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "vet.exe: cmd/tools-validator/main.go",
+              "line": 60,
+              "col": 4,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "unknown field StrictMode in struct literal of type \"github.com/vertikon/mcp-core-inventory/tools/validators\".ConfigValidateRequest",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "vet.exe: internal/ai/knowledge/indexer_test.go",
+              "line": 68,
+              "col": 60,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "not enough arguments in call to NewIndexer",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "vet.exe: internal/core/transformer/feedforward.go",
+              "line": 194,
+              "col": 21,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "ffn.router undefined (type *FeedForwardNetwork has no field or method router)",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "vet.exe: internal/domain/services/ai_domain_service.go",
+              "line": 33,
+              "col": 17,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "context.documents undefined (type *entities.KnowledgeContext has no field or method documents, but does have method Documents)",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "vet.exe: internal/core/state/distributed_store.go",
+              "line": 543,
+              "col": 22,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "invalid operation: cannot take address of dss.stats.LockWaitTime.Nanoseconds() (value of type int64)",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/domain/value_objects/validation_rule.go",
+              "line": 69,
+              "col": 22,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "non-constant format string in call to fmt.Errorf",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "vet.exe: internal/infrastructure/messaging/pubsub/pubsub_client.go",
+              "line": 9,
+              "col": 6,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "PubSubClient redeclared in this block",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "vet.exe: internal/infrastructure/compute/serverless/cloud_functions.go",
+              "line": 14,
+              "col": 46,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "undefined: FunctionConfig",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "vet.exe: internal/infrastructure/messaging/streaming/nats_jetstream.go",
+              "line": 178,
+              "col": 18,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "undefined: nats.ErrStreamNameExist",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "vet.exe: internal/infrastructure/persistence/relational/postgres_knowledge_repository.go",
+              "line": 87,
+              "col": 6,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "declared and not used: knowledge",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "vet.exe: internal/interfaces/cli/root.go",
+              "line": 42,
+              "col": 21,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "undefined: analytics",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "vet.exe: internal/mcp/registry/template_registry.go",
+              "line": 17,
+              "col": 6,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "TemplateInfo redeclared in this block",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "vet.exe: internal/mcp/generators/generator_factory.go",
+              "line": 317,
+              "col": 32,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "req.Stack undefined (type GenerateRequest has no field or method Stack)",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/security/encryption/encryption_manager.go",
+              "line": 56,
+              "col": 6,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "Manager redeclared in this block",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/security/encryption/certificate_manager.go",
+              "line": 42,
+              "col": 6,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "other declaration of Manager",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/security/encryption/encryption_manager.go",
+              "line": 64,
+              "col": 3,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "unknown field keyManager in struct literal of type Manager",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/security/encryption/encryption_manager.go",
+              "line": 71,
+              "col": 16,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "m.keyManager undefined (type *Manager has no field or method keyManager)",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/security/encryption/encryption_manager.go",
+              "line": 81,
+              "col": 16,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "m.keyManager undefined (type *Manager has no field or method keyManager)",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/security/encryption/key_manager.go",
+              "line": 52,
+              "col": 6,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "Manager redeclared in this block",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/security/encryption/certificate_manager.go",
+              "line": 42,
+              "col": 6,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "other declaration of Manager",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/security/encryption/key_manager.go",
+              "line": 72,
+              "col": 3,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "unknown field keyVersion in struct literal of type Manager",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/security/encryption/key_manager.go",
+              "line": 82,
+              "col": 6,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "km.encryptionKey undefined (type *Manager has no field or method encryptionKey)",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/security/encryption/key_manager.go",
+              "line": 96,
+              "col": 4,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "m.mu undefined (type *Manager has no field or method mu)",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/security/encryption/key_manager.go",
+              "line": 97,
+              "col": 10,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "m.mu undefined (type *Manager has no field or method mu)",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/security/encryption/key_manager.go",
+              "line": 99,
+              "col": 7,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "m.encryptionKey undefined (type *Manager has no field or method encryptionKey)",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/security/encryption/key_manager.go",
+              "line": 99,
+              "col": 7,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "too many errors",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "vet.exe: internal/state/cache/cache_coherency.go",
+              "line": 162,
+              "col": 11,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "cm.cache.Delete undefined (type *StateCache is pointer to interface, not interface)",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "vet.exe: internal/security/encryption/encryption_manager.go",
+              "line": 56,
+              "col": 6,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "Manager redeclared in this block",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "vet.exe: internal/state/store/conflict_resolver.go",
+              "line": 622,
+              "col": 6,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "max redeclared in this block",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "vet.exe: internal/state/events/event_replay.go",
+              "line": 249,
+              "col": 2,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "declared and not used: snapshot",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "pkg/httpserver/server_test.go",
+              "line": 216,
+              "col": 5,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "comparison of function healthHandler == nil is always false",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "pkg/httpserver/server_test.go",
+              "line": 224,
+              "col": 5,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "comparison of function readyHandler == nil is always false",
+              "snippet": ""
+            }
+          ],
+          "fail_count": 71,
+          "warn_count": 0,
+          "info_count": 0,
+          "raw_log_path": "E:\\vertikon\\.endurance\\internal\\services\\bloco-1-core\\mcp-core-inventory\\docs\\validation\\raw\\govet.txt"
+        },
+        {
+          "tool": "staticcheck",
+          "exit_code": 1,
+          "issues": null,
+          "fail_count": 0,
+          "warn_count": 0,
+          "info_count": 0,
+          "raw_log_path": "E:\\vertikon\\.endurance\\internal\\services\\bloco-1-core\\mcp-core-inventory\\docs\\validation\\raw\\staticcheck.txt"
+        }
+      ],
+      "total_fail": 71,
+      "total_warn": 0,
+      "total_info": 0,
+      "status": "FAIL"
+    }
+  ],
+  "timestamp": "2025-11-21 20:37:08",
+  "total_fail": 71,
+  "total_info": 0,
+  "total_modules": 1,
+  "total_warn": 0
+}

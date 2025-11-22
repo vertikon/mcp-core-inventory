@@ -41,14 +41,9 @@ var generateCmd = &cobra.Command{
 	},
 }
 
-func init() {
-	rootCmd.AddCommand(generateCmd)
-	generateCmd.Flags().StringP("template", "t", "", "Template ID to use")
-	generateCmd.Flags().StringP("output", "o", ".", "Output directory")
-	generateCmd.MarkFlagRequired("template")
-}
+// Command registration moved to registration.go to avoid init() conflicts
 
-// SetMCPService sets the MCP service (for dependency injection)
+// SetMCPService sets MCP service (for dependency injection)
 func SetMCPService(service *services.MCPAppService) {
 	mcpService = service
 }

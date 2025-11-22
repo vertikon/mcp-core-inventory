@@ -4,6 +4,7 @@ package scheduler
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"time"
 
 	"github.com/nats-io/nats.go"
@@ -28,7 +29,7 @@ func NewScheduler(js nats.JetStreamContext) *Scheduler {
 // InitializeStreams creates required NATS JetStream streams
 func (s *Scheduler) InitializeStreams(ctx context.Context) error {
 	streams := []struct {
-		name    string
+		name     string
 		subjects []string
 	}{
 		{
@@ -51,15 +52,15 @@ func (s *Scheduler) InitializeStreams(ctx context.Context) error {
 
 	for _, stream := range streams {
 		cfg := &nats.StreamConfig{
-			Name:      stream.name,
+			Name:     stream.name,
 			Subjects: stream.subjects,
-			Replicas:  1,
-			MaxAge:    24 * time.Hour,
+			Replicas: 1,
+			MaxAge:   24 * time.Hour,
 		}
 
 		_, err := s.js.AddStream(cfg)
 		if err != nil {
-			if err == nats.ErrStreamNameExist {
+			if errors.Is(err, nats.ErrStreamNameAlreadyInUse) {
 				logger.Debug("Stream already exists", zap.String("stream", stream.name))
 				continue
 			}
@@ -115,4 +116,3 @@ func (s *Scheduler) SubscribeToTicks(ctx context.Context, handler func(*TickEven
 type TickEvent struct {
 	Timestamp time.Time `json:"timestamp"`
 }
-

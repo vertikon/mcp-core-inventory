@@ -1,0 +1,4 @@
+# github.com/vertikon/mcp-core-inventory/internal/interfaces/cli
+internal\interfaces\cli\registration.go:8:2: "go.uber.org/zap" imported and not used
+internal\interfaces\cli\root.go:8:2: "github.com/vertikon/mcp-core-inventory/internal/interfaces/cli/analytics" imported and not used
+internal\interfaces\cli\root.go:9:2: "github.com/vertikon/mcp-core-inventory/internal/interfaces/cli/ci" imported and not used

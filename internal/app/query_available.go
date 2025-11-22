@@ -3,8 +3,6 @@ package app
 import (
 	"context"
 	"fmt"
-
-	"github.com/vertikon/mcp-core-inventory/internal/domain/ledger"
 )
 
 // QueryAvailableRequest represents a request to query available stock
@@ -30,7 +28,7 @@ type CacheService interface {
 
 // QueryAvailableUseCase handles stock availability queries
 type QueryAvailableUseCase struct {
-	ledgerRepo  LedgerRepository
+	ledgerRepo   LedgerRepository
 	cacheService CacheService
 }
 
@@ -40,7 +38,7 @@ func NewQueryAvailableUseCase(
 	cacheService CacheService,
 ) *QueryAvailableUseCase {
 	return &QueryAvailableUseCase{
-		ledgerRepo:  ledgerRepo,
+		ledgerRepo:   ledgerRepo,
 		cacheService: cacheService,
 	}
 }
@@ -83,4 +81,3 @@ func (uc *QueryAvailableUseCase) Execute(ctx context.Context, req QueryAvailable
 		Total:     stockLedger.Total(),
 	}, nil
 }
-

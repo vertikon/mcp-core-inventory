@@ -1,6 +1,6 @@
 module github.com/vertikon/mcp-core-inventory
 
-go 1.24.0
+go 1.23.0
 
 require (
 	github.com/dgraph-io/badger/v4 v4.2.0

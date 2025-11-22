@@ -1,6 +1,8 @@
 package generators
 
 import (
+	"path/filepath"
+	"runtime"
 	"testing"
 )
 
@@ -40,7 +42,7 @@ func TestNewGeneratorFactory(t *testing.T) {
 func TestGeneratorFactory_RegisterGenerator(t *testing.T) {
 	factory := NewGeneratorFactory(nil)
 
-	generator := NewGoGenerator("./templates/go")
+	generator := NewGoGenerator(testTemplatePath("go"))
 	if err := factory.RegisterGenerator("go", generator); err != nil {
 		t.Fatalf("RegisterGenerator() error = %v", err)
 	}
@@ -61,7 +63,7 @@ func TestGeneratorFactory_GetGenerator(t *testing.T) {
 	}
 
 	// Register and get generator
-	generator := NewGoGenerator("./templates/go")
+	generator := NewGoGenerator(testTemplatePath("go"))
 	_ = factory.RegisterGenerator("go", generator)
 
 	got, err := factory.GetGenerator("go")
@@ -113,6 +115,12 @@ func TestGeneratorFactory_GetGeneratorInfo(t *testing.T) {
 	}
 }
 
+func testTemplatePath(stack string) string {
+	_, file, _, _ := runtime.Caller(0)
+	root := filepath.Clean(filepath.Join(filepath.Dir(file), "..", "..", ".."))
+	return filepath.Join(root, "templates", stack)
+}
+
 func TestGeneratorFactory_ValidateRequest(t *testing.T) {
 	factory := NewGeneratorFactory(nil)
 
@@ -159,7 +167,7 @@ func TestGeneratorFactory_ValidateRequest(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			err := factory.ValidateRequest(tt.request)
+			err := factory.ValidateRequest(&tt.request)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("ValidateRequest() error = %v, wantErr %v", err, tt.wantErr)
 			}

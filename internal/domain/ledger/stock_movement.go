@@ -9,27 +9,27 @@ import (
 type MovementType string
 
 const (
-	MovementTypeReservation MovementType = "reservation"
+	MovementTypeReservation  MovementType = "reservation"
 	MovementTypeConfirmation MovementType = "confirmation"
-	MovementTypeRelease     MovementType = "release"
+	MovementTypeRelease      MovementType = "release"
 	MovementTypeAdjustment   MovementType = "adjustment"
-	MovementTypeReceipt     MovementType = "receipt"
-	MovementTypeShipment    MovementType = "shipment"
-	MovementTypeReturn      MovementType = "return"
-	MovementTypeTransfer    MovementType = "transfer"
+	MovementTypeReceipt      MovementType = "receipt"
+	MovementTypeShipment     MovementType = "shipment"
+	MovementTypeReturn       MovementType = "return"
+	MovementTypeTransfer     MovementType = "transfer"
 )
 
 // StockMovement represents a movement in the stock ledger
 type StockMovement struct {
-	id            string
-	ledgerID      string
-	movementType  MovementType
-	quantity      int64
-	referenceID   string // Reservation ID, Order ID, etc.
-	reason        string
-	metadata      map[string]string
-	createdAt     time.Time
-	createdBy     string
+	id           string
+	ledgerID     string
+	movementType MovementType
+	quantity     int64
+	referenceID  string // Reservation ID, Order ID, etc.
+	reason       string
+	metadata     map[string]string
+	createdAt    time.Time
+	createdBy    string
 }
 
 // NewStockMovement creates a new stock movement
@@ -112,4 +112,3 @@ func (m *StockMovement) CreatedAt() time.Time {
 func (m *StockMovement) CreatedBy() string {
 	return m.createdBy
 }
-

@@ -103,4 +103,3 @@ type HealthEvent struct {
 	Timestamp time.Time              `json:"timestamp"`
 	Details   map[string]interface{} `json:"details,omitempty"`
 }
-

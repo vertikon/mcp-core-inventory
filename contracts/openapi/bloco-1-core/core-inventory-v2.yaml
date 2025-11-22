@@ -1,0 +1,248 @@
+openapi: 3.0.3
+info:
+  title: MCP Core Inventory API
+  version: 2.0.0
+  description: >
+    Versão estendida da API de estoque com suporte a metadados de lote, validade e headers de depreciação do v1.
+servers:
+  - url: https://api.vertikon.com/inventory/v2
+    description: Produção
+  - url: http://localhost:8080/v2
+    description: Desenvolvimento
+tags:
+  - name: Reservations
+  - name: Adjustments
+  - name: Queries
+paths:
+  /reserve:
+    post:
+      tags: [Reservations]
+      summary: Cria uma reserva de estoque (v2)
+      operationId: reserveStockV2
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReserveRequestV2'
+      responses:
+        '200':
+          description: Reserva criada
+          headers:
+            Deprecation:
+              schema: { type: string }
+              description: Indica se o endpoint será descontinuado.
+            Sunset:
+              schema: { type: string }
+              description: Data alvo de sunset do v1.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReserveResponseV2'
+        '409':
+          description: Conflito de estoque
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Falha de validação
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /confirm:
+    post:
+      tags: [Reservations]
+      summary: Confirma uma reserva (v2)
+      operationId: confirmReservationV2
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfirmRequest'
+      responses:
+        '200':
+          description: Reserva confirmada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConfirmResponseV2'
+        '404':
+          description: Reserva não encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /release:
+    post:
+      tags: [Reservations]
+      summary: Libera uma reserva (v2)
+      operationId: releaseReservationV2
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReleaseRequest'
+      responses:
+        '200':
+          description: Reserva liberada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReleaseResponse'
+        '404':
+          description: Reserva não encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /adjust:
+    post:
+      tags: [Adjustments]
+      summary: Ajusta manualmente um saldo com lotes
+      operationId: adjustStockV2
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdjustRequestV2'
+      responses:
+        '200':
+          description: Ajuste realizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdjustResponseV2'
+        '422':
+          description: Ajuste inválido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /available:
+    get:
+      tags: [Queries]
+      summary: Consulta saldo disponível com lotes
+      operationId: queryAvailableV2
+      parameters:
+        - in: query
+          name: sku
+          required: true
+          schema: { type: string }
+        - in: query
+          name: location
+          required: true
+          schema: { type: string }
+        - in: query
+          name: batch
+          required: false
+          schema: { type: string }
+      responses:
+        '200':
+          description: Consulta realizada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueryResponseV2'
+        '404':
+          description: Ledger inexistente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  parameters:
+    IdempotencyKey:
+      name: X-Idempotency-Key
+      in: header
+      required: false
+      schema: { type: string, minLength: 16, maxLength: 64 }
+  schemas:
+    ReserveRequestV2:
+      allOf:
+        - $ref: './core-inventory-v1.yaml#/components/schemas/ReserveRequest'
+        - type: object
+          properties:
+            batch_code:
+              type: string
+            expiry_date:
+              type: string
+              format: date
+    ReserveResponseV2:
+      allOf:
+        - $ref: './core-inventory-v1.yaml#/components/schemas/ReserveResponse'
+        - type: object
+          properties:
+            batch_code:
+              type: string
+            expiry_date:
+              type: string
+              format: date
+    ConfirmRequest:
+      $ref: './core-inventory-v1.yaml#/components/schemas/ConfirmRequest'
+    ConfirmResponseV2:
+      allOf:
+        - $ref: './core-inventory-v1.yaml#/components/schemas/ConfirmResponse'
+        - type: object
+          properties:
+            batch_code:
+              type: string
+            expiry_date:
+              type: string
+              format: date
+    ReleaseRequest:
+      $ref: './core-inventory-v1.yaml#/components/schemas/ReleaseRequest'
+    ReleaseResponse:
+      $ref: './core-inventory-v1.yaml#/components/schemas/ReleaseResponse'
+    AdjustRequestV2:
+      allOf:
+        - $ref: './core-inventory-v1.yaml#/components/schemas/AdjustRequest'
+        - type: object
+          properties:
+            batch_code:
+              type: string
+            expiry_date:
+              type: string
+              format: date
+    AdjustResponseV2:
+      allOf:
+        - $ref: './core-inventory-v1.yaml#/components/schemas/AdjustResponse'
+        - type: object
+          properties:
+            batch_code:
+              type: string
+    QueryResponseV2:
+      type: object
+      properties:
+        sku:
+          type: string
+        location:
+          type: string
+        available:
+          type: integer
+        reserved:
+          type: integer
+        total:
+          type: integer
+        batches:
+          type: array
+          items:
+            type: object
+            properties:
+              batch_code:
+                type: string
+              available:
+                type: integer
+              reserved:
+                type: integer
+              expiry_date:
+                type: string
+                format: date
+    Error:
+      $ref: './core-inventory-v1.yaml#/components/schemas/Error'

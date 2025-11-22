@@ -100,7 +100,6 @@ func (uc *ConfirmReservationUseCase) Execute(ctx context.Context, req ConfirmRes
 		SKU:           reservation.SKU(),
 		Location:      reservation.Location(),
 		Quantity:      reservation.Quantity(),
-		ConfirmedAt:  reservation.UpdatedAt().Format("2006-01-02T15:04:05Z07:00"),
+		ConfirmedAt:   reservation.UpdatedAt().Format("2006-01-02T15:04:05Z07:00"),
 	}, nil
 }
-

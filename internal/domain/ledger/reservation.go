@@ -163,3 +163,23 @@ func (r *Reservation) Expire() {
 	}
 }
 
+// NewReservationFromRecord reconstructs a reservation from persisted data.
+func NewReservationFromRecord(
+	id, ledgerID, sku, location, idempotencyKey string,
+	quantity int64,
+	status ReservationStatus,
+	expiresAt, createdAt, updatedAt time.Time,
+) *Reservation {
+	return &Reservation{
+		id:             id,
+		ledgerID:       ledgerID,
+		sku:            sku,
+		location:       location,
+		quantity:       quantity,
+		idempotencyKey: idempotencyKey,
+		status:         status,
+		expiresAt:      expiresAt,
+		createdAt:      createdAt,
+		updatedAt:      updatedAt,
+	}
+}

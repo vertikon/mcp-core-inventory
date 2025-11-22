@@ -17,6 +17,4 @@ var stateCmd = &cobra.Command{
 	},
 }
 
-func init() {
-	rootCmd.AddCommand(stateCmd)
-}
+// Command registration moved to registration.go to avoid init() conflicts

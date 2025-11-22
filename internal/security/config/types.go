@@ -27,42 +27,42 @@ type SessionConfig struct {
 // OAuthConfig represents OAuth providers configuration
 type OAuthConfig struct {
 	Auth0   OAuthProviderConfig `mapstructure:"auth0"`
-	Google  OAuthProviderConfig  `mapstructure:"google"`
-	GitHub  OAuthProviderConfig  `mapstructure:"github"`
-	AzureAD AzureADConfig        `mapstructure:"azuread"`
+	Google  OAuthProviderConfig `mapstructure:"google"`
+	GitHub  OAuthProviderConfig `mapstructure:"github"`
+	AzureAD AzureADConfig       `mapstructure:"azuread"`
 }
 
 // OAuthProviderConfig represents a single OAuth provider configuration
 type OAuthProviderConfig struct {
-	Enabled     bool     `mapstructure:"enabled"`
-	Domain      string   `mapstructure:"domain,omitempty"`
-	ClientID    string   `mapstructure:"client_id"`
-	ClientSecret string  `mapstructure:"client_secret"`
-	RedirectURL string   `mapstructure:"redirect_url"`
-	Scopes      []string `mapstructure:"scopes"`
-	AuthURL     string   `mapstructure:"auth_url,omitempty"`
-	TokenURL    string   `mapstructure:"token_url,omitempty"`
-	UserInfoURL string   `mapstructure:"userinfo_url,omitempty"`
+	Enabled      bool     `mapstructure:"enabled"`
+	Domain       string   `mapstructure:"domain,omitempty"`
+	ClientID     string   `mapstructure:"client_id"`
+	ClientSecret string   `mapstructure:"client_secret"`
+	RedirectURL  string   `mapstructure:"redirect_url"`
+	Scopes       []string `mapstructure:"scopes"`
+	AuthURL      string   `mapstructure:"auth_url,omitempty"`
+	TokenURL     string   `mapstructure:"token_url,omitempty"`
+	UserInfoURL  string   `mapstructure:"userinfo_url,omitempty"`
 }
 
 // AzureADConfig extends OAuthProviderConfig with tenant ID
 type AzureADConfig struct {
 	OAuthProviderConfig `mapstructure:",squash"`
-	TenantID           string `mapstructure:"tenant_id"`
+	TenantID            string `mapstructure:"tenant_id"`
 }
 
 // RBACConfig represents RBAC configuration
 type RBACConfig struct {
-	Roles    []RoleConfig    `mapstructure:"roles"`
-	Policies []PolicyConfig  `mapstructure:"policies"`
+	Roles     []RoleConfig     `mapstructure:"roles"`
+	Policies  []PolicyConfig   `mapstructure:"policies"`
 	Overrides []OverrideConfig `mapstructure:"overrides"`
 }
 
 // RoleConfig represents a role configuration
 type RoleConfig struct {
-	ID          string         `mapstructure:"id"`
-	Name        string         `mapstructure:"name"`
-	Description string         `mapstructure:"description,omitempty"`
+	ID          string             `mapstructure:"id"`
+	Name        string             `mapstructure:"name"`
+	Description string             `mapstructure:"description,omitempty"`
 	Permissions []PermissionConfig `mapstructure:"permissions"`
 }
 
@@ -74,10 +74,10 @@ type PermissionConfig struct {
 
 // PolicyConfig represents a policy configuration
 type PolicyConfig struct {
-	ID          string            `mapstructure:"id"`
-	Name        string            `mapstructure:"name"`
-	Description string            `mapstructure:"description,omitempty"`
-	Priority    int               `mapstructure:"priority"`
+	ID          string             `mapstructure:"id"`
+	Name        string             `mapstructure:"name"`
+	Description string             `mapstructure:"description,omitempty"`
+	Priority    int                `mapstructure:"priority"`
 	Rules       []PolicyRuleConfig `mapstructure:"rules"`
 }
 
@@ -99,11 +99,11 @@ type OverrideConfig struct {
 
 // EncryptionConfig represents encryption configuration
 type EncryptionConfig struct {
-	Algorithm      string            `mapstructure:"algorithm"`
-	KeyRotationTTL string            `mapstructure:"key_rotation_ttl"`
-	RSAKeySize     int               `mapstructure:"rsa_key_size"`
-	CertificateTTL string            `mapstructure:"certificate_ttl"`
-	KMS            KMSConfig         `mapstructure:"kms,omitempty"`
+	Algorithm      string    `mapstructure:"algorithm"`
+	KeyRotationTTL string    `mapstructure:"key_rotation_ttl"`
+	RSAKeySize     int       `mapstructure:"rsa_key_size"`
+	CertificateTTL string    `mapstructure:"certificate_ttl"`
+	KMS            KMSConfig `mapstructure:"kms,omitempty"`
 }
 
 // KMSConfig represents KMS configuration
@@ -111,4 +111,3 @@ type KMSConfig struct {
 	Provider string            `mapstructure:"provider"` // aws, gcp, vault, none
 	Config   map[string]string `mapstructure:"config"`
 }
-

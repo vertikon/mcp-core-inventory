@@ -1,0 +1,197 @@
+groups:
+  - name: bloco-1-core-inventory-alerts
+    rules:
+      # P0: CRÍTICO - Race Conditions (Zero Tolerância)
+      - alert: Bloco1RaceConditionDetected
+        expr: increase(race_condition_incidents_total[1m]) > 0
+        for: 0m
+        labels:
+          severity: critical
+          bloco: "1"
+          service: "core-inventory"
+          component: "ledger"
+        annotations:
+          summary: "🚨 Race Condition Detectada no BLOCO-1 Core Inventory"
+          description: "O sistema detectou {{ $value }} tentativas de violação de concorrência no último minuto. Isso é CRÍTICO e pode causar overselling."
+          runbook_url: "https://docs.vertikon.com/runbooks/bloco-1/race-condition"
+          dashboard_url: "http://localhost:3000/d/bloco-1-core-inventory-health"
+
+      # P0: CRÍTICO - Overselling Detectado
+      - alert: Bloco1OversellingDetected
+        expr: increase(overselling_incidents_total[1m]) > 0
+        for: 0m
+        labels:
+          severity: critical
+          bloco: "1"
+          service: "core-inventory"
+          component: "ledger"
+        annotations:
+          summary: "🚨 Overselling Detectado no BLOCO-1"
+          description: "O sistema detectou {{ $value }} casos de overselling no último minuto. Vendas sem estoque!"
+          runbook_url: "https://docs.vertikon.com/runbooks/bloco-1/overselling"
+          dashboard_url: "http://localhost:3000/d/bloco-1-core-inventory-health"
+
+      # P0: CRÍTICO - Serviço Indisponível
+      - alert: Bloco1ServiceDown
+        expr: up{job="mcp-core-inventory"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          bloco: "1"
+          service: "core-inventory"
+          component: "availability"
+        annotations:
+          summary: "🚨 Serviço BLOCO-1 Core Inventory Indisponível"
+          description: "O serviço principal do BLOCO-1 está fora do ar há mais de 1 minuto."
+          runbook_url: "https://docs.vertikon.com/runbooks/bloco-1/service-down"
+          dashboard_url: "http://localhost:3000/d/bloco-1-core-inventory-health"
+
+      # P0: CRÍTICO - Alta Taxa de Erros
+      - alert: Bloco1HighErrorRate
+        expr: rate(http_requests_total{job="mcp-core-inventory",status=~"5.."}[5m]) > 0.01
+        for: 2m
+        labels:
+          severity: critical
+          bloco: "1"
+          service: "core-inventory"
+          component: "api"
+        annotations:
+          summary: "🚨 Alta Taxa de Erros no BLOCO-1"
+          description: "Taxa de erros 5xx está acima de 1%: {{ $value | humanizePercentage }}"
+          runbook_url: "https://docs.vertikon.com/runbooks/bloco-1/high-error-rate"
+          dashboard_url: "http://localhost:3000/d/bloco-1-core-inventory-health"
+
+      # P1: WARNING - Alta Latência de Reserva
+      - alert: Bloco1HighReservationLatency
+        expr: histogram_quantile(0.99, sum(rate(http_request_duration_seconds_bucket{handler="ReserveStock"}[5m])) by (le)) > 0.12
+        for: 3m
+        labels:
+          severity: warning
+          bloco: "1"
+          service: "core-inventory"
+          component: "performance"
+        annotations:
+          summary: "⚠️ Alta Latência de Reserva no BLOCO-1"
+          description: "p99 de reserva está acima de 120ms (valor atual: {{ $value }}s)."
+          runbook_url: "https://docs.vertikon.com/runbooks/bloco-1/high-latency"
+          dashboard_url: "http://localhost:3000/d/bloco-1-core-inventory-health"
+
+      # P1: WARNING - Redis Indisponível
+      - alert: Bloco1RedisDown
+        expr: up{job="redis"} == 0
+        for: 30s
+        labels:
+          severity: warning
+          bloco: "1"
+          service: "redis"
+          component: "cache"
+        annotations:
+          summary: "⚠️ Redis Indisponível no BLOCO-1"
+          description: "O serviço Redis está fora do ar há mais de 30 segundos. O sistema pode estar operando em modo degradado."
+          runbook_url: "https://docs.vertikon.com/runbooks/bloco-1/redis-down"
+          dashboard_url: "http://localhost:3000/d/bloco-1-core-inventory-health"
+
+      # P1: WARNING - Alta Latência do Redis
+      - alert: Bloco1RedisHighLatency
+        expr: rate(redis_latency_ms_sum[1m]) / rate(redis_latency_ms_count[1m]) > 50
+        for: 2m
+        labels:
+          severity: warning
+          bloco: "1"
+          service: "redis"
+          component: "cache"
+        annotations:
+          summary: "⚠️ Redis com Alta Latência no BLOCO-1"
+          description: "Latência média do Redis > 50ms (valor atual: {{ $value }}ms)."
+          runbook_url: "https://docs.vertikon.com/runbooks/bloco-1/redis-high-latency"
+          dashboard_url: "http://localhost:3000/d/bloco-1-core-inventory-health"
+
+      # P1: WARNING - Postgres Lock Wait
+      - alert: Bloco1PostgresLockWait
+        expr: postgres_lock_wait_ms > 2000
+        for: 1m
+        labels:
+          severity: warning
+          bloco: "1"
+          service: "postgres"
+          component: "database"
+        annotations:
+          summary: "⚠️ Postgres com Lock Wait Elevado no BLOCO-1"
+          description: "Tempo de espera por lock no Postgres > 2s (valor atual: {{ $value }}ms)."
+          runbook_url: "https://docs.vertikon.com/runbooks/bloco-1/postgres-lock-wait"
+          dashboard_url: "http://localhost:3000/d/bloco-1-core-inventory-health"
+
+      # P1: WARNING - NATS com Atraso
+      - alert: Bloco1NatsDelay
+        expr: nats_jetstream_lag > 1000
+        for: 2m
+        labels:
+          severity: warning
+          bloco: "1"
+          service: "nats"
+          component: "messaging"
+        annotations:
+          summary: "⚠️ NATS com Atraso no BLOCO-1"
+          description: "Lag de mensagens no NATS JetStream > 1000 (valor atual: {{ $value }})."
+          runbook_url: "https://docs.vertikon.com/runbooks/bloco-1/nats-delay"
+          dashboard_url: "http://localhost:3000/d/bloco-1-core-inventory-health"
+
+      # P2: INFO - Alto Consumo de Memória
+      - alert: Bloco1HighMemoryUsage
+        expr: (container_memory_usage_bytes{name="mcp-core-inventory"} / container_spec_memory_limit_bytes{name="mcp-core-inventory"}) > 0.8
+        for: 5m
+        labels:
+          severity: info
+          bloco: "1"
+          service: "core-inventory"
+          component: "resources"
+        annotations:
+          summary: "ℹ️ Alto Consumo de Memória no BLOCO-1"
+          description: "Consumo de memória > 80% (valor atual: {{ $value | humanizePercentage }})."
+          runbook_url: "https://docs.vertikon.com/runbooks/bloco-1/high-memory-usage"
+          dashboard_url: "http://localhost:3000/d/bloco-1-core-inventory-health"
+
+      # P2: INFO - Alto Consumo de CPU
+      - alert: Bloco1HighCpuUsage
+        expr: rate(container_cpu_usage_seconds_total{name="mcp-core-inventory"}[5m]) > 0.8
+        for: 5m
+        labels:
+          severity: info
+          bloco: "1"
+          service: "core-inventory"
+          component: "resources"
+        annotations:
+          summary: "ℹ️ Alto Consumo de CPU no BLOCO-1"
+          description: "Consumo de CPU > 80% (valor atual: {{ $value | humanizePercentage }})."
+          runbook_url: "https://docs.vertikon.com/runbooks/bloco-1/high-cpu-usage"
+          dashboard_url: "http://localhost:3000/d/bloco-1-core-inventory-health"
+
+      # P2: INFO - Muitas Reservas Expiradas
+      - alert: Bloco1ManyExpiredReservations
+        expr: rate(reservations_expired_total[5m]) > 10
+        for: 2m
+        labels:
+          severity: info
+          bloco: "1"
+          service: "core-inventory"
+          component: "business"
+        annotations:
+          summary: "ℹ️ Muitas Reservas Expiradas no BLOCO-1"
+          description: "Taxa de reservas expiradas > 10/min (valor atual: {{ $value }}). Pode indicar problemas no checkout."
+          runbook_url: "https://docs.vertikon.com/runbooks/bloco-1/expired-reservations"
+          dashboard_url: "http://localhost:3000/d/bloco-1-core-inventory-health"
+
+      # P2: INFO - Baixa Taxa de Sucesso de Reserva
+      - alert: Bloco1LowReservationSuccessRate
+        expr: rate(http_requests_total{job="mcp-core-inventory",handler="ReserveStock",status="200"}[5m]) / rate(http_requests_total{job="mcp-core-inventory",handler="ReserveStock"}[5m]) < 0.8
+        for: 3m
+        labels:
+          severity: info
+          bloco: "1"
+          service: "core-inventory"
+          component: "business"
+        annotations:
+          summary: "ℹ️ Baixa Taxa de Sucesso de Reserva no BLOCO-1"
+          description: "Taxa de sucesso de reservas < 80% (valor atual: {{ $value | humanizePercentage }})."
+          runbook_url: "https://docs.vertikon.com/runbooks/bloco-1/low-reservation-success"
+          dashboard_url: "http://localhost:3000/d/bloco-1-core-inventory-health"

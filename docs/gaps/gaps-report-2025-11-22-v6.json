@@ -1,0 +1,263 @@
+{
+  "project_name": "mcp-core-inventory",
+  "project_path": "E:\\vertikon\\.endurance\\internal\\services\\bloco-1-core\\mcp-core-inventory",
+  "timestamp": "2025-11-22 18:44:17",
+  "validator_version": "9.4",
+  "critical": [
+    {
+      "type": "No Code Conflicts",
+      "severity": "critical",
+      "location": "multiplos arquivos",
+      "description": "Conflitos de declaracao detectados",
+      "suggestion": "Remova ou renomeie as declaracoes duplicadas",
+      "fixability": {
+        "safe": false,
+        "rollback_easy": false,
+        "affects_behavior": true,
+        "requires_review": true,
+        "manual_steps": "1. Identifique qual declaracao manter\n2. Remova ou renomeie as duplicatas\n3. Atualize referencias",
+        "non_fixable_reason": "ARCHITECTURAL",
+        "tools": null,
+        "executable_steps": null,
+        "estimated_time": "15-30 minutos",
+        "confidence": 0
+      },
+      "examples": [
+        "analytics: 'init' declarado em metrics.go, performance.go"
+      ],
+      "non_fixable_reason": "ARCHITECTURAL",
+      "code_contexts": [
+        {
+          "file_path": "E:\\vertikon\\.endurance\\internal\\services\\bloco-1-core\\mcp-core-inventory\\internal\\interfaces\\cli\\analytics\\performance.go",
+          "line_number": 23,
+          "code_snippet": "    18 | \t\tcmd.Println(\"  P95 Latency: 0ms\")\n    19 | \t\treturn nil\n    20 | \t},\n    21 | }\n    22 | \n→   23 | func init() {\n    24 | \tAnalyticsCmd.AddCommand(performanceCmd)\n    25 | }\n    26 | \n",
+          "full_function": "func init() {\n\tAnalyticsCmd.AddCommand(performanceCmd)\n}",
+          "symbol_name": "init",
+          "package_name": "analytics",
+          "dependencies": [
+            "github.com/spf13/cobra",
+            "github.com/vertikon/mcp-core-inventory/pkg/logger"
+          ],
+          "related_files": null
+        }
+      ],
+      "impact_analysis": {
+        "severity": "critical",
+        "affected_files": 0,
+        "affected_lines": 0,
+        "blocks_deploy": true,
+        "blocks_tests": false,
+        "breaks_api": false,
+        "estimated_time": "10-30 minutos",
+        "priority": 1,
+        "risk_level": "high",
+        "dependencies": null
+      },
+      "related_gaps": null,
+      "tags": [],
+      "error_breakdown": {},
+      "top_files": []
+    }
+  ],
+  "high": null,
+  "medium": null,
+  "low": [
+    {
+      "type": "Nil Pointer Check",
+      "severity": "low",
+      "location": "multiplos arquivos",
+      "description": "1 potencial(is) nil pointer issue(s)",
+      "suggestion": "Adicione nil checks",
+      "fixability": {
+        "safe": false,
+        "rollback_easy": false,
+        "affects_behavior": false,
+        "requires_review": false,
+        "tools": null,
+        "executable_steps": null,
+        "estimated_time": "",
+        "confidence": 0
+      },
+      "examples": [
+        "multi_level_cache.go:180"
+      ],
+      "code_contexts": null,
+      "impact_analysis": {
+        "severity": "",
+        "affected_files": 0,
+        "affected_lines": 0,
+        "blocks_deploy": false,
+        "blocks_tests": false,
+        "breaks_api": false,
+        "estimated_time": "",
+        "priority": 0,
+        "risk_level": "",
+        "dependencies": null
+      },
+      "related_gaps": null,
+      "tags": [],
+      "error_breakdown": {},
+      "top_files": []
+    }
+  ],
+  "total_gaps": 2,
+  "score": 90,
+  "auto_fixable": 0,
+  "manual": 2,
+  "top_priorities": [
+    {
+      "type": "Nil Pointer Check",
+      "severity": "low",
+      "location": "multiplos arquivos",
+      "description": "1 potencial(is) nil pointer issue(s)",
+      "suggestion": "Adicione nil checks",
+      "fixability": {
+        "safe": false,
+        "rollback_easy": false,
+        "affects_behavior": false,
+        "requires_review": false,
+        "tools": null,
+        "executable_steps": null,
+        "estimated_time": "",
+        "confidence": 0
+      },
+      "examples": [
+        "multi_level_cache.go:180"
+      ],
+      "code_contexts": null,
+      "impact_analysis": {
+        "severity": "",
+        "affected_files": 0,
+        "affected_lines": 0,
+        "blocks_deploy": false,
+        "blocks_tests": false,
+        "breaks_api": false,
+        "estimated_time": "",
+        "priority": 0,
+        "risk_level": "",
+        "dependencies": null
+      },
+      "related_gaps": null,
+      "tags": [],
+      "error_breakdown": {},
+      "top_files": []
+    },
+    {
+      "type": "No Code Conflicts",
+      "severity": "critical",
+      "location": "multiplos arquivos",
+      "description": "Conflitos de declaracao detectados",
+      "suggestion": "Remova ou renomeie as declaracoes duplicadas",
+      "fixability": {
+        "safe": false,
+        "rollback_easy": false,
+        "affects_behavior": true,
+        "requires_review": true,
+        "manual_steps": "1. Identifique qual declaracao manter\n2. Remova ou renomeie as duplicatas\n3. Atualize referencias",
+        "non_fixable_reason": "ARCHITECTURAL",
+        "tools": null,
+        "executable_steps": null,
+        "estimated_time": "15-30 minutos",
+        "confidence": 0
+      },
+      "examples": [
+        "analytics: 'init' declarado em metrics.go, performance.go"
+      ],
+      "non_fixable_reason": "ARCHITECTURAL",
+      "code_contexts": [
+        {
+          "file_path": "E:\\vertikon\\.endurance\\internal\\services\\bloco-1-core\\mcp-core-inventory\\internal\\interfaces\\cli\\analytics\\performance.go",
+          "line_number": 23,
+          "code_snippet": "    18 | \t\tcmd.Println(\"  P95 Latency: 0ms\")\n    19 | \t\treturn nil\n    20 | \t},\n    21 | }\n    22 | \n→   23 | func init() {\n    24 | \tAnalyticsCmd.AddCommand(performanceCmd)\n    25 | }\n    26 | \n",
+          "full_function": "func init() {\n\tAnalyticsCmd.AddCommand(performanceCmd)\n}",
+          "symbol_name": "init",
+          "package_name": "analytics",
+          "dependencies": [
+            "github.com/spf13/cobra",
+            "github.com/vertikon/mcp-core-inventory/pkg/logger"
+          ],
+          "related_files": null
+        }
+      ],
+      "impact_analysis": {
+        "severity": "critical",
+        "affected_files": 0,
+        "affected_lines": 0,
+        "blocks_deploy": true,
+        "blocks_tests": false,
+        "breaks_api": false,
+        "estimated_time": "10-30 minutos",
+        "priority": 1,
+        "risk_level": "high",
+        "dependencies": null
+      },
+      "related_gaps": null,
+      "tags": [],
+      "error_breakdown": {},
+      "top_files": []
+    }
+  ],
+  "quick_wins": null,
+  "blockers": [
+    {
+      "type": "No Code Conflicts",
+      "severity": "critical",
+      "location": "multiplos arquivos",
+      "description": "Conflitos de declaracao detectados",
+      "suggestion": "Remova ou renomeie as declaracoes duplicadas",
+      "fixability": {
+        "safe": false,
+        "rollback_easy": false,
+        "affects_behavior": true,
+        "requires_review": true,
+        "manual_steps": "1. Identifique qual declaracao manter\n2. Remova ou renomeie as duplicatas\n3. Atualize referencias",
+        "non_fixable_reason": "ARCHITECTURAL",
+        "tools": null,
+        "executable_steps": null,
+        "estimated_time": "15-30 minutos",
+        "confidence": 0
+      },
+      "examples": [
+        "analytics: 'init' declarado em metrics.go, performance.go"
+      ],
+      "non_fixable_reason": "ARCHITECTURAL",
+      "code_contexts": [
+        {
+          "file_path": "E:\\vertikon\\.endurance\\internal\\services\\bloco-1-core\\mcp-core-inventory\\internal\\interfaces\\cli\\analytics\\performance.go",
+          "line_number": 23,
+          "code_snippet": "    18 | \t\tcmd.Println(\"  P95 Latency: 0ms\")\n    19 | \t\treturn nil\n    20 | \t},\n    21 | }\n    22 | \n→   23 | func init() {\n    24 | \tAnalyticsCmd.AddCommand(performanceCmd)\n    25 | }\n    26 | \n",
+          "full_function": "func init() {\n\tAnalyticsCmd.AddCommand(performanceCmd)\n}",
+          "symbol_name": "init",
+          "package_name": "analytics",
+          "dependencies": [
+            "github.com/spf13/cobra",
+            "github.com/vertikon/mcp-core-inventory/pkg/logger"
+          ],
+          "related_files": null
+        }
+      ],
+      "impact_analysis": {
+        "severity": "critical",
+        "affected_files": 0,
+        "affected_lines": 0,
+        "blocks_deploy": true,
+        "blocks_tests": false,
+        "breaks_api": false,
+        "estimated_time": "10-30 minutos",
+        "priority": 1,
+        "risk_level": "high",
+        "dependencies": null
+      },
+      "related_gaps": null,
+      "tags": [],
+      "error_breakdown": {},
+      "top_files": []
+    }
+  ],
+  "technical_debt": null,
+  "recommended_tools": null,
+  "next_steps": [
+    "🔴 URGENTE: Resolver 1 bloqueador(es)"
+  ],
+  "estimated_effort": "30m"
+}

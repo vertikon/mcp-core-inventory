@@ -12,19 +12,19 @@ import (
 
 // AdjustStockRequest represents a request to adjust stock
 type AdjustStockRequest struct {
-	SKU      string
-	Location string
-	Quantity int64 // Positive for increase, negative for decrease
-	Reason   string
+	SKU       string
+	Location  string
+	Quantity  int64 // Positive for increase, negative for decrease
+	Reason    string
 	CreatedBy string
 }
 
 // AdjustStockResponse represents the response from adjusting stock
 type AdjustStockResponse struct {
-	LedgerID string
-	SKU      string
-	Location string
-	NewTotal int64
+	LedgerID     string
+	SKU          string
+	Location     string
+	NewTotal     int64
 	NewAvailable int64
 }
 
@@ -35,10 +35,10 @@ type MovementRepository interface {
 
 // AdjustStockUseCase handles stock adjustments
 type AdjustStockUseCase struct {
-	ledgerRepo    LedgerRepository
-	movementRepo  MovementRepository
-	logger        *zap.Logger
-	policy        *ledger.Policy
+	ledgerRepo   LedgerRepository
+	movementRepo MovementRepository
+	logger       *zap.Logger
+	policy       *ledger.Policy
 }
 
 // NewAdjustStockUseCase creates a new AdjustStock use case
@@ -110,4 +110,3 @@ func generateMovementID() string {
 	rand.Read(bytes)
 	return hex.EncodeToString(bytes)
 }
-

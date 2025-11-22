@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"io/fs"
+	"os"
 	"path/filepath"
 	"strings"
 	"sync"
@@ -12,19 +13,6 @@ import (
 	"go.uber.org/zap"
 	"gopkg.in/yaml.v3"
 )
-
-// TemplateInfo holds information about a registered template
-type TemplateInfo struct {
-	Name         string            `json:"name"`
-	Stack        string            `json:"stack"`
-	Version      string            `json:"version"`
-	Summary      string            `json:"summary"`
-	Placeholders []string          `json:"placeholders"`
-	Files        []string          `json:"files"`
-	Path         string            `json:"path"`
-	Metadata     map[string]string `json:"metadata"`
-	LastModified string            `json:"last_modified"`
-}
 
 // TemplateRegistry manages registration and discovery of templates
 type TemplateRegistry struct {
@@ -39,7 +27,7 @@ func NewTemplateRegistry(basePath string) *TemplateRegistry {
 	return &TemplateRegistry{
 		templates: make(map[string]*TemplateInfo),
 		basePath:  basePath,
-		logger:    logger.GetLogger(),
+		logger:    logger.Get(),
 	}
 }
 
@@ -66,15 +54,15 @@ func (tr *TemplateRegistry) LoadTemplates(ctx context.Context) error {
 
 			templateInfo, err := tr.loadTemplateFromManifest(path)
 			if err != nil {
-				tr.logger.Error("Failed to load template", 
-					zap.String("path", path), 
+				tr.logger.Error("Failed to load template",
+					zap.String("path", path),
 					zap.Error(err))
 				return nil // Continue loading other templates
 			}
 
 			templateInfo.Path = relPath
 			tr.templates[templateInfo.Name] = templateInfo
-			tr.logger.Info("Loaded template", 
+			tr.logger.Info("Loaded template",
 				zap.String("name", templateInfo.Name),
 				zap.String("stack", templateInfo.Stack))
 		}
@@ -92,7 +80,7 @@ func (tr *TemplateRegistry) LoadTemplates(ctx context.Context) error {
 
 // loadTemplateFromManifest loads template information from manifest.yaml
 func (tr *TemplateRegistry) loadTemplateFromManifest(manifestPath string) (*TemplateInfo, error) {
-	data, err := fs.ReadFile(nil, manifestPath)
+	data, err := os.ReadFile(manifestPath)
 	if err != nil {
 		return nil, fmt.Errorf("failed to read manifest: %w", err)
 	}
@@ -247,7 +235,7 @@ func (tr *TemplateRegistry) RegisterTemplate(templateInfo *TemplateInfo) error {
 	}
 
 	tr.templates[templateInfo.Name] = templateInfo
-	tr.logger.Info("Template registered", 
+	tr.logger.Info("Template registered",
 		zap.String("name", templateInfo.Name),
 		zap.String("stack", templateInfo.Stack))
 

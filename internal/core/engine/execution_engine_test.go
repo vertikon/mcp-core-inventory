@@ -163,7 +163,7 @@ func TestExecutionEngine_Submit(t *testing.T) {
 				ctx := context.Background()
 				_ = ee.Start(ctx)
 			},
-			task: &mockTask{id: "test-task"},
+			task:    &mockTask{id: "test-task"},
 			wantErr: false,
 		},
 		{
@@ -320,7 +320,7 @@ func TestExecutionEngine_ConcurrentOperations(t *testing.T) {
 	for i := 0; i < 10; i++ {
 		go func(id int) {
 			task := &mockTask{
-				id:      "task-" + string(rune(id)),
+				id: "task-" + string(rune(id)),
 				execute: func(ctx context.Context) error {
 					time.Sleep(10 * time.Millisecond)
 					return nil
@@ -347,8 +347,22 @@ func TestExecutionEngine_ConcurrentOperations(t *testing.T) {
 	}
 }
 
+func requireEventually(t *testing.T, timeout time.Duration, condition func() bool, msg string) {
+	t.Helper()
+	deadline := time.Now().Add(timeout)
+	for time.Now().Before(deadline) {
+		if condition() {
+			return
+		}
+		time.Sleep(10 * time.Millisecond)
+	}
+	t.Fatal(msg)
+}
+
 func TestExecutionEngine_ErrorHandling(t *testing.T) {
 	ee := NewExecutionEngine(2, 10, time.Second)
+	ee.workerPool.backoff = 20 * time.Millisecond
+	ee.workerPool.retryCount = 1
 	ctx := context.Background()
 
 	if err := ee.Start(ctx); err != nil {
@@ -357,9 +371,11 @@ func TestExecutionEngine_ErrorHandling(t *testing.T) {
 	defer ee.Stop()
 
 	// Submit task that fails
+	done := make(chan struct{}, 1)
 	failingTask := &mockTask{
 		id: "failing-task",
 		execute: func(ctx context.Context) error {
+			done <- struct{}{}
 			return errors.New("task failed")
 		},
 	}
@@ -369,11 +385,17 @@ func TestExecutionEngine_ErrorHandling(t *testing.T) {
 	}
 
 	// Wait for task to be processed
-	time.Sleep(200 * time.Millisecond)
-
-	stats := ee.Stats()
-	if stats.PoolStats.Failed == 0 {
-		t.Error("Expected failed count to be incremented")
+	t.Log("waiting for failing task to execute")
+	select {
+	case <-done:
+		t.Log("failing task executed")
+	case <-time.After(3 * time.Second):
+		t.Fatal("Failed task did not execute in time")
 	}
-}
 
+	requireEventually(t, time.Second, func() bool {
+		ee.workerPool.mu.RLock()
+		defer ee.workerPool.mu.RUnlock()
+		return ee.workerPool.failed > 0
+	}, "Expected failed count to be incremented")
+}

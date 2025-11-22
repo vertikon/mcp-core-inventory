@@ -61,13 +61,37 @@ func TestStructureValidator_Validate(t *testing.T) {
 	defer os.RemoveAll(tmpDir)
 
 	// Create some basic structure
-	_ = os.MkdirAll(filepath.Join(tmpDir, "cmd"), 0755)
-	_ = os.MkdirAll(filepath.Join(tmpDir, "internal"), 0755)
+	files := []string{
+		"go.mod",
+		"README.md",
+		".gitignore",
+		"Makefile",
+	}
+	for _, file := range files {
+		if err := os.WriteFile(filepath.Join(tmpDir, file), []byte("test"), 0644); err != nil {
+			t.Fatalf("Failed to create file %s: %v", file, err)
+		}
+	}
+	dirs := []string{
+		"cmd",
+		filepath.Join("internal", "domain"),
+		filepath.Join("internal", "application"),
+		filepath.Join("internal", "infrastructure"),
+		"configs",
+		"pkg",
+		"tests",
+	}
+	for _, dir := range dirs {
+		if err := os.MkdirAll(filepath.Join(tmpDir, dir), 0755); err != nil {
+			t.Fatalf("Failed to create dir %s: %v", dir, err)
+		}
+	}
 
 	tests := []struct {
-		name    string
-		request StructureRequest
-		wantErr bool
+		name      string
+		request   StructureRequest
+		wantErr   bool
+		wantValid bool
 	}{
 		{
 			name: "valid structure",
@@ -75,7 +99,8 @@ func TestStructureValidator_Validate(t *testing.T) {
 				Path:       tmpDir,
 				StrictMode: false,
 			},
-			wantErr: false,
+			wantErr:   false,
+			wantValid: true,
 		},
 		{
 			name: "nonexistent path",
@@ -83,7 +108,8 @@ func TestStructureValidator_Validate(t *testing.T) {
 				Path:       "/nonexistent/path",
 				StrictMode: false,
 			},
-			wantErr: true,
+			wantErr:   false,
+			wantValid: false,
 		},
 	}
 
@@ -93,8 +119,11 @@ func TestStructureValidator_Validate(t *testing.T) {
 			if (err != nil) != tt.wantErr {
 				t.Errorf("Validate() error = %v, wantErr %v", err, tt.wantErr)
 			}
-			if result == nil && !tt.wantErr {
-				t.Error("Validate() should return result")
+			if result == nil {
+				t.Fatal("Validate() returned nil result")
+			}
+			if result.Valid != tt.wantValid {
+				t.Errorf("Validate() valid = %v, want %v (errors=%v, warnings=%v)", result.Valid, tt.wantValid, result.Errors, result.Warnings)
 			}
 		})
 	}

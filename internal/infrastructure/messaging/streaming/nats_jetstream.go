@@ -4,6 +4,7 @@ package streaming
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"time"
 
@@ -175,7 +176,7 @@ func (c *natsJetStreamClient) CreateStream(ctx context.Context, config *StreamCo
 
 	_, err := c.js.AddStream(streamConfig)
 	if err != nil {
-		if err == nats.ErrStreamNameExist {
+		if errors.Is(err, nats.ErrStreamNameAlreadyInUse) {
 			logger.Debug("Stream already exists", zap.String("stream", config.Name))
 			return nil
 		}

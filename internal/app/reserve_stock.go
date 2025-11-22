@@ -22,7 +22,7 @@ type ReserveStockRequest struct {
 
 // ReserveStockResponse represents the response from reserving stock
 type ReserveStockResponse struct {
-	ReservationID   string
+	ReservationID  string
 	IdempotencyKey string
 	SKU            string
 	Location       string
@@ -52,11 +52,11 @@ type EventPublisher interface {
 
 // ReserveStockUseCase handles stock reservation
 type ReserveStockUseCase struct {
-	ledgerRepo   LedgerRepository
-	lockService  LockService
-	eventPub     EventPublisher
-	logger       *zap.Logger
-	policy       *ledger.Policy
+	ledgerRepo  LedgerRepository
+	lockService LockService
+	eventPub    EventPublisher
+	logger      *zap.Logger
+	policy      *ledger.Policy
 }
 
 // NewReserveStockUseCase creates a new ReserveStock use case
@@ -92,12 +92,12 @@ func (uc *ReserveStockUseCase) Execute(ctx context.Context, req ReserveStockRequ
 	if err == nil && existingReservation != nil {
 		// Return existing reservation
 		return &ReserveStockResponse{
-			ReservationID:   existingReservation.ID(),
-			IdempotencyKey:  existingReservation.IdempotencyKey(),
-			SKU:             existingReservation.SKU(),
-			Location:        existingReservation.Location(),
-			Quantity:        existingReservation.Quantity(),
-			ExpiresAt:       existingReservation.ExpiresAt(),
+			ReservationID:  existingReservation.ID(),
+			IdempotencyKey: existingReservation.IdempotencyKey(),
+			SKU:            existingReservation.SKU(),
+			Location:       existingReservation.Location(),
+			Quantity:       existingReservation.Quantity(),
+			ExpiresAt:      existingReservation.ExpiresAt(),
 		}, nil
 	}
 
@@ -164,12 +164,12 @@ func (uc *ReserveStockUseCase) Execute(ctx context.Context, req ReserveStockRequ
 	}
 
 	return &ReserveStockResponse{
-		ReservationID:   reservationID,
-		IdempotencyKey:  idempotencyKey,
-		SKU:             req.SKU,
-		Location:        req.Location,
-		Quantity:        req.Quantity,
-		ExpiresAt:       reservation.ExpiresAt(),
+		ReservationID:  reservationID,
+		IdempotencyKey: idempotencyKey,
+		SKU:            req.SKU,
+		Location:       req.Location,
+		Quantity:       req.Quantity,
+		ExpiresAt:      reservation.ExpiresAt(),
 	}, nil
 }
 
@@ -186,4 +186,3 @@ func generateReservationID() string {
 	rand.Read(bytes)
 	return hex.EncodeToString(bytes)
 }
-

@@ -1,0 +1,857 @@
+{
+  "project_name": "mcp-core-inventory",
+  "project_path": "E:\\vertikon\\.endurance\\internal\\services\\bloco-1-core\\mcp-core-inventory",
+  "timestamp": "2025-11-22 10:48:52",
+  "validator_version": "9.4",
+  "critical": [
+    {
+      "type": "Nil Pointer Check",
+      "severity": "critical",
+      "location": "multiplos arquivos",
+      "description": "1 potencial(is) nil pointer issue(s)",
+      "suggestion": "Adicione nil checks",
+      "fixability": {
+        "safe": false,
+        "rollback_easy": false,
+        "affects_behavior": false,
+        "requires_review": false,
+        "tools": null,
+        "executable_steps": null,
+        "estimated_time": "",
+        "confidence": 0
+      },
+      "examples": [
+        "multi_level_cache.go:180"
+      ],
+      "code_contexts": null,
+      "impact_analysis": {
+        "severity": "",
+        "affected_files": 0,
+        "affected_lines": 0,
+        "blocks_deploy": false,
+        "blocks_tests": false,
+        "breaks_api": false,
+        "estimated_time": "",
+        "priority": 0,
+        "risk_level": "",
+        "dependencies": null
+      },
+      "related_gaps": null,
+      "tags": [],
+      "error_breakdown": {},
+      "top_files": []
+    },
+    {
+      "type": "Codigo compila",
+      "severity": "critical",
+      "location": "multiplos arquivos",
+      "description": "Nao compila: # github.com/vertikon/mcp-core-inventory/internal/interfaces/cli\ninternal\\interfaces\\cli\\registration.go:8:2: \"go.uber.org/zap\" imported and not used\ninternal\\interfaces\\cli\\root.go:8:2: \"github.com/v...",
+      "suggestion": "Corrija os erros de compilacao listados",
+      "fixability": {
+        "safe": false,
+        "rollback_easy": false,
+        "affects_behavior": false,
+        "requires_review": false,
+        "non_fixable_reason": "BUSINESS_LOGIC",
+        "tools": null,
+        "executable_steps": null,
+        "estimated_time": "Variavel - depende dos erros",
+        "confidence": 0
+      },
+      "examples": [
+        "📄 Log completo: E:\\vertikon\\.endurance\\internal\\services\\bloco-1-core\\mcp-core-inventory\\docs\\validation\\raw\\2025-11-22-10-41-23-compilation.log",
+        "",
+        "# github.com/vertikon/mcp-core-inventory/internal/interfaces/cli",
+        "internal\\interfaces\\cli\\registration.go:8:2: \"go.uber.org/zap\" imported and not used",
+        "internal\\interfaces\\cli\\root.go:8:2: \"github.com/vertikon/mcp-core-inventory/internal/interfaces/cli/analytics\" imported and not used",
+        "internal\\interfaces\\cli\\root.go:9:2: \"github.com/vertikon/mcp-core-inventory/internal/interfaces/cli/ci\" imported and not used",
+        ""
+      ],
+      "non_fixable_reason": "BUSINESS_LOGIC",
+      "code_contexts": [
+        {
+          "file_path": "E:\\vertikon\\.endurance\\internal\\services\\bloco-1-core\\mcp-core-inventory\\internal\\interfaces\\cli\\registration.go",
+          "line_number": 8,
+          "code_snippet": "     3 | import (\r\n     4 | \t\"github.com/spf13/cobra\"\r\n     5 | \t\"github.com/vertikon/mcp-core-inventory/internal/interfaces/cli/analytics\"\r\n     6 | \t\"github.com/vertikon/mcp-core-inventory/internal/interfaces/cli/ci\"\r\n     7 | \t\"github.com/vertikon/mcp-core-inventory/pkg/logger\"\r\n→    8 | \t\"go.uber.org/zap\"\r\n     9 | )\r\n    10 | \r\n    11 | // RegisterCommands registers all CLI commands to the root command\r\n    12 | // This centralizes command registration to avoid init() conflicts\r\n    13 | func RegisterCommands(rootCmd *cobra.Command) {\r\n",
+          "full_function": "\t\"go.uber.org/zap\"\r\n)\r\n\r\n// RegisterCommands registers all CLI commands to the root command\r\n// This centralizes command registration to avoid init() conflicts\r\nfunc RegisterCommands(rootCmd *cobra.Command) {\r\n\tlogger.Info(\"Registering CLI commands\")\r\n\t\r\n\t// Register main command groups\r\n\trootCmd.AddCommand(analytics.AnalyticsCmd)\r\n\trootCmd.AddCommand(ci.CICmd)\r\n\t\r\n\t// Register individual commands\r\n\trootCmd.AddCommand(generateCmd)\r\n\trootCmd.AddCommand(monitorCmd)\r\n\trootCmd.AddCommand(stateCmd)\r\n\trootCmd.AddCommand(templateCmd)\r\n\trootCmd.AddCommand(versionCmd)\r\n\t\r\n\t// Configure command flags\r\n\tconfigureFlags()\r\n\t\r\n\tlogger.Info(\"All CLI commands registered successfully\")\r\n}\r",
+          "symbol_name": "",
+          "package_name": "cli",
+          "dependencies": [
+            "github.com/spf13/cobra",
+            "github.com/vertikon/mcp-core-inventory/internal/interfaces/cli/analytics",
+            "github.com/vertikon/mcp-core-inventory/internal/interfaces/cli/ci",
+            "github.com/vertikon/mcp-core-inventory/pkg/logger",
+            "go.uber.org/zap"
+          ],
+          "related_files": null
+        },
+        {
+          "file_path": "E:\\vertikon\\.endurance\\internal\\services\\bloco-1-core\\mcp-core-inventory\\internal\\interfaces\\cli\\root.go",
+          "line_number": 8,
+          "code_snippet": "     3 | import (\n     4 | \t\"fmt\"\n     5 | \t\"os\"\n     6 | \n     7 | \t\"github.com/spf13/cobra\"\n→    8 | \t\"github.com/vertikon/mcp-core-inventory/internal/interfaces/cli/analytics\"\n     9 | \t\"github.com/vertikon/mcp-core-inventory/internal/interfaces/cli/ci\"\n    10 | \t\"github.com/vertikon/mcp-core-inventory/pkg/logger\"\n    11 | \t\"go.uber.org/zap\"\n    12 | )\n    13 | \n",
+          "full_function": "\t\"github.com/vertikon/mcp-core-inventory/internal/interfaces/cli/analytics\"\n\t\"github.com/vertikon/mcp-core-inventory/internal/interfaces/cli/ci\"\n\t\"github.com/vertikon/mcp-core-inventory/pkg/logger\"\n\t\"go.uber.org/zap\"\n)\n\nvar (\n\t// Version is set at build time\n\tVersion = \"dev\"\n\t// BuildDate is set at build time\n\tBuildDate = \"unknown\"\n)\n\n// rootCmd represents the base command when called without any subcommands\nvar rootCmd = \u0026cobra.Command{\n\tUse:   \"hulk\",\n\tShort: \"mcp-core-inventory CLI - Generate and manage MCP projects\",\n\tLong: `mcp-core-inventory is a powerful CLI tool for generating and managing\nModel Context Protocol (MCP) projects.`,\n\tVersion: fmt.Sprintf(\"%s (built %s)\", Version, BuildDate),\n}",
+          "symbol_name": "",
+          "package_name": "cli",
+          "dependencies": [
+            "fmt",
+            "os",
+            "github.com/spf13/cobra",
+            "github.com/vertikon/mcp-core-inventory/internal/interfaces/cli/analytics",
+            "github.com/vertikon/mcp-core-inventory/internal/interfaces/cli/ci",
+            "github.com/vertikon/mcp-core-inventory/pkg/logger",
+            "go.uber.org/zap"
+          ],
+          "related_files": null
+        },
+        {
+          "file_path": "E:\\vertikon\\.endurance\\internal\\services\\bloco-1-core\\mcp-core-inventory\\internal\\interfaces\\cli\\root.go",
+          "line_number": 9,
+          "code_snippet": "     4 | \t\"fmt\"\n     5 | \t\"os\"\n     6 | \n     7 | \t\"github.com/spf13/cobra\"\n     8 | \t\"github.com/vertikon/mcp-core-inventory/internal/interfaces/cli/analytics\"\n→    9 | \t\"github.com/vertikon/mcp-core-inventory/internal/interfaces/cli/ci\"\n    10 | \t\"github.com/vertikon/mcp-core-inventory/pkg/logger\"\n    11 | \t\"go.uber.org/zap\"\n    12 | )\n    13 | \n    14 | var (\n",
+          "full_function": "\t\"github.com/vertikon/mcp-core-inventory/internal/interfaces/cli/ci\"\n\t\"github.com/vertikon/mcp-core-inventory/pkg/logger\"\n\t\"go.uber.org/zap\"\n)\n\nvar (\n\t// Version is set at build time\n\tVersion = \"dev\"\n\t// BuildDate is set at build time\n\tBuildDate = \"unknown\"\n)\n\n// rootCmd represents the base command when called without any subcommands\nvar rootCmd = \u0026cobra.Command{\n\tUse:   \"hulk\",\n\tShort: \"mcp-core-inventory CLI - Generate and manage MCP projects\",\n\tLong: `mcp-core-inventory is a powerful CLI tool for generating and managing\nModel Context Protocol (MCP) projects.`,\n\tVersion: fmt.Sprintf(\"%s (built %s)\", Version, BuildDate),\n}",
+          "symbol_name": "",
+          "package_name": "cli",
+          "dependencies": [
+            "fmt",
+            "os",
+            "github.com/spf13/cobra",
+            "github.com/vertikon/mcp-core-inventory/internal/interfaces/cli/analytics",
+            "github.com/vertikon/mcp-core-inventory/internal/interfaces/cli/ci",
+            "github.com/vertikon/mcp-core-inventory/pkg/logger",
+            "go.uber.org/zap"
+          ],
+          "related_files": null
+        }
+      ],
+      "impact_analysis": {
+        "severity": "critical",
+        "affected_files": 2,
+        "affected_lines": 3,
+        "blocks_deploy": true,
+        "blocks_tests": false,
+        "breaks_api": false,
+        "estimated_time": "5-15 minutos",
+        "priority": 1,
+        "risk_level": "high",
+        "dependencies": null
+      },
+      "related_gaps": null,
+      "tags": [],
+      "error_breakdown": {},
+      "top_files": []
+    },
+    {
+      "type": "No Code Conflicts",
+      "severity": "critical",
+      "location": "multiplos arquivos",
+      "description": "Conflitos de declaracao detectados",
+      "suggestion": "Remova ou renomeie as declaracoes duplicadas",
+      "fixability": {
+        "safe": false,
+        "rollback_easy": false,
+        "affects_behavior": true,
+        "requires_review": true,
+        "manual_steps": "1. Identifique qual declaracao manter\n2. Remova ou renomeie as duplicatas\n3. Atualize referencias",
+        "non_fixable_reason": "ARCHITECTURAL",
+        "tools": null,
+        "executable_steps": null,
+        "estimated_time": "15-30 minutos",
+        "confidence": 0
+      },
+      "examples": [
+        "cli: 'init' declarado em ai.go, template.go, version.go",
+        "analytics: 'init' declarado em metrics.go, performance.go"
+      ],
+      "non_fixable_reason": "ARCHITECTURAL",
+      "code_contexts": [
+        {
+          "file_path": "E:\\vertikon\\.endurance\\internal\\services\\bloco-1-core\\mcp-core-inventory\\internal\\interfaces\\cli\\template.go",
+          "line_number": 44,
+          "code_snippet": "    39 | \t\tcmd.Println(\"Template created\")\n    40 | \t\treturn nil\n    41 | \t},\n    42 | }\n    43 | \n→   44 | func init() {\n    45 | \trootCmd.AddCommand(templateCmd)\n    46 | \ttemplateCmd.AddCommand(templateListCmd)\n    47 | \ttemplateCmd.AddCommand(templateCreateCmd)\n    48 | \ttemplateCreateCmd.Flags().StringP(\"name\", \"n\", \"\", \"Template name\")\n    49 | \ttemplateCreateCmd.MarkFlagRequired(\"name\")\n",
+          "full_function": "func init() {\n\trootCmd.AddCommand(templateCmd)\n\ttemplateCmd.AddCommand(templateListCmd)\n\ttemplateCmd.AddCommand(templateCreateCmd)\n\ttemplateCreateCmd.Flags().StringP(\"name\", \"n\", \"\", \"Template name\")\n\ttemplateCreateCmd.MarkFlagRequired(\"name\")\n}",
+          "symbol_name": "init",
+          "package_name": "cli",
+          "dependencies": [
+            "github.com/spf13/cobra",
+            "github.com/vertikon/mcp-core-inventory/internal/services",
+            "github.com/vertikon/mcp-core-inventory/pkg/logger",
+            "go.uber.org/zap"
+          ],
+          "related_files": null
+        },
+        {
+          "file_path": "E:\\vertikon\\.endurance\\internal\\services\\bloco-1-core\\mcp-core-inventory\\internal\\interfaces\\cli\\version.go",
+          "line_number": 21,
+          "code_snippet": "    16 | \t\tfmt.Printf(\"Version: %s\\n\", Version)\n    17 | \t\tfmt.Printf(\"Build Date: %s\\n\", BuildDate)\n    18 | \t},\n    19 | }\n    20 | \n→   21 | func init() {\n    22 | \trootCmd.AddCommand(versionCmd)\n    23 | }\n    24 | \n",
+          "full_function": "func init() {\n\trootCmd.AddCommand(versionCmd)\n}",
+          "symbol_name": "init",
+          "package_name": "cli",
+          "dependencies": [
+            "fmt",
+            "github.com/spf13/cobra"
+          ],
+          "related_files": null
+        },
+        {
+          "file_path": "E:\\vertikon\\.endurance\\internal\\services\\bloco-1-core\\mcp-core-inventory\\internal\\interfaces\\cli\\analytics\\performance.go",
+          "line_number": 23,
+          "code_snippet": "    18 | \t\tcmd.Println(\"  P95 Latency: 0ms\")\n    19 | \t\treturn nil\n    20 | \t},\n    21 | }\n    22 | \n→   23 | func init() {\n    24 | \tAnalyticsCmd.AddCommand(performanceCmd)\n    25 | }\n    26 | \n",
+          "full_function": "func init() {\n\tAnalyticsCmd.AddCommand(performanceCmd)\n}",
+          "symbol_name": "init",
+          "package_name": "analytics",
+          "dependencies": [
+            "github.com/spf13/cobra",
+            "github.com/vertikon/mcp-core-inventory/pkg/logger"
+          ],
+          "related_files": null
+        }
+      ],
+      "impact_analysis": {
+        "severity": "critical",
+        "affected_files": 0,
+        "affected_lines": 0,
+        "blocks_deploy": true,
+        "blocks_tests": false,
+        "breaks_api": false,
+        "estimated_time": "10-30 minutos",
+        "priority": 1,
+        "risk_level": "high",
+        "dependencies": null
+      },
+      "related_gaps": null,
+      "tags": [],
+      "error_breakdown": {},
+      "top_files": []
+    }
+  ],
+  "high": null,
+  "medium": [
+    {
+      "type": "Linter limpo",
+      "severity": "medium",
+      "location": "multiplos arquivos",
+      "description": "✗ FAIL: 4 issues críticos, 0 warnings",
+      "suggestion": "Corrija os issues FAIL primeiro, depois warnings",
+      "fixability": {
+        "safe": false,
+        "rollback_easy": false,
+        "affects_behavior": true,
+        "requires_review": true,
+        "non_fixable_reason": "BUSINESS_LOGIC",
+        "tools": [
+          {
+            "tool_name": "golangci-lint",
+            "install_command": "go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest",
+            "diagnose_command": "golangci-lint run",
+            "fix_command": "# NAO use --fix automaticamente, revise cada issue",
+            "config_required": true,
+            "config_template": ".golangci.yml com linters selecionados",
+            "documentation": "https://golangci-lint.run/",
+            "alternative_tools": null
+          },
+          {
+            "tool_name": "staticcheck",
+            "install_command": "go install honnef.co/go/tools/cmd/staticcheck@latest",
+            "diagnose_command": "staticcheck ./...",
+            "fix_command": "# Manual - staticcheck nao tem auto-fix",
+            "config_required": false,
+            "config_template": "",
+            "documentation": "https://staticcheck.io/",
+            "alternative_tools": null
+          },
+          {
+            "tool_name": "gosec",
+            "install_command": "go install github.com/securego/gosec/v2/cmd/gosec@latest",
+            "diagnose_command": "gosec ./...",
+            "fix_command": "# Manual - corrija issues de seguranca",
+            "config_required": false,
+            "config_template": "",
+            "documentation": "https://github.com/securego/gosec",
+            "alternative_tools": null
+          }
+        ],
+        "executable_steps": null,
+        "estimated_time": "8m",
+        "confidence": 0
+      },
+      "examples": [
+        "📦 Módulos analisados: 1",
+        "📄 Linter Report v5: JSON + SARIF gerados",
+        "",
+        "📊 Resumo por ferramenta (todos os módulos):",
+        "  • golangci-lint: 𐄂 0 FAIL / ⚠ 0 WARN / ℹ 0 INFO",
+        "  • govet: 𐄂 4 FAIL / ⚠ 0 WARN / ℹ 0 INFO",
+        "  • staticcheck: 𐄂 0 FAIL / ⚠ 0 WARN / ℹ 0 INFO",
+        "",
+        "🔝 Top issues prioritários (FAIL):",
+        "  1. [govet] vet.exe: internal/ai/knowledge/indexer_test.go:68 - cannot use 1000 (constant of type int) as Embedder value in argument t... (govet)",
+        "  2. [govet] vet.exe: internal/interfaces/cli/registration.go:8 - \"go.uber.org/zap\" imported and not used (govet)",
+        "  3. [govet] pkg/httpserver/server_test.go:217 - comparison of function healthHandler == nil is always false (govet)",
+        "  4. [govet] pkg/httpserver/server_test.go:225 - comparison of function readyHandler == nil is always false (govet)"
+      ],
+      "non_fixable_reason": "BUSINESS_LOGIC",
+      "code_contexts": null,
+      "impact_analysis": {
+        "severity": "medium",
+        "affected_files": 4,
+        "affected_lines": 4,
+        "blocks_deploy": false,
+        "blocks_tests": false,
+        "breaks_api": false,
+        "estimated_time": "8m",
+        "priority": 3,
+        "risk_level": "medium",
+        "dependencies": null
+      },
+      "related_gaps": null,
+      "tags": [
+        "performance",
+        "memory-optimization"
+      ],
+      "error_breakdown": {
+        "govet": 4
+      },
+      "top_files": [
+        "pkg/httpserver/server_test.go (2)",
+        "vet.exe: internal/interfaces/cli/registration.go (1)",
+        "vet.exe: internal/ai/knowledge/indexer_test.go (1)"
+      ]
+    }
+  ],
+  "low": null,
+  "total_gaps": 4,
+  "score": 80,
+  "auto_fixable": 0,
+  "manual": 4,
+  "top_priorities": [
+    {
+      "type": "Nil Pointer Check",
+      "severity": "critical",
+      "location": "multiplos arquivos",
+      "description": "1 potencial(is) nil pointer issue(s)",
+      "suggestion": "Adicione nil checks",
+      "fixability": {
+        "safe": false,
+        "rollback_easy": false,
+        "affects_behavior": false,
+        "requires_review": false,
+        "tools": null,
+        "executable_steps": null,
+        "estimated_time": "",
+        "confidence": 0
+      },
+      "examples": [
+        "multi_level_cache.go:180"
+      ],
+      "code_contexts": null,
+      "impact_analysis": {
+        "severity": "",
+        "affected_files": 0,
+        "affected_lines": 0,
+        "blocks_deploy": false,
+        "blocks_tests": false,
+        "breaks_api": false,
+        "estimated_time": "",
+        "priority": 0,
+        "risk_level": "",
+        "dependencies": null
+      },
+      "related_gaps": null,
+      "tags": [],
+      "error_breakdown": {},
+      "top_files": []
+    },
+    {
+      "type": "Codigo compila",
+      "severity": "critical",
+      "location": "multiplos arquivos",
+      "description": "Nao compila: # github.com/vertikon/mcp-core-inventory/internal/interfaces/cli\ninternal\\interfaces\\cli\\registration.go:8:2: \"go.uber.org/zap\" imported and not used\ninternal\\interfaces\\cli\\root.go:8:2: \"github.com/v...",
+      "suggestion": "Corrija os erros de compilacao listados",
+      "fixability": {
+        "safe": false,
+        "rollback_easy": false,
+        "affects_behavior": false,
+        "requires_review": false,
+        "non_fixable_reason": "BUSINESS_LOGIC",
+        "tools": null,
+        "executable_steps": null,
+        "estimated_time": "Variavel - depende dos erros",
+        "confidence": 0
+      },
+      "examples": [
+        "📄 Log completo: E:\\vertikon\\.endurance\\internal\\services\\bloco-1-core\\mcp-core-inventory\\docs\\validation\\raw\\2025-11-22-10-41-23-compilation.log",
+        "",
+        "# github.com/vertikon/mcp-core-inventory/internal/interfaces/cli",
+        "internal\\interfaces\\cli\\registration.go:8:2: \"go.uber.org/zap\" imported and not used",
+        "internal\\interfaces\\cli\\root.go:8:2: \"github.com/vertikon/mcp-core-inventory/internal/interfaces/cli/analytics\" imported and not used",
+        "internal\\interfaces\\cli\\root.go:9:2: \"github.com/vertikon/mcp-core-inventory/internal/interfaces/cli/ci\" imported and not used",
+        ""
+      ],
+      "non_fixable_reason": "BUSINESS_LOGIC",
+      "code_contexts": [
+        {
+          "file_path": "E:\\vertikon\\.endurance\\internal\\services\\bloco-1-core\\mcp-core-inventory\\internal\\interfaces\\cli\\registration.go",
+          "line_number": 8,
+          "code_snippet": "     3 | import (\r\n     4 | \t\"github.com/spf13/cobra\"\r\n     5 | \t\"github.com/vertikon/mcp-core-inventory/internal/interfaces/cli/analytics\"\r\n     6 | \t\"github.com/vertikon/mcp-core-inventory/internal/interfaces/cli/ci\"\r\n     7 | \t\"github.com/vertikon/mcp-core-inventory/pkg/logger\"\r\n→    8 | \t\"go.uber.org/zap\"\r\n     9 | )\r\n    10 | \r\n    11 | // RegisterCommands registers all CLI commands to the root command\r\n    12 | // This centralizes command registration to avoid init() conflicts\r\n    13 | func RegisterCommands(rootCmd *cobra.Command) {\r\n",
+          "full_function": "\t\"go.uber.org/zap\"\r\n)\r\n\r\n// RegisterCommands registers all CLI commands to the root command\r\n// This centralizes command registration to avoid init() conflicts\r\nfunc RegisterCommands(rootCmd *cobra.Command) {\r\n\tlogger.Info(\"Registering CLI commands\")\r\n\t\r\n\t// Register main command groups\r\n\trootCmd.AddCommand(analytics.AnalyticsCmd)\r\n\trootCmd.AddCommand(ci.CICmd)\r\n\t\r\n\t// Register individual commands\r\n\trootCmd.AddCommand(generateCmd)\r\n\trootCmd.AddCommand(monitorCmd)\r\n\trootCmd.AddCommand(stateCmd)\r\n\trootCmd.AddCommand(templateCmd)\r\n\trootCmd.AddCommand(versionCmd)\r\n\t\r\n\t// Configure command flags\r\n\tconfigureFlags()\r\n\t\r\n\tlogger.Info(\"All CLI commands registered successfully\")\r\n}\r",
+          "symbol_name": "",
+          "package_name": "cli",
+          "dependencies": [
+            "github.com/spf13/cobra",
+            "github.com/vertikon/mcp-core-inventory/internal/interfaces/cli/analytics",
+            "github.com/vertikon/mcp-core-inventory/internal/interfaces/cli/ci",
+            "github.com/vertikon/mcp-core-inventory/pkg/logger",
+            "go.uber.org/zap"
+          ],
+          "related_files": null
+        },
+        {
+          "file_path": "E:\\vertikon\\.endurance\\internal\\services\\bloco-1-core\\mcp-core-inventory\\internal\\interfaces\\cli\\root.go",
+          "line_number": 8,
+          "code_snippet": "     3 | import (\n     4 | \t\"fmt\"\n     5 | \t\"os\"\n     6 | \n     7 | \t\"github.com/spf13/cobra\"\n→    8 | \t\"github.com/vertikon/mcp-core-inventory/internal/interfaces/cli/analytics\"\n     9 | \t\"github.com/vertikon/mcp-core-inventory/internal/interfaces/cli/ci\"\n    10 | \t\"github.com/vertikon/mcp-core-inventory/pkg/logger\"\n    11 | \t\"go.uber.org/zap\"\n    12 | )\n    13 | \n",
+          "full_function": "\t\"github.com/vertikon/mcp-core-inventory/internal/interfaces/cli/analytics\"\n\t\"github.com/vertikon/mcp-core-inventory/internal/interfaces/cli/ci\"\n\t\"github.com/vertikon/mcp-core-inventory/pkg/logger\"\n\t\"go.uber.org/zap\"\n)\n\nvar (\n\t// Version is set at build time\n\tVersion = \"dev\"\n\t// BuildDate is set at build time\n\tBuildDate = \"unknown\"\n)\n\n// rootCmd represents the base command when called without any subcommands\nvar rootCmd = \u0026cobra.Command{\n\tUse:   \"hulk\",\n\tShort: \"mcp-core-inventory CLI - Generate and manage MCP projects\",\n\tLong: `mcp-core-inventory is a powerful CLI tool for generating and managing\nModel Context Protocol (MCP) projects.`,\n\tVersion: fmt.Sprintf(\"%s (built %s)\", Version, BuildDate),\n}",
+          "symbol_name": "",
+          "package_name": "cli",
+          "dependencies": [
+            "fmt",
+            "os",
+            "github.com/spf13/cobra",
+            "github.com/vertikon/mcp-core-inventory/internal/interfaces/cli/analytics",
+            "github.com/vertikon/mcp-core-inventory/internal/interfaces/cli/ci",
+            "github.com/vertikon/mcp-core-inventory/pkg/logger",
+            "go.uber.org/zap"
+          ],
+          "related_files": null
+        },
+        {
+          "file_path": "E:\\vertikon\\.endurance\\internal\\services\\bloco-1-core\\mcp-core-inventory\\internal\\interfaces\\cli\\root.go",
+          "line_number": 9,
+          "code_snippet": "     4 | \t\"fmt\"\n     5 | \t\"os\"\n     6 | \n     7 | \t\"github.com/spf13/cobra\"\n     8 | \t\"github.com/vertikon/mcp-core-inventory/internal/interfaces/cli/analytics\"\n→    9 | \t\"github.com/vertikon/mcp-core-inventory/internal/interfaces/cli/ci\"\n    10 | \t\"github.com/vertikon/mcp-core-inventory/pkg/logger\"\n    11 | \t\"go.uber.org/zap\"\n    12 | )\n    13 | \n    14 | var (\n",
+          "full_function": "\t\"github.com/vertikon/mcp-core-inventory/internal/interfaces/cli/ci\"\n\t\"github.com/vertikon/mcp-core-inventory/pkg/logger\"\n\t\"go.uber.org/zap\"\n)\n\nvar (\n\t// Version is set at build time\n\tVersion = \"dev\"\n\t// BuildDate is set at build time\n\tBuildDate = \"unknown\"\n)\n\n// rootCmd represents the base command when called without any subcommands\nvar rootCmd = \u0026cobra.Command{\n\tUse:   \"hulk\",\n\tShort: \"mcp-core-inventory CLI - Generate and manage MCP projects\",\n\tLong: `mcp-core-inventory is a powerful CLI tool for generating and managing\nModel Context Protocol (MCP) projects.`,\n\tVersion: fmt.Sprintf(\"%s (built %s)\", Version, BuildDate),\n}",
+          "symbol_name": "",
+          "package_name": "cli",
+          "dependencies": [
+            "fmt",
+            "os",
+            "github.com/spf13/cobra",
+            "github.com/vertikon/mcp-core-inventory/internal/interfaces/cli/analytics",
+            "github.com/vertikon/mcp-core-inventory/internal/interfaces/cli/ci",
+            "github.com/vertikon/mcp-core-inventory/pkg/logger",
+            "go.uber.org/zap"
+          ],
+          "related_files": null
+        }
+      ],
+      "impact_analysis": {
+        "severity": "critical",
+        "affected_files": 2,
+        "affected_lines": 3,
+        "blocks_deploy": true,
+        "blocks_tests": false,
+        "breaks_api": false,
+        "estimated_time": "5-15 minutos",
+        "priority": 1,
+        "risk_level": "high",
+        "dependencies": null
+      },
+      "related_gaps": null,
+      "tags": [],
+      "error_breakdown": {},
+      "top_files": []
+    },
+    {
+      "type": "No Code Conflicts",
+      "severity": "critical",
+      "location": "multiplos arquivos",
+      "description": "Conflitos de declaracao detectados",
+      "suggestion": "Remova ou renomeie as declaracoes duplicadas",
+      "fixability": {
+        "safe": false,
+        "rollback_easy": false,
+        "affects_behavior": true,
+        "requires_review": true,
+        "manual_steps": "1. Identifique qual declaracao manter\n2. Remova ou renomeie as duplicatas\n3. Atualize referencias",
+        "non_fixable_reason": "ARCHITECTURAL",
+        "tools": null,
+        "executable_steps": null,
+        "estimated_time": "15-30 minutos",
+        "confidence": 0
+      },
+      "examples": [
+        "cli: 'init' declarado em ai.go, template.go, version.go",
+        "analytics: 'init' declarado em metrics.go, performance.go"
+      ],
+      "non_fixable_reason": "ARCHITECTURAL",
+      "code_contexts": [
+        {
+          "file_path": "E:\\vertikon\\.endurance\\internal\\services\\bloco-1-core\\mcp-core-inventory\\internal\\interfaces\\cli\\template.go",
+          "line_number": 44,
+          "code_snippet": "    39 | \t\tcmd.Println(\"Template created\")\n    40 | \t\treturn nil\n    41 | \t},\n    42 | }\n    43 | \n→   44 | func init() {\n    45 | \trootCmd.AddCommand(templateCmd)\n    46 | \ttemplateCmd.AddCommand(templateListCmd)\n    47 | \ttemplateCmd.AddCommand(templateCreateCmd)\n    48 | \ttemplateCreateCmd.Flags().StringP(\"name\", \"n\", \"\", \"Template name\")\n    49 | \ttemplateCreateCmd.MarkFlagRequired(\"name\")\n",
+          "full_function": "func init() {\n\trootCmd.AddCommand(templateCmd)\n\ttemplateCmd.AddCommand(templateListCmd)\n\ttemplateCmd.AddCommand(templateCreateCmd)\n\ttemplateCreateCmd.Flags().StringP(\"name\", \"n\", \"\", \"Template name\")\n\ttemplateCreateCmd.MarkFlagRequired(\"name\")\n}",
+          "symbol_name": "init",
+          "package_name": "cli",
+          "dependencies": [
+            "github.com/spf13/cobra",
+            "github.com/vertikon/mcp-core-inventory/internal/services",
+            "github.com/vertikon/mcp-core-inventory/pkg/logger",
+            "go.uber.org/zap"
+          ],
+          "related_files": null
+        },
+        {
+          "file_path": "E:\\vertikon\\.endurance\\internal\\services\\bloco-1-core\\mcp-core-inventory\\internal\\interfaces\\cli\\version.go",
+          "line_number": 21,
+          "code_snippet": "    16 | \t\tfmt.Printf(\"Version: %s\\n\", Version)\n    17 | \t\tfmt.Printf(\"Build Date: %s\\n\", BuildDate)\n    18 | \t},\n    19 | }\n    20 | \n→   21 | func init() {\n    22 | \trootCmd.AddCommand(versionCmd)\n    23 | }\n    24 | \n",
+          "full_function": "func init() {\n\trootCmd.AddCommand(versionCmd)\n}",
+          "symbol_name": "init",
+          "package_name": "cli",
+          "dependencies": [
+            "fmt",
+            "github.com/spf13/cobra"
+          ],
+          "related_files": null
+        },
+        {
+          "file_path": "E:\\vertikon\\.endurance\\internal\\services\\bloco-1-core\\mcp-core-inventory\\internal\\interfaces\\cli\\analytics\\performance.go",
+          "line_number": 23,
+          "code_snippet": "    18 | \t\tcmd.Println(\"  P95 Latency: 0ms\")\n    19 | \t\treturn nil\n    20 | \t},\n    21 | }\n    22 | \n→   23 | func init() {\n    24 | \tAnalyticsCmd.AddCommand(performanceCmd)\n    25 | }\n    26 | \n",
+          "full_function": "func init() {\n\tAnalyticsCmd.AddCommand(performanceCmd)\n}",
+          "symbol_name": "init",
+          "package_name": "analytics",
+          "dependencies": [
+            "github.com/spf13/cobra",
+            "github.com/vertikon/mcp-core-inventory/pkg/logger"
+          ],
+          "related_files": null
+        }
+      ],
+      "impact_analysis": {
+        "severity": "critical",
+        "affected_files": 0,
+        "affected_lines": 0,
+        "blocks_deploy": true,
+        "blocks_tests": false,
+        "breaks_api": false,
+        "estimated_time": "10-30 minutos",
+        "priority": 1,
+        "risk_level": "high",
+        "dependencies": null
+      },
+      "related_gaps": null,
+      "tags": [],
+      "error_breakdown": {},
+      "top_files": []
+    },
+    {
+      "type": "Linter limpo",
+      "severity": "medium",
+      "location": "multiplos arquivos",
+      "description": "✗ FAIL: 4 issues críticos, 0 warnings",
+      "suggestion": "Corrija os issues FAIL primeiro, depois warnings",
+      "fixability": {
+        "safe": false,
+        "rollback_easy": false,
+        "affects_behavior": true,
+        "requires_review": true,
+        "non_fixable_reason": "BUSINESS_LOGIC",
+        "tools": [
+          {
+            "tool_name": "golangci-lint",
+            "install_command": "go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest",
+            "diagnose_command": "golangci-lint run",
+            "fix_command": "# NAO use --fix automaticamente, revise cada issue",
+            "config_required": true,
+            "config_template": ".golangci.yml com linters selecionados",
+            "documentation": "https://golangci-lint.run/",
+            "alternative_tools": null
+          },
+          {
+            "tool_name": "staticcheck",
+            "install_command": "go install honnef.co/go/tools/cmd/staticcheck@latest",
+            "diagnose_command": "staticcheck ./...",
+            "fix_command": "# Manual - staticcheck nao tem auto-fix",
+            "config_required": false,
+            "config_template": "",
+            "documentation": "https://staticcheck.io/",
+            "alternative_tools": null
+          },
+          {
+            "tool_name": "gosec",
+            "install_command": "go install github.com/securego/gosec/v2/cmd/gosec@latest",
+            "diagnose_command": "gosec ./...",
+            "fix_command": "# Manual - corrija issues de seguranca",
+            "config_required": false,
+            "config_template": "",
+            "documentation": "https://github.com/securego/gosec",
+            "alternative_tools": null
+          }
+        ],
+        "executable_steps": null,
+        "estimated_time": "8m",
+        "confidence": 0
+      },
+      "examples": [
+        "📦 Módulos analisados: 1",
+        "📄 Linter Report v5: JSON + SARIF gerados",
+        "",
+        "📊 Resumo por ferramenta (todos os módulos):",
+        "  • golangci-lint: 𐄂 0 FAIL / ⚠ 0 WARN / ℹ 0 INFO",
+        "  • govet: 𐄂 4 FAIL / ⚠ 0 WARN / ℹ 0 INFO",
+        "  • staticcheck: 𐄂 0 FAIL / ⚠ 0 WARN / ℹ 0 INFO",
+        "",
+        "🔝 Top issues prioritários (FAIL):",
+        "  1. [govet] vet.exe: internal/ai/knowledge/indexer_test.go:68 - cannot use 1000 (constant of type int) as Embedder value in argument t... (govet)",
+        "  2. [govet] vet.exe: internal/interfaces/cli/registration.go:8 - \"go.uber.org/zap\" imported and not used (govet)",
+        "  3. [govet] pkg/httpserver/server_test.go:217 - comparison of function healthHandler == nil is always false (govet)",
+        "  4. [govet] pkg/httpserver/server_test.go:225 - comparison of function readyHandler == nil is always false (govet)"
+      ],
+      "non_fixable_reason": "BUSINESS_LOGIC",
+      "code_contexts": null,
+      "impact_analysis": {
+        "severity": "medium",
+        "affected_files": 4,
+        "affected_lines": 4,
+        "blocks_deploy": false,
+        "blocks_tests": false,
+        "breaks_api": false,
+        "estimated_time": "8m",
+        "priority": 3,
+        "risk_level": "medium",
+        "dependencies": null
+      },
+      "related_gaps": null,
+      "tags": [
+        "performance",
+        "memory-optimization"
+      ],
+      "error_breakdown": {
+        "govet": 4
+      },
+      "top_files": [
+        "pkg/httpserver/server_test.go (2)",
+        "vet.exe: internal/interfaces/cli/registration.go (1)",
+        "vet.exe: internal/ai/knowledge/indexer_test.go (1)"
+      ]
+    }
+  ],
+  "quick_wins": null,
+  "blockers": [
+    {
+      "type": "No Code Conflicts",
+      "severity": "critical",
+      "location": "multiplos arquivos",
+      "description": "Conflitos de declaracao detectados",
+      "suggestion": "Remova ou renomeie as declaracoes duplicadas",
+      "fixability": {
+        "safe": false,
+        "rollback_easy": false,
+        "affects_behavior": true,
+        "requires_review": true,
+        "manual_steps": "1. Identifique qual declaracao manter\n2. Remova ou renomeie as duplicatas\n3. Atualize referencias",
+        "non_fixable_reason": "ARCHITECTURAL",
+        "tools": null,
+        "executable_steps": null,
+        "estimated_time": "15-30 minutos",
+        "confidence": 0
+      },
+      "examples": [
+        "cli: 'init' declarado em ai.go, template.go, version.go",
+        "analytics: 'init' declarado em metrics.go, performance.go"
+      ],
+      "non_fixable_reason": "ARCHITECTURAL",
+      "code_contexts": [
+        {
+          "file_path": "E:\\vertikon\\.endurance\\internal\\services\\bloco-1-core\\mcp-core-inventory\\internal\\interfaces\\cli\\template.go",
+          "line_number": 44,
+          "code_snippet": "    39 | \t\tcmd.Println(\"Template created\")\n    40 | \t\treturn nil\n    41 | \t},\n    42 | }\n    43 | \n→   44 | func init() {\n    45 | \trootCmd.AddCommand(templateCmd)\n    46 | \ttemplateCmd.AddCommand(templateListCmd)\n    47 | \ttemplateCmd.AddCommand(templateCreateCmd)\n    48 | \ttemplateCreateCmd.Flags().StringP(\"name\", \"n\", \"\", \"Template name\")\n    49 | \ttemplateCreateCmd.MarkFlagRequired(\"name\")\n",
+          "full_function": "func init() {\n\trootCmd.AddCommand(templateCmd)\n\ttemplateCmd.AddCommand(templateListCmd)\n\ttemplateCmd.AddCommand(templateCreateCmd)\n\ttemplateCreateCmd.Flags().StringP(\"name\", \"n\", \"\", \"Template name\")\n\ttemplateCreateCmd.MarkFlagRequired(\"name\")\n}",
+          "symbol_name": "init",
+          "package_name": "cli",
+          "dependencies": [
+            "github.com/spf13/cobra",
+            "github.com/vertikon/mcp-core-inventory/internal/services",
+            "github.com/vertikon/mcp-core-inventory/pkg/logger",
+            "go.uber.org/zap"
+          ],
+          "related_files": null
+        },
+        {
+          "file_path": "E:\\vertikon\\.endurance\\internal\\services\\bloco-1-core\\mcp-core-inventory\\internal\\interfaces\\cli\\version.go",
+          "line_number": 21,
+          "code_snippet": "    16 | \t\tfmt.Printf(\"Version: %s\\n\", Version)\n    17 | \t\tfmt.Printf(\"Build Date: %s\\n\", BuildDate)\n    18 | \t},\n    19 | }\n    20 | \n→   21 | func init() {\n    22 | \trootCmd.AddCommand(versionCmd)\n    23 | }\n    24 | \n",
+          "full_function": "func init() {\n\trootCmd.AddCommand(versionCmd)\n}",
+          "symbol_name": "init",
+          "package_name": "cli",
+          "dependencies": [
+            "fmt",
+            "github.com/spf13/cobra"
+          ],
+          "related_files": null
+        },
+        {
+          "file_path": "E:\\vertikon\\.endurance\\internal\\services\\bloco-1-core\\mcp-core-inventory\\internal\\interfaces\\cli\\analytics\\performance.go",
+          "line_number": 23,
+          "code_snippet": "    18 | \t\tcmd.Println(\"  P95 Latency: 0ms\")\n    19 | \t\treturn nil\n    20 | \t},\n    21 | }\n    22 | \n→   23 | func init() {\n    24 | \tAnalyticsCmd.AddCommand(performanceCmd)\n    25 | }\n    26 | \n",
+          "full_function": "func init() {\n\tAnalyticsCmd.AddCommand(performanceCmd)\n}",
+          "symbol_name": "init",
+          "package_name": "analytics",
+          "dependencies": [
+            "github.com/spf13/cobra",
+            "github.com/vertikon/mcp-core-inventory/pkg/logger"
+          ],
+          "related_files": null
+        }
+      ],
+      "impact_analysis": {
+        "severity": "critical",
+        "affected_files": 0,
+        "affected_lines": 0,
+        "blocks_deploy": true,
+        "blocks_tests": false,
+        "breaks_api": false,
+        "estimated_time": "10-30 minutos",
+        "priority": 1,
+        "risk_level": "high",
+        "dependencies": null
+      },
+      "related_gaps": null,
+      "tags": [],
+      "error_breakdown": {},
+      "top_files": []
+    },
+    {
+      "type": "Codigo compila",
+      "severity": "critical",
+      "location": "multiplos arquivos",
+      "description": "Nao compila: # github.com/vertikon/mcp-core-inventory/internal/interfaces/cli\ninternal\\interfaces\\cli\\registration.go:8:2: \"go.uber.org/zap\" imported and not used\ninternal\\interfaces\\cli\\root.go:8:2: \"github.com/v...",
+      "suggestion": "Corrija os erros de compilacao listados",
+      "fixability": {
+        "safe": false,
+        "rollback_easy": false,
+        "affects_behavior": false,
+        "requires_review": false,
+        "non_fixable_reason": "BUSINESS_LOGIC",
+        "tools": null,
+        "executable_steps": null,
+        "estimated_time": "Variavel - depende dos erros",
+        "confidence": 0
+      },
+      "examples": [
+        "📄 Log completo: E:\\vertikon\\.endurance\\internal\\services\\bloco-1-core\\mcp-core-inventory\\docs\\validation\\raw\\2025-11-22-10-41-23-compilation.log",
+        "",
+        "# github.com/vertikon/mcp-core-inventory/internal/interfaces/cli",
+        "internal\\interfaces\\cli\\registration.go:8:2: \"go.uber.org/zap\" imported and not used",
+        "internal\\interfaces\\cli\\root.go:8:2: \"github.com/vertikon/mcp-core-inventory/internal/interfaces/cli/analytics\" imported and not used",
+        "internal\\interfaces\\cli\\root.go:9:2: \"github.com/vertikon/mcp-core-inventory/internal/interfaces/cli/ci\" imported and not used",
+        ""
+      ],
+      "non_fixable_reason": "BUSINESS_LOGIC",
+      "code_contexts": [
+        {
+          "file_path": "E:\\vertikon\\.endurance\\internal\\services\\bloco-1-core\\mcp-core-inventory\\internal\\interfaces\\cli\\registration.go",
+          "line_number": 8,
+          "code_snippet": "     3 | import (\r\n     4 | \t\"github.com/spf13/cobra\"\r\n     5 | \t\"github.com/vertikon/mcp-core-inventory/internal/interfaces/cli/analytics\"\r\n     6 | \t\"github.com/vertikon/mcp-core-inventory/internal/interfaces/cli/ci\"\r\n     7 | \t\"github.com/vertikon/mcp-core-inventory/pkg/logger\"\r\n→    8 | \t\"go.uber.org/zap\"\r\n     9 | )\r\n    10 | \r\n    11 | // RegisterCommands registers all CLI commands to the root command\r\n    12 | // This centralizes command registration to avoid init() conflicts\r\n    13 | func RegisterCommands(rootCmd *cobra.Command) {\r\n",
+          "full_function": "\t\"go.uber.org/zap\"\r\n)\r\n\r\n// RegisterCommands registers all CLI commands to the root command\r\n// This centralizes command registration to avoid init() conflicts\r\nfunc RegisterCommands(rootCmd *cobra.Command) {\r\n\tlogger.Info(\"Registering CLI commands\")\r\n\t\r\n\t// Register main command groups\r\n\trootCmd.AddCommand(analytics.AnalyticsCmd)\r\n\trootCmd.AddCommand(ci.CICmd)\r\n\t\r\n\t// Register individual commands\r\n\trootCmd.AddCommand(generateCmd)\r\n\trootCmd.AddCommand(monitorCmd)\r\n\trootCmd.AddCommand(stateCmd)\r\n\trootCmd.AddCommand(templateCmd)\r\n\trootCmd.AddCommand(versionCmd)\r\n\t\r\n\t// Configure command flags\r\n\tconfigureFlags()\r\n\t\r\n\tlogger.Info(\"All CLI commands registered successfully\")\r\n}\r",
+          "symbol_name": "",
+          "package_name": "cli",
+          "dependencies": [
+            "github.com/spf13/cobra",
+            "github.com/vertikon/mcp-core-inventory/internal/interfaces/cli/analytics",
+            "github.com/vertikon/mcp-core-inventory/internal/interfaces/cli/ci",
+            "github.com/vertikon/mcp-core-inventory/pkg/logger",
+            "go.uber.org/zap"
+          ],
+          "related_files": null
+        },
+        {
+          "file_path": "E:\\vertikon\\.endurance\\internal\\services\\bloco-1-core\\mcp-core-inventory\\internal\\interfaces\\cli\\root.go",
+          "line_number": 8,
+          "code_snippet": "     3 | import (\n     4 | \t\"fmt\"\n     5 | \t\"os\"\n     6 | \n     7 | \t\"github.com/spf13/cobra\"\n→    8 | \t\"github.com/vertikon/mcp-core-inventory/internal/interfaces/cli/analytics\"\n     9 | \t\"github.com/vertikon/mcp-core-inventory/internal/interfaces/cli/ci\"\n    10 | \t\"github.com/vertikon/mcp-core-inventory/pkg/logger\"\n    11 | \t\"go.uber.org/zap\"\n    12 | )\n    13 | \n",
+          "full_function": "\t\"github.com/vertikon/mcp-core-inventory/internal/interfaces/cli/analytics\"\n\t\"github.com/vertikon/mcp-core-inventory/internal/interfaces/cli/ci\"\n\t\"github.com/vertikon/mcp-core-inventory/pkg/logger\"\n\t\"go.uber.org/zap\"\n)\n\nvar (\n\t// Version is set at build time\n\tVersion = \"dev\"\n\t// BuildDate is set at build time\n\tBuildDate = \"unknown\"\n)\n\n// rootCmd represents the base command when called without any subcommands\nvar rootCmd = \u0026cobra.Command{\n\tUse:   \"hulk\",\n\tShort: \"mcp-core-inventory CLI - Generate and manage MCP projects\",\n\tLong: `mcp-core-inventory is a powerful CLI tool for generating and managing\nModel Context Protocol (MCP) projects.`,\n\tVersion: fmt.Sprintf(\"%s (built %s)\", Version, BuildDate),\n}",
+          "symbol_name": "",
+          "package_name": "cli",
+          "dependencies": [
+            "fmt",
+            "os",
+            "github.com/spf13/cobra",
+            "github.com/vertikon/mcp-core-inventory/internal/interfaces/cli/analytics",
+            "github.com/vertikon/mcp-core-inventory/internal/interfaces/cli/ci",
+            "github.com/vertikon/mcp-core-inventory/pkg/logger",
+            "go.uber.org/zap"
+          ],
+          "related_files": null
+        },
+        {
+          "file_path": "E:\\vertikon\\.endurance\\internal\\services\\bloco-1-core\\mcp-core-inventory\\internal\\interfaces\\cli\\root.go",
+          "line_number": 9,
+          "code_snippet": "     4 | \t\"fmt\"\n     5 | \t\"os\"\n     6 | \n     7 | \t\"github.com/spf13/cobra\"\n     8 | \t\"github.com/vertikon/mcp-core-inventory/internal/interfaces/cli/analytics\"\n→    9 | \t\"github.com/vertikon/mcp-core-inventory/internal/interfaces/cli/ci\"\n    10 | \t\"github.com/vertikon/mcp-core-inventory/pkg/logger\"\n    11 | \t\"go.uber.org/zap\"\n    12 | )\n    13 | \n    14 | var (\n",
+          "full_function": "\t\"github.com/vertikon/mcp-core-inventory/internal/interfaces/cli/ci\"\n\t\"github.com/vertikon/mcp-core-inventory/pkg/logger\"\n\t\"go.uber.org/zap\"\n)\n\nvar (\n\t// Version is set at build time\n\tVersion = \"dev\"\n\t// BuildDate is set at build time\n\tBuildDate = \"unknown\"\n)\n\n// rootCmd represents the base command when called without any subcommands\nvar rootCmd = \u0026cobra.Command{\n\tUse:   \"hulk\",\n\tShort: \"mcp-core-inventory CLI - Generate and manage MCP projects\",\n\tLong: `mcp-core-inventory is a powerful CLI tool for generating and managing\nModel Context Protocol (MCP) projects.`,\n\tVersion: fmt.Sprintf(\"%s (built %s)\", Version, BuildDate),\n}",
+          "symbol_name": "",
+          "package_name": "cli",
+          "dependencies": [
+            "fmt",
+            "os",
+            "github.com/spf13/cobra",
+            "github.com/vertikon/mcp-core-inventory/internal/interfaces/cli/analytics",
+            "github.com/vertikon/mcp-core-inventory/internal/interfaces/cli/ci",
+            "github.com/vertikon/mcp-core-inventory/pkg/logger",
+            "go.uber.org/zap"
+          ],
+          "related_files": null
+        }
+      ],
+      "impact_analysis": {
+        "severity": "critical",
+        "affected_files": 2,
+        "affected_lines": 3,
+        "blocks_deploy": true,
+        "blocks_tests": false,
+        "breaks_api": false,
+        "estimated_time": "5-15 minutos",
+        "priority": 1,
+        "risk_level": "high",
+        "dependencies": null
+      },
+      "related_gaps": null,
+      "tags": [],
+      "error_breakdown": {},
+      "top_files": []
+    }
+  ],
+  "technical_debt": null,
+  "recommended_tools": [
+    {
+      "tool_name": "golangci-lint",
+      "install_command": "go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest",
+      "diagnose_command": "golangci-lint run",
+      "fix_command": "# NAO use --fix automaticamente, revise cada issue",
+      "config_required": true,
+      "config_template": ".golangci.yml com linters selecionados",
+      "documentation": "https://golangci-lint.run/",
+      "alternative_tools": null
+    },
+    {
+      "tool_name": "staticcheck",
+      "install_command": "go install honnef.co/go/tools/cmd/staticcheck@latest",
+      "diagnose_command": "staticcheck ./...",
+      "fix_command": "# Manual - staticcheck nao tem auto-fix",
+      "config_required": false,
+      "config_template": "",
+      "documentation": "https://staticcheck.io/",
+      "alternative_tools": null
+    },
+    {
+      "tool_name": "gosec",
+      "install_command": "go install github.com/securego/gosec/v2/cmd/gosec@latest",
+      "diagnose_command": "gosec ./...",
+      "fix_command": "# Manual - corrija issues de seguranca",
+      "config_required": false,
+      "config_template": "",
+      "documentation": "https://github.com/securego/gosec",
+      "alternative_tools": null
+    }
+  ],
+  "next_steps": [
+    "🔴 URGENTE: Resolver 2 bloqueador(es)"
+  ],
+  "estimated_effort": "45m"
+}

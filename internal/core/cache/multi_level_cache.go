@@ -178,6 +178,12 @@ func (c *L1Cache) Get(key string) ([]byte, error) {
 	}
 
 	entry := val.(*L1Entry)
+	if entry == nil {
+		c.mu.Lock()
+		c.stats.Misses++
+		c.mu.Unlock()
+		return nil, ErrCacheMiss
+	}
 	if !entry.ExpiresAt.IsZero() && time.Now().After(entry.ExpiresAt) {
 		c.data.Delete(key)
 		c.mu.Lock()

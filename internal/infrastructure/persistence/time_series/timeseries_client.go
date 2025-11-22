@@ -1,1 +1,4 @@
-# Função: Interface/cliente genérico de time series
+// Package time_series contains buildable stubs until the real implementation is ready.
+package time_series
+
+// TODO: Função: Interface/cliente genérico de time series.

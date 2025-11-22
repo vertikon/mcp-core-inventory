@@ -8,6 +8,7 @@ import (
 	"github.com/vertikon/mcp-core-inventory/internal/mcp/generators"
 	"github.com/vertikon/mcp-core-inventory/internal/mcp/registry"
 	"github.com/vertikon/mcp-core-inventory/internal/mcp/validators"
+	"go.uber.org/zap"
 )
 
 func TestNewHandlerManager(t *testing.T) {
@@ -236,6 +237,7 @@ func TestDeleteProjectHandler(t *testing.T) {
 
 	handler := &DeleteProjectHandler{
 		registry: reg,
+		logger:   zap.NewNop(),
 	}
 
 	if handler.Name() != "delete_project" {
@@ -303,6 +305,7 @@ func TestUpdateProjectHandler(t *testing.T) {
 		generatorFactory: genFactory,
 		validatorFactory: valFactory,
 		registry:         reg,
+		logger:           zap.NewNop(),
 	}
 
 	if handler.Name() != "update_project" {
@@ -355,7 +358,7 @@ func TestParseParams(t *testing.T) {
 			name:    "invalid params",
 			params:  "not an object",
 			target:  &struct{}{},
-			wantErr: false, // parseParams doesn't validate, just unmarshals
+			wantErr: true,
 		},
 	}
 

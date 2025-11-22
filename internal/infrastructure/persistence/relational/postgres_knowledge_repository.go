@@ -84,7 +84,6 @@ func (r *PostgresKnowledgeRepository) FindByID(ctx context.Context, id string) (
 		WHERE id = $1
 	`
 
-	var knowledge entities.Knowledge
 	var documentsJSON, embeddingsJSON []byte
 	var name, description string
 	var version int
@@ -201,7 +200,7 @@ func (r *PostgresKnowledgeRepository) FindByName(ctx context.Context, name strin
 		return nil, fmt.Errorf("failed to create Knowledge entity: %w", err)
 	}
 
-	return &knowledge, nil
+	return knowledge, nil
 }
 
 // List lists all Knowledge entities with optional filters

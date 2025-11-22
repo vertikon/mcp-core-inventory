@@ -9,18 +9,19 @@ import (
 func TestNewFeature(t *testing.T) {
 	tests := []struct {
 		name        string
+		inputName   string
 		status      FeatureStatus
 		description string
 		wantErr     bool
 	}{
-		{"Valid feature", FeatureStatusEnabled, "Test feature", false},
-		{"Empty name", FeatureStatusEnabled, "Test feature", true},
-		{"Disabled feature", FeatureStatusDisabled, "Test feature", false},
+		{"Valid feature", "feature-valid", FeatureStatusEnabled, "Test feature", false},
+		{"Empty name", "", FeatureStatusEnabled, "Test feature", true},
+		{"Disabled feature", "feature-disabled", FeatureStatusDisabled, "Test feature", false},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			feature, err := NewFeature(tt.name, tt.status, tt.description)
+			feature, err := NewFeature(tt.inputName, tt.status, tt.description)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("NewFeature() error = %v, wantErr %v", err, tt.wantErr)
 				return
@@ -28,8 +29,8 @@ func TestNewFeature(t *testing.T) {
 			if !tt.wantErr && feature == nil {
 				t.Errorf("NewFeature() returned nil feature")
 			}
-			if !tt.wantErr && feature.Name() != tt.name {
-				t.Errorf("NewFeature() name = %v, want %v", feature.Name(), tt.name)
+			if !tt.wantErr && feature.Name() != tt.inputName {
+				t.Errorf("NewFeature() name = %v, want %v", feature.Name(), tt.inputName)
 			}
 		})
 	}

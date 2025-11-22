@@ -1,0 +1,737 @@
+{
+  "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+  "runs": [
+    {
+      "results": [
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/mcp/protocol/router.go"
+                },
+                "region": {
+                  "startColumn": 2,
+                  "startLine": 6
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "\"strings\" imported and not used"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/mcp/protocol/router.go"
+                },
+                "region": {
+                  "startColumn": 6,
+                  "startLine": 215
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "parseParams redeclared in this block"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/mcp/protocol/handlers.go"
+                },
+                "region": {
+                  "startColumn": 6,
+                  "startLine": 779
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "other declaration of parseParams"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/mcp/protocol/tools.go"
+                },
+                "region": {
+                  "startColumn": 64,
+                  "startLine": 358
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "undefined: protocol"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/mcp/protocol/handlers.go"
+                },
+                "region": {
+                  "startColumn": 2,
+                  "startLine": 8
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "\"strings\" imported and not used"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/mcp/protocol/handlers.go"
+                },
+                "region": {
+                  "startColumn": 4,
+                  "startLine": 345
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "h.parseParams undefined (type *ListTemplatesHandler has no field or method parseParams)"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/mcp/protocol/handlers.go"
+                },
+                "region": {
+                  "startColumn": 4,
+                  "startLine": 447
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "h.parseParams undefined (type *ListProjectsHandler has no field or method parseParams)"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "vet.exe: cmd/core-inventory/main.go"
+                },
+                "region": {
+                  "startColumn": 2,
+                  "startLine": 17
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "nats redeclared in this block"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "tools/generators/mcp_generator.go"
+                },
+                "region": {
+                  "startColumn": 2,
+                  "startLine": 6
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "\"path/filepath\" imported and not used"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "vet.exe: internal/ai/knowledge/indexer_test.go"
+                },
+                "region": {
+                  "startColumn": 60,
+                  "startLine": 68
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "not enough arguments in call to NewIndexer"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "vet.exe: internal/core/crush/parallel_processor.go"
+                },
+                "region": {
+                  "startColumn": 6,
+                  "startLine": 625
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "min redeclared in this block"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "vet.exe: internal/core/transformer/feedforward.go"
+                },
+                "region": {
+                  "startColumn": 21,
+                  "startLine": 194
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "ffn.router undefined (type *FeedForwardNetwork has no field or method router)"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "vet.exe: internal/core/state/distributed_store.go"
+                },
+                "region": {
+                  "startColumn": 22,
+                  "startLine": 543
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "invalid operation: cannot take address of dss.stats.LockWaitTime.Nanoseconds() (value of type int64)"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/domain/value_objects/validation_rule.go"
+                },
+                "region": {
+                  "startColumn": 22,
+                  "startLine": 69
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "non-constant format string in call to fmt.Errorf"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "vet.exe: internal/infrastructure/persistence/relational/postgres_knowledge_repository.go"
+                },
+                "region": {
+                  "startColumn": 9,
+                  "startLine": 203
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "undefined: knowledgePtr"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "vet.exe: internal/mcp/protocol/router.go"
+                },
+                "region": {
+                  "startColumn": 6,
+                  "startLine": 215
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "parseParams redeclared in this block"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "vet.exe: internal/mcp/generators/generator_factory_test.go"
+                },
+                "region": {
+                  "startColumn": 35,
+                  "startLine": 162
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "cannot use tt.request (variable of struct type GenerateRequest) as *GenerateRequest value in argument to factory.ValidateRequest"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/security/encryption/encryption_manager.go"
+                },
+                "region": {
+                  "startColumn": 6,
+                  "startLine": 56
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Manager redeclared in this block"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/security/encryption/certificate_manager.go"
+                },
+                "region": {
+                  "startColumn": 6,
+                  "startLine": 42
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "other declaration of Manager"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/security/encryption/encryption_manager.go"
+                },
+                "region": {
+                  "startColumn": 3,
+                  "startLine": 64
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "unknown field keyManager in struct literal of type Manager"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/security/encryption/encryption_manager.go"
+                },
+                "region": {
+                  "startColumn": 16,
+                  "startLine": 71
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "m.keyManager undefined (type *Manager has no field or method keyManager)"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/security/encryption/encryption_manager.go"
+                },
+                "region": {
+                  "startColumn": 16,
+                  "startLine": 81
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "m.keyManager undefined (type *Manager has no field or method keyManager)"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/security/encryption/key_manager.go"
+                },
+                "region": {
+                  "startColumn": 6,
+                  "startLine": 52
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Manager redeclared in this block"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/security/encryption/certificate_manager.go"
+                },
+                "region": {
+                  "startColumn": 6,
+                  "startLine": 42
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "other declaration of Manager"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/security/encryption/key_manager.go"
+                },
+                "region": {
+                  "startColumn": 3,
+                  "startLine": 72
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "unknown field keyVersion in struct literal of type Manager"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/security/encryption/key_manager.go"
+                },
+                "region": {
+                  "startColumn": 6,
+                  "startLine": 82
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "km.encryptionKey undefined (type *Manager has no field or method encryptionKey)"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/security/encryption/key_manager.go"
+                },
+                "region": {
+                  "startColumn": 4,
+                  "startLine": 96
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "m.mu undefined (type *Manager has no field or method mu)"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/security/encryption/key_manager.go"
+                },
+                "region": {
+                  "startColumn": 10,
+                  "startLine": 97
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "m.mu undefined (type *Manager has no field or method mu)"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/security/encryption/key_manager.go"
+                },
+                "region": {
+                  "startColumn": 7,
+                  "startLine": 99
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "m.encryptionKey undefined (type *Manager has no field or method encryptionKey)"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/security/encryption/key_manager.go"
+                },
+                "region": {
+                  "startColumn": 7,
+                  "startLine": 99
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "too many errors"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "vet.exe: internal/security/encryption/encryption_manager.go"
+                },
+                "region": {
+                  "startColumn": 6,
+                  "startLine": 56
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Manager redeclared in this block"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "vet.exe: internal/state/cache/cache_coherency.go"
+                },
+                "region": {
+                  "startColumn": 11,
+                  "startLine": 162
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "cm.cache.Delete undefined (type *StateCache is pointer to interface, not interface)"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "vet.exe: internal/state/store/conflict_resolver.go"
+                },
+                "region": {
+                  "startColumn": 6,
+                  "startLine": 622
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "max redeclared in this block"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "vet.exe: internal/state/events/event_replay.go"
+                },
+                "region": {
+                  "startColumn": 2,
+                  "startLine": 249
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "declared and not used: snapshot"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "pkg/httpserver/server_test.go"
+                },
+                "region": {
+                  "startColumn": 5,
+                  "startLine": 216
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "comparison of function healthHandler == nil is always false"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "pkg/httpserver/server_test.go"
+                },
+                "region": {
+                  "startColumn": 5,
+                  "startLine": 224
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "comparison of function readyHandler == nil is always false"
+          },
+          "ruleId": "govet"
+        }
+      ],
+      "tool": {
+        "driver": {
+          "informationUri": "https://github.com/vertikon/mcp-validator",
+          "name": "MCP Validator V9.1",
+          "version": "9.4"
+        }
+      }
+    }
+  ],
+  "version": "2.1.0"
+}

@@ -13,13 +13,13 @@ import (
 
 // ReservationHandlers handles HTTP requests for stock reservations
 type ReservationHandlers struct {
-	reserveUseCase  *app.ReserveStockUseCase
-	confirmUseCase  *app.ConfirmReservationUseCase
-	releaseUseCase  *app.ReleaseReservationUseCase
-	adjustUseCase   *app.AdjustStockUseCase
-	queryUseCase    *app.QueryAvailableUseCase
-	logger          *zap.Logger
-	metrics         *observability.InventoryMetrics
+	reserveUseCase *app.ReserveStockUseCase
+	confirmUseCase *app.ConfirmReservationUseCase
+	releaseUseCase *app.ReleaseReservationUseCase
+	adjustUseCase  *app.AdjustStockUseCase
+	queryUseCase   *app.QueryAvailableUseCase
+	logger         *zap.Logger
+	metrics        *observability.InventoryMetrics
 }
 
 // NewReservationHandlers creates new reservation handlers
@@ -46,7 +46,7 @@ func NewReservationHandlers(
 // ReserveStock handles POST /reserve
 func (h *ReservationHandlers) ReserveStock(w http.ResponseWriter, r *http.Request) {
 	startTime := time.Now()
-	
+
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
@@ -79,10 +79,10 @@ func (h *ReservationHandlers) ReserveStock(w http.ResponseWriter, r *http.Reques
 
 	resp, err := h.reserveUseCase.Execute(r.Context(), appReq)
 	duration := time.Since(startTime).Seconds()
-	
+
 	if err != nil {
 		h.logger.Error("failed to reserve stock", zap.Error(err))
-		
+
 		// Record error metrics
 		if h.metrics != nil {
 			errorType := "unknown"
@@ -96,7 +96,7 @@ func (h *ReservationHandlers) ReserveStock(w http.ResponseWriter, r *http.Reques
 			}
 			h.metrics.RecordReservationError(req.SKU, req.Location, errorType)
 		}
-		
+
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
@@ -120,7 +120,7 @@ func (h *ReservationHandlers) ReserveStock(w http.ResponseWriter, r *http.Reques
 // ConfirmReservation handles POST /confirm
 func (h *ReservationHandlers) ConfirmReservation(w http.ResponseWriter, r *http.Request) {
 	startTime := time.Now()
-	
+
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
@@ -142,10 +142,10 @@ func (h *ReservationHandlers) ConfirmReservation(w http.ResponseWriter, r *http.
 
 	resp, err := h.confirmUseCase.Execute(r.Context(), appReq)
 	duration := time.Since(startTime).Seconds()
-	
+
 	if err != nil {
 		h.logger.Error("failed to confirm reservation", zap.Error(err))
-		
+
 		// Record error metrics
 		if h.metrics != nil {
 			errorType := "unknown"
@@ -163,7 +163,7 @@ func (h *ReservationHandlers) ConfirmReservation(w http.ResponseWriter, r *http.
 			}
 			h.metrics.RecordConfirmationError(sku, location, errorType)
 		}
-		
+
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
@@ -199,10 +199,10 @@ func (h *ReservationHandlers) ReleaseReservation(w http.ResponseWriter, r *http.
 	}
 
 	resp, err := h.releaseUseCase.Execute(r.Context(), appReq)
-	
+
 	if err != nil {
 		h.logger.Error("failed to release reservation", zap.Error(err))
-		
+
 		// Record error metrics
 		if h.metrics != nil {
 			errorType := "unknown"
@@ -220,7 +220,7 @@ func (h *ReservationHandlers) ReleaseReservation(w http.ResponseWriter, r *http.
 			}
 			h.metrics.RecordReleaseError(sku, location, errorType)
 		}
-		
+
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
@@ -267,10 +267,10 @@ func (h *ReservationHandlers) AdjustStock(w http.ResponseWriter, r *http.Request
 	}
 
 	resp, err := h.adjustUseCase.Execute(r.Context(), appReq)
-	
+
 	if err != nil {
 		h.logger.Error("failed to adjust stock", zap.Error(err))
-		
+
 		// Record error metrics
 		if h.metrics != nil {
 			errorType := "unknown"
@@ -279,7 +279,7 @@ func (h *ReservationHandlers) AdjustStock(w http.ResponseWriter, r *http.Request
 			}
 			h.metrics.RecordAdjustmentError(req.SKU, req.Location, errorType)
 		}
-		
+
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
@@ -300,7 +300,7 @@ func (h *ReservationHandlers) AdjustStock(w http.ResponseWriter, r *http.Request
 // QueryAvailable handles GET /available
 func (h *ReservationHandlers) QueryAvailable(w http.ResponseWriter, r *http.Request) {
 	startTime := time.Now()
-	
+
 	if r.Method != http.MethodGet {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
@@ -321,7 +321,7 @@ func (h *ReservationHandlers) QueryAvailable(w http.ResponseWriter, r *http.Requ
 
 	resp, err := h.queryUseCase.Execute(r.Context(), appReq)
 	duration := time.Since(startTime).Seconds()
-	
+
 	if err != nil {
 		h.logger.Error("failed to query available stock", zap.Error(err))
 		http.Error(w, err.Error(), http.StatusBadRequest)
@@ -338,4 +338,3 @@ func (h *ReservationHandlers) QueryAvailable(w http.ResponseWriter, r *http.Requ
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(resp)
 }
-

@@ -94,4 +94,3 @@ func (bp *BatchPolicy) SelectBatchesForConsumption(batches []*Batch, quantity in
 
 	return selectedBatches, quantities, nil
 }
-

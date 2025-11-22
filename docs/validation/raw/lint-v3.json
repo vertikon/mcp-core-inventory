@@ -1,0 +1,408 @@
+{
+  "linter_report_version": 3,
+  "modules": [
+    {
+      "module_path": "E:\\vertikon\\.endurance\\internal\\services\\bloco-1-core\\mcp-core-inventory",
+      "module_name": "github.com/vertikon/gera-treina\ngithub.com/vertikon/model-router\ngithub.com/vertikon/claude-desktop-agent\ngithub.com/vertikon/mcp-go-architect-sdk-custom\ngithub.com/vertikon/mcp-core-inventory\ngithub.com/vertikon/mcp-fulfillment-ops\ngithub.com/vertikon/mcp-hulk\ngithub.com/vertikon/mcp-wa-auth\ngithub.com/docker/compose/v2\ngithub.com/vertikon/mcp-gateway-providers-ai",
+      "linter_results": [
+        {
+          "tool": "golangci-lint",
+          "exit_code": 3,
+          "issues": [],
+          "fail_count": 0,
+          "warn_count": 0,
+          "info_count": 0,
+          "raw_log_path": "E:\\vertikon\\.endurance\\internal\\services\\bloco-1-core\\mcp-core-inventory\\docs\\validation\\raw\\lint-temp.json"
+        },
+        {
+          "tool": "govet",
+          "exit_code": 1,
+          "issues": [
+            {
+              "tool": "govet",
+              "file": "internal/mcp/protocol/router.go",
+              "line": 6,
+              "col": 2,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "\"strings\" imported and not used",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/mcp/protocol/router.go",
+              "line": 215,
+              "col": 6,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "parseParams redeclared in this block",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/mcp/protocol/handlers.go",
+              "line": 779,
+              "col": 6,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "other declaration of parseParams",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/mcp/protocol/tools.go",
+              "line": 358,
+              "col": 64,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "undefined: protocol",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/mcp/protocol/handlers.go",
+              "line": 8,
+              "col": 2,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "\"strings\" imported and not used",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/mcp/protocol/handlers.go",
+              "line": 345,
+              "col": 4,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "h.parseParams undefined (type *ListTemplatesHandler has no field or method parseParams)",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/mcp/protocol/handlers.go",
+              "line": 447,
+              "col": 4,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "h.parseParams undefined (type *ListProjectsHandler has no field or method parseParams)",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "vet.exe: cmd/core-inventory/main.go",
+              "line": 17,
+              "col": 2,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "nats redeclared in this block",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "tools/generators/mcp_generator.go",
+              "line": 6,
+              "col": 2,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "\"path/filepath\" imported and not used",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "vet.exe: internal/ai/knowledge/indexer_test.go",
+              "line": 68,
+              "col": 60,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "not enough arguments in call to NewIndexer",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "vet.exe: internal/core/crush/parallel_processor.go",
+              "line": 625,
+              "col": 6,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "min redeclared in this block",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "vet.exe: internal/core/transformer/feedforward.go",
+              "line": 194,
+              "col": 21,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "ffn.router undefined (type *FeedForwardNetwork has no field or method router)",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "vet.exe: internal/core/state/distributed_store.go",
+              "line": 543,
+              "col": 22,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "invalid operation: cannot take address of dss.stats.LockWaitTime.Nanoseconds() (value of type int64)",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/domain/value_objects/validation_rule.go",
+              "line": 69,
+              "col": 22,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "non-constant format string in call to fmt.Errorf",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "vet.exe: internal/infrastructure/persistence/relational/postgres_knowledge_repository.go",
+              "line": 203,
+              "col": 9,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "undefined: knowledgePtr",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "vet.exe: internal/mcp/protocol/router.go",
+              "line": 215,
+              "col": 6,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "parseParams redeclared in this block",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "vet.exe: internal/mcp/generators/generator_factory_test.go",
+              "line": 162,
+              "col": 35,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "cannot use tt.request (variable of struct type GenerateRequest) as *GenerateRequest value in argument to factory.ValidateRequest",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/security/encryption/encryption_manager.go",
+              "line": 56,
+              "col": 6,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "Manager redeclared in this block",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/security/encryption/certificate_manager.go",
+              "line": 42,
+              "col": 6,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "other declaration of Manager",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/security/encryption/encryption_manager.go",
+              "line": 64,
+              "col": 3,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "unknown field keyManager in struct literal of type Manager",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/security/encryption/encryption_manager.go",
+              "line": 71,
+              "col": 16,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "m.keyManager undefined (type *Manager has no field or method keyManager)",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/security/encryption/encryption_manager.go",
+              "line": 81,
+              "col": 16,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "m.keyManager undefined (type *Manager has no field or method keyManager)",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/security/encryption/key_manager.go",
+              "line": 52,
+              "col": 6,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "Manager redeclared in this block",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/security/encryption/certificate_manager.go",
+              "line": 42,
+              "col": 6,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "other declaration of Manager",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/security/encryption/key_manager.go",
+              "line": 72,
+              "col": 3,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "unknown field keyVersion in struct literal of type Manager",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/security/encryption/key_manager.go",
+              "line": 82,
+              "col": 6,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "km.encryptionKey undefined (type *Manager has no field or method encryptionKey)",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/security/encryption/key_manager.go",
+              "line": 96,
+              "col": 4,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "m.mu undefined (type *Manager has no field or method mu)",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/security/encryption/key_manager.go",
+              "line": 97,
+              "col": 10,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "m.mu undefined (type *Manager has no field or method mu)",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/security/encryption/key_manager.go",
+              "line": 99,
+              "col": 7,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "m.encryptionKey undefined (type *Manager has no field or method encryptionKey)",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "internal/security/encryption/key_manager.go",
+              "line": 99,
+              "col": 7,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "too many errors",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "vet.exe: internal/security/encryption/encryption_manager.go",
+              "line": 56,
+              "col": 6,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "Manager redeclared in this block",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "vet.exe: internal/state/cache/cache_coherency.go",
+              "line": 162,
+              "col": 11,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "cm.cache.Delete undefined (type *StateCache is pointer to interface, not interface)",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "vet.exe: internal/state/store/conflict_resolver.go",
+              "line": 622,
+              "col": 6,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "max redeclared in this block",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "vet.exe: internal/state/events/event_replay.go",
+              "line": 249,
+              "col": 2,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "declared and not used: snapshot",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "pkg/httpserver/server_test.go",
+              "line": 216,
+              "col": 5,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "comparison of function healthHandler == nil is always false",
+              "snippet": ""
+            },
+            {
+              "tool": "govet",
+              "file": "pkg/httpserver/server_test.go",
+              "line": 224,
+              "col": 5,
+              "code": "govet",
+              "severity": "FAIL",
+              "message": "comparison of function readyHandler == nil is always false",
+              "snippet": ""
+            }
+          ],
+          "fail_count": 36,
+          "warn_count": 0,
+          "info_count": 0,
+          "raw_log_path": "E:\\vertikon\\.endurance\\internal\\services\\bloco-1-core\\mcp-core-inventory\\docs\\validation\\raw\\govet.txt"
+        },
+        {
+          "tool": "staticcheck",
+          "exit_code": 1,
+          "issues": null,
+          "fail_count": 0,
+          "warn_count": 0,
+          "info_count": 0,
+          "raw_log_path": "E:\\vertikon\\.endurance\\internal\\services\\bloco-1-core\\mcp-core-inventory\\docs\\validation\\raw\\staticcheck.txt"
+        }
+      ],
+      "total_fail": 36,
+      "total_warn": 0,
+      "total_info": 0,
+      "status": "FAIL"
+    }
+  ],
+  "timestamp": "2025-11-21 21:16:58",
+  "total_fail": 36,
+  "total_info": 0,
+  "total_modules": 1,
+  "total_warn": 0
+}

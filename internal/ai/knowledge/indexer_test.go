@@ -61,11 +61,34 @@ func (m *mockGraphClient) DeleteNode(ctx context.Context, id string) error {
 	return nil
 }
 
+type mockEmbedder struct {
+	embedFunc      func(ctx context.Context, text string) ([]float64, error)
+	embedBatchFunc func(ctx context.Context, texts []string) ([][]float64, error)
+}
+
+func (m *mockEmbedder) Embed(ctx context.Context, text string) ([]float64, error) {
+	if m.embedFunc != nil {
+		return m.embedFunc(ctx, text)
+	}
+	return []float64{0.1, 0.2}, nil
+}
+
+func (m *mockEmbedder) EmbedBatch(ctx context.Context, texts []string) ([][]float64, error) {
+	if m.embedBatchFunc != nil {
+		return m.embedBatchFunc(ctx, texts)
+	}
+	result := make([][]float64, len(texts))
+	for i := range texts {
+		result[i] = []float64{0.1, 0.2}
+	}
+	return result, nil
+}
+
 func TestNewIndexer(t *testing.T) {
 	vectorClient := &mockVectorClient{}
 	graphClient := &mockGraphClient{}
 
-	indexer := NewIndexer(vectorClient, graphClient, 1000, 200)
+	indexer := NewIndexer(vectorClient, graphClient, &mockEmbedder{}, 1000, 200)
 
 	if indexer == nil {
 		t.Fatal("NewIndexer returned nil")
@@ -79,7 +102,7 @@ func TestNewIndexer(t *testing.T) {
 }
 
 func TestNewIndexer_Defaults(t *testing.T) {
-	indexer := NewIndexer(nil, nil, 0, -1)
+	indexer := NewIndexer(nil, nil, &mockEmbedder{}, 0, -1)
 
 	if indexer.chunkSize != 1000 {
 		t.Errorf("Expected default chunkSize 1000, got %d", indexer.chunkSize)
@@ -100,7 +123,7 @@ func TestIndexer_IndexDocument(t *testing.T) {
 		},
 	}
 
-	indexer := NewIndexer(vectorClient, graphClient, 100, 20)
+	indexer := NewIndexer(vectorClient, graphClient, &mockEmbedder{}, 100, 20)
 
 	ctx := context.Background()
 	err := indexer.IndexDocument(ctx, "knowledge1", "doc1", "test content", map[string]interface{}{"key": "value"})
@@ -121,7 +144,7 @@ func TestIndexer_IndexDocument_Chunking(t *testing.T) {
 		},
 	}
 
-	indexer := NewIndexer(vectorClient, graphClient, 50, 10)
+	indexer := NewIndexer(vectorClient, graphClient, &mockEmbedder{}, 50, 10)
 
 	// Create content longer than chunk size
 	longContent := ""
@@ -150,7 +173,7 @@ func TestIndexer_UpdateVectorIndex(t *testing.T) {
 		},
 	}
 
-	indexer := NewIndexer(vectorClient, nil, 1000, 200)
+	indexer := NewIndexer(vectorClient, nil, &mockEmbedder{}, 1000, 200)
 
 	ctx := context.Background()
 	vector := []float64{0.1, 0.2, 0.3}
@@ -162,7 +185,7 @@ func TestIndexer_UpdateVectorIndex(t *testing.T) {
 }
 
 func TestIndexer_UpdateVectorIndex_NoVectorClient(t *testing.T) {
-	indexer := NewIndexer(nil, nil, 1000, 200)
+	indexer := NewIndexer(nil, nil, &mockEmbedder{}, 1000, 200)
 
 	ctx := context.Background()
 	err := indexer.UpdateVectorIndex(ctx, "knowledge1", "doc1", []float64{0.1})
@@ -175,7 +198,7 @@ func TestIndexer_UpdateVectorIndex_NoVectorClient(t *testing.T) {
 func TestIndexer_DeleteKnowledge(t *testing.T) {
 	vectorClient := &mockVectorClient{}
 
-	indexer := NewIndexer(vectorClient, nil, 1000, 200)
+	indexer := NewIndexer(vectorClient, nil, &mockEmbedder{}, 1000, 200)
 
 	ctx := context.Background()
 	err := indexer.DeleteKnowledge(ctx, "knowledge1")
@@ -186,11 +209,11 @@ func TestIndexer_DeleteKnowledge(t *testing.T) {
 }
 
 func TestIndexer_chunkDocument(t *testing.T) {
-	indexer := NewIndexer(nil, nil, 100, 20)
+	indexer := NewIndexer(nil, nil, &mockEmbedder{}, 100, 20)
 
 	tests := []struct {
-		name    string
-		content string
+		name      string
+		content   string
 		minChunks int
 	}{
 		{
@@ -229,4 +252,3 @@ func TestIndexer_chunkDocument(t *testing.T) {
 		})
 	}
 }
-

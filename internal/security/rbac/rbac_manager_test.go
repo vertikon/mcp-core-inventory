@@ -107,16 +107,18 @@ func (m *MockPolicyEnforcer) Clear() {
 
 func TestRBACManager_HasPermission(t *testing.T) {
 	tests := []struct {
-		name          string
-		userID        string
-		resource      string
-		action        string
-		setupMocks    func(*MockRoleManager, *MockPermissionChecker, *MockPolicyEnforcer)
-		expected      bool
+		name       string
+		userID     string
+		roleID     string
+		resource   string
+		action     string
+		setupMocks func(*MockRoleManager, *MockPermissionChecker, *MockPolicyEnforcer)
+		expected   bool
 	}{
 		{
 			name:     "permission granted",
 			userID:   "user123",
+			roleID:   "admin",
 			resource: "mcp",
 			action:   "create",
 			setupMocks: func(rm *MockRoleManager, pc *MockPermissionChecker, pe *MockPolicyEnforcer) {
@@ -136,6 +138,7 @@ func TestRBACManager_HasPermission(t *testing.T) {
 		{
 			name:     "permission denied by role",
 			userID:   "user123",
+			roleID:   "user",
 			resource: "mcp",
 			action:   "delete",
 			setupMocks: func(rm *MockRoleManager, pc *MockPermissionChecker, pe *MockPolicyEnforcer) {
@@ -154,6 +157,7 @@ func TestRBACManager_HasPermission(t *testing.T) {
 		{
 			name:     "permission denied by policy",
 			userID:   "user123",
+			roleID:   "admin",
 			resource: "mcp",
 			action:   "delete",
 			setupMocks: func(rm *MockRoleManager, pc *MockPermissionChecker, pe *MockPolicyEnforcer) {
@@ -173,6 +177,7 @@ func TestRBACManager_HasPermission(t *testing.T) {
 		{
 			name:     "user has no roles",
 			userID:   "user456",
+			roleID:   "",
 			resource: "mcp",
 			action:   "create",
 			setupMocks: func(rm *MockRoleManager, pc *MockPermissionChecker, pe *MockPolicyEnforcer) {
@@ -190,14 +195,11 @@ func TestRBACManager_HasPermission(t *testing.T) {
 
 			manager := NewRBACManager(mockRoleManager, mockPermissionChecker, mockPolicyEnforcer)
 
-			// Assign role to user for tests that need it
-			if tt.name != "user has no roles" {
-				role := &Role{ID: "admin", Name: "Admin"}
-				mockRoleManager.On("GetRole", mock.Anything, "admin").Return(role, nil).Maybe()
-				_ = manager.AssignRole(context.Background(), tt.userID, "admin")
-			}
-
 			tt.setupMocks(mockRoleManager, mockPermissionChecker, mockPolicyEnforcer)
+
+			if tt.roleID != "" {
+				_ = manager.AssignRole(context.Background(), tt.userID, tt.roleID)
+			}
 
 			result := manager.HasPermission(tt.userID, tt.resource, tt.action)
 			assert.Equal(t, tt.expected, result)
@@ -303,4 +305,3 @@ func TestRBACManager_GetUserRoles(t *testing.T) {
 	assert.Contains(t, roles, "admin")
 	assert.Contains(t, roles, "user")
 }
-

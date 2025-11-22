@@ -17,7 +17,3 @@ var versionCmd = &cobra.Command{
 		fmt.Printf("Build Date: %s\n", BuildDate)
 	},
 }
-
-func init() {
-	rootCmd.AddCommand(versionCmd)
-}

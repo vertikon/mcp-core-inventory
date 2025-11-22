@@ -9,44 +9,44 @@ import (
 
 func TestStockLedger_Reserve(t *testing.T) {
 	tests := []struct {
-		name        string
-		initialQty  int64
-		reserveQty   int64
-		wantErr     bool
+		name          string
+		initialQty    int64
+		reserveQty    int64
+		wantErr       bool
 		wantAvailable int64
-		wantReserved int64
+		wantReserved  int64
 	}{
 		{
-			name:         "successful reservation",
-			initialQty:  100,
-			reserveQty:   50,
-			wantErr:      false,
+			name:          "successful reservation",
+			initialQty:    100,
+			reserveQty:    50,
+			wantErr:       false,
 			wantAvailable: 50,
-			wantReserved: 50,
+			wantReserved:  50,
 		},
 		{
-			name:         "insufficient stock",
-			initialQty:  100,
-			reserveQty:   150,
-			wantErr:      true,
+			name:          "insufficient stock",
+			initialQty:    100,
+			reserveQty:    150,
+			wantErr:       true,
 			wantAvailable: 100,
-			wantReserved: 0,
+			wantReserved:  0,
 		},
 		{
-			name:         "zero quantity",
-			initialQty:  100,
-			reserveQty:   0,
-			wantErr:      true,
+			name:          "zero quantity",
+			initialQty:    100,
+			reserveQty:    0,
+			wantErr:       true,
 			wantAvailable: 100,
-			wantReserved: 0,
+			wantReserved:  0,
 		},
 		{
-			name:         "negative quantity",
-			initialQty:  100,
-			reserveQty:   -10,
-			wantErr:      true,
+			name:          "negative quantity",
+			initialQty:    100,
+			reserveQty:    -10,
+			wantErr:       true,
 			wantAvailable: 100,
-			wantReserved: 0,
+			wantReserved:  0,
 		},
 	}
 
@@ -77,30 +77,30 @@ func TestStockLedger_Reserve(t *testing.T) {
 
 func TestStockLedger_ConfirmReservation(t *testing.T) {
 	tests := []struct {
-		name        string
-		initialQty  int64
-		reserveQty  int64
-		confirmQty  int64
-		wantErr     bool
-		wantTotal   int64
+		name         string
+		initialQty   int64
+		reserveQty   int64
+		confirmQty   int64
+		wantErr      bool
+		wantTotal    int64
 		wantReserved int64
 	}{
 		{
-			name:        "successful confirmation",
-			initialQty:  100,
-			reserveQty:  50,
-			confirmQty:  50,
-			wantErr:     false,
-			wantTotal:   50,
+			name:         "successful confirmation",
+			initialQty:   100,
+			reserveQty:   50,
+			confirmQty:   50,
+			wantErr:      false,
+			wantTotal:    50,
 			wantReserved: 0,
 		},
 		{
-			name:        "insufficient reserved",
-			initialQty:  100,
-			reserveQty:  50,
-			confirmQty:  60,
-			wantErr:     true,
-			wantTotal:   100,
+			name:         "insufficient reserved",
+			initialQty:   100,
+			reserveQty:   50,
+			confirmQty:   60,
+			wantErr:      true,
+			wantTotal:    100,
 			wantReserved: 50,
 		},
 	}
@@ -130,21 +130,21 @@ func TestStockLedger_ConfirmReservation(t *testing.T) {
 
 func TestReservation_IsExpired(t *testing.T) {
 	tests := []struct {
-		name     string
-		ttl      time.Duration
-		waitTime time.Duration
+		name        string
+		ttl         time.Duration
+		waitTime    time.Duration
 		wantExpired bool
 	}{
 		{
-			name:       "not expired",
-			ttl:        5 * time.Minute,
-			waitTime:   0,
+			name:        "not expired",
+			ttl:         5 * time.Minute,
+			waitTime:    0,
 			wantExpired: false,
 		},
 		{
-			name:       "expired",
-			ttl:        100 * time.Millisecond,
-			waitTime:   150 * time.Millisecond,
+			name:        "expired",
+			ttl:         100 * time.Millisecond,
+			waitTime:    150 * time.Millisecond,
 			wantExpired: true,
 		},
 	}
@@ -214,4 +214,3 @@ func TestPolicy_ValidateReservation(t *testing.T) {
 		})
 	}
 }
-

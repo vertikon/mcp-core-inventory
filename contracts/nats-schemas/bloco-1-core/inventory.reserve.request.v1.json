@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://schemas.vertikon.com/bloco-1-core/inventory.reserve.request.v1.json",
+  "title": "inventory.reserve.request.v1",
+  "type": "object",
+  "required": [
+    "event_id",
+    "reservation_id",
+    "sku",
+    "location",
+    "quantity",
+    "requested_at",
+    "trace_id"
+  ],
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "reservation_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "sku": {
+      "type": "string"
+    },
+    "location": {
+      "type": "string"
+    },
+    "quantity": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "ttl_seconds": {
+      "type": "integer",
+      "minimum": 60
+    },
+    "trace_id": {
+      "type": "string"
+    },
+    "requested_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    }
+  }
+}

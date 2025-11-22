@@ -1,0 +1,1006 @@
+openapi: 3.0.3
+info:
+  title: MCP Core Inventory API
+  description: |
+    Core Inventory Management API for the mcp-core-inventory service.
+    
+    This API provides ACID-compliant stock ledger operations with race condition protection,
+    idempotency guarantees, and real-time observability. Built following Clean Architecture
+    principles for enterprise-grade inventory management.
+    
+    ## Key Features
+    - **Atomic Stock Operations**: All stock modifications are atomic and ACID-compliant
+    - **Race Condition Protection**: Distributed locks prevent over-reservation
+    - **Idempotency**: Safe retry mechanisms with idempotency keys
+    - **Real-time Metrics**: Built-in observability and performance tracking
+    - **Multi-location Support**: Location-based inventory tracking
+    - **Batch Management**: FIFO/FEFO policies for expiration tracking
+    
+    ## Authentication
+    All endpoints require Bearer token authentication with appropriate inventory management permissions.
+    
+  version: 1.0.0
+  contact:
+    name: Vertikon Platform Team
+    email: platform@vertikon.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: https://api.vertikon.com/v1
+    description: Production server
+  - url: https://staging-api.vertikon.com/v1
+    description: Staging server
+  - url: http://localhost:8080/v1
+    description: Development server
+
+security:
+  - BearerAuth: []
+
+paths:
+  /reserve:
+    post:
+      summary: Reserve stock quantity
+      description: |
+        Reserves a specified quantity of stock for a given SKU and location.
+        
+        This operation is:
+        - **Atomic**: Cannot be partially completed
+        - **Idempotent**: Safe to retry with same idempotency_key
+        - **Race-safe**: Uses distributed locks to prevent over-reservation
+        
+        ## Business Rules
+        - Reservation expires if not confirmed within TTL period
+        - Only available stock can be reserved
+        - Each location maintains independent stock ledgers
+        - Idempotency keys prevent duplicate reservations
+        
+        ## Error Scenarios
+        - `400 Bad Request`: Invalid input or insufficient stock
+        - `409 Conflict`: Insufficient available stock
+        - `422 Unprocessable`: Reservation would cause negative balance
+        - `429 Too Many Requests`: Rate limited or lock acquisition failed
+        
+      operationId: reserveStock
+      tags:
+        - Reservations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReserveStockRequest'
+            examples:
+              successfulReservation:
+                summary: Standard reservation request
+                value:
+                  sku: "SKU-12345"
+                  location: "WH-01"
+                  quantity: 10
+                  idempotency_key: "order_12345_v1"
+                  ttl: "15m"
+              bulkReservation:
+                summary: Large quantity reservation
+                value:
+                  sku: "SKU-BULK-001"
+                  location: "WH-MAIN"
+                  quantity: 500
+                  idempotency_key: "bulk_batch_789"
+                  ttl: "1h"
+      responses:
+        '200':
+          description: Stock successfully reserved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReservationResponse'
+              examples:
+                successExample:
+                  summary: Successful reservation
+                  value:
+                    reservation_id: "res_abc123def456"
+                    sku: "SKU-12345"
+                    location: "WH-01"
+                    quantity: 10
+                    status: "pending"
+                    expires_at: "2024-12-01T12:15:00Z"
+                    created_at: "2024-12-01T12:00:00Z"
+        '400':
+          description: Bad request - Invalid input or business rule violation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                invalidQuantity:
+                  summary: Invalid quantity
+                  value:
+                    error: "reservation quantity must be positive"
+                    code: "INVALID_QUANTITY"
+                    timestamp: "2024-12-01T12:00:00Z"
+                expiredReservation:
+                  summary: Reservation expired
+                  value:
+                    error: "reservation expired"
+                    code: "RESERVATION_EXPIRED"
+                    timestamp: "2024-12-01T12:00:00Z"
+        '409':
+          description: Conflict - Insufficient stock available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                insufficientStock:
+                  summary: Not enough stock available
+                  value:
+                    error: "insufficient stock available"
+                    code: "INSUFFICIENT_STOCK"
+                    details:
+                      available: 5
+                      requested: 10
+                      sku: "SKU-12345"
+                      location: "WH-01"
+                    timestamp: "2024-12-01T12:00:00Z"
+        '429':
+          description: Too many requests - Rate limited or lock failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                rateLimited:
+                  summary: Rate limit exceeded
+                  value:
+                    error: "rate limit exceeded"
+                    code: "RATE_LIMIT_EXCEEDED"
+                    retry_after: 60
+                    timestamp: "2024-12-01T12:00:00Z"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                internalError:
+                  summary: Unexpected system error
+                  value:
+                    error: "internal server error"
+                    code: "INTERNAL_ERROR"
+                    timestamp: "2024-12-01T12:00:00Z"
+
+  /confirm:
+    post:
+      summary: Confirm a reservation
+      description: |
+        Confirms a previously created reservation, converting it from pending to confirmed status
+        and permanently reducing the available stock.
+        
+        ## Business Rules
+        - Only pending reservations can be confirmed
+        - Confirmation reduces total stock permanently
+        - Expired reservations cannot be confirmed
+        - Operation is atomic and irreversible
+        
+        ## Error Scenarios
+        - `400 Bad Request`: Invalid reservation ID or state
+        - `404 Not Found`: Reservation does not exist
+        - `409 Conflict`: Reservation already processed or expired
+      operationId: confirmReservation
+      tags:
+        - Reservations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfirmReservationRequest'
+            examples:
+              confirmExample:
+                summary: Confirm reservation
+                value:
+                  reservation_id: "res_abc123def456"
+      responses:
+        '200':
+          description: Reservation successfully confirmed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReservationConfirmationResponse'
+              examples:
+                confirmationSuccess:
+                  summary: Successful confirmation
+                  value:
+                    reservation_id: "res_abc123def456"
+                    sku: "SKU-12345"
+                    location: "WH-01"
+                    quantity: 10
+                    status: "confirmed"
+                    confirmed_at: "2024-12-01T12:05:00Z"
+                    stock_after:
+                      available: 90
+                      reserved: 0
+                      total: 90
+        '400':
+          description: Bad request - Invalid reservation state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                alreadyConfirmed:
+                  summary: Reservation already confirmed
+                  value:
+                    error: "only pending reservations can be confirmed"
+                    code: "INVALID_RESERVATION_STATE"
+                    timestamp: "2024-12-01T12:00:00Z"
+        '404':
+          description: Reservation not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                notFound:
+                  summary: Reservation does not exist
+                  value:
+                    error: "reservation not found"
+                    code: "RESERVATION_NOT_FOUND"
+                    timestamp: "2024-12-01T12:00:00Z"
+
+  /release:
+    post:
+      summary: Release a reservation
+      description: |
+        Releases a pending reservation, returning the reserved quantity back to available stock.
+        
+        ## Business Rules
+        - Only pending reservations can be released
+        - Released quantity becomes immediately available
+        - Operation is atomic and reversible
+        - Commonly used for abandoned carts or cancelled orders
+        
+        ## Error Scenarios
+        - `400 Bad Request`: Invalid reservation ID or state
+        - `404 Not Found`: Reservation does not exist
+        - `409 Conflict`: Reservation already processed
+      operationId: releaseReservation
+      tags:
+        - Reservations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReleaseReservationRequest'
+            examples:
+              releaseExample:
+                summary: Release reservation
+                value:
+                  reservation_id: "res_abc123def456"
+      responses:
+        '200':
+          description: Reservation successfully released
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReservationReleaseResponse'
+              examples:
+                releaseSuccess:
+                  summary: Successful release
+                  value:
+                    reservation_id: "res_abc123def456"
+                    sku: "SKU-12345"
+                    location: "WH-01"
+                    quantity: 10
+                    status: "released"
+                    released_at: "2024-12-01T12:05:00Z"
+                    stock_after:
+                      available: 100
+                      reserved: 0
+                      total: 100
+        '400':
+          description: Bad request - Invalid reservation state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                cannotRelease:
+                  summary: Cannot release confirmed reservation
+                  value:
+                    error: "only pending reservations can be released"
+                    code: "INVALID_RESERVATION_STATE"
+                    timestamp: "2024-12-01T12:00:00Z"
+
+  /adjust:
+    post:
+      summary: Adjust stock quantity
+      description: |
+        Adjusts stock quantity for administrative corrections, inventory counts, or returns.
+        
+        ## Business Rules
+        - Positive quantity increases total stock
+        - Negative quantity decreases total stock
+        - Cannot create negative total stock
+        - Adjustments are logged with audit trail
+        - Bypasses reservation system (direct ledger adjustment)
+        
+        ## Error Scenarios
+        - `400 Bad Request`: Invalid adjustment or would create negative stock
+        - `403 Forbidden`: Insufficient permissions for stock adjustments
+      operationId: adjustStock
+      tags:
+        - Stock Management
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdjustStockRequest'
+            examples:
+              stockIncrease:
+                summary: Increase stock (new inventory)
+                value:
+                  sku: "SKU-12345"
+                  location: "WH-01"
+                  quantity: 50
+                  reason: "New inventory receipt - PO-789"
+                  created_by: "inventory_manager_01"
+              stockDecrease:
+                summary: Decrease stock (damage/loss)
+                value:
+                  sku: "SKU-67890"
+                  location: "WH-02"
+                  quantity: -2
+                  reason: "Damaged goods - quality control"
+                  created_by: "quality_inspector_03"
+      responses:
+        '200':
+          description: Stock successfully adjusted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StockAdjustmentResponse'
+              examples:
+                adjustmentSuccess:
+                  summary: Successful adjustment
+                  value:
+                    sku: "SKU-12345"
+                    location: "WH-01"
+                    adjustment_quantity: 50
+                    adjustment_type: "increase"
+                    stock_after:
+                      available: 150
+                      reserved: 0
+                      total: 150
+                    adjusted_at: "2024-12-01T12:05:00Z"
+        '400':
+          description: Bad request - Invalid adjustment
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                negativeStock:
+                  summary: Would create negative stock
+                  value:
+                    error: "stock cannot be negative"
+                    code: "NEGATIVE_STOCK"
+                    details:
+                      requested_adjustment: -200
+                      current_total: 100
+                      sku: "SKU-12345"
+                      location: "WH-01"
+                    timestamp: "2024-12-01T12:00:00Z"
+
+  /available:
+    get:
+      summary: Query available stock
+      description: |
+        Retrieves current available stock information for a specific SKU and location.
+        
+        ## Features
+        - Real-time stock levels
+        - Multi-dimensional stock view (available/reserved/total)
+        - Cached responses for high performance
+        - Consistent read guarantees
+        
+        ## Caching
+        Responses are cached for 5 seconds by default to ensure high performance
+        while maintaining near real-time accuracy.
+        
+        ## Error Scenarios
+        - `400 Bad Request`: Missing required parameters
+        - `404 Not Found`: SKU/location combination does not exist
+      operationId: queryAvailable
+      tags:
+        - Stock Queries
+      parameters:
+        - name: sku
+          in: query
+          required: true
+          description: Stock Keeping Unit identifier
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 100
+            pattern: '^[A-Za-z0-9\-_]+$'
+          example: "SKU-12345"
+        - name: location
+          in: query
+          required: true
+          description: Warehouse or store location code
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 50
+            pattern: '^[A-Za-z0-9\-_]+$'
+          example: "WH-01"
+        - name: include_reserved
+          in: query
+          required: false
+          description: Include reserved stock information in response
+          schema:
+            type: boolean
+            default: false
+          example: true
+      responses:
+        '200':
+          description: Stock information retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StockQueryResponse'
+              examples:
+                stockAvailable:
+                  summary: Stock query result
+                  value:
+                    sku: "SKU-12345"
+                    location: "WH-01"
+                    stock:
+                      available: 100
+                      reserved: 25
+                      total: 125
+                    last_updated: "2024-12-01T12:00:00Z"
+                    cache_ttl: 5
+        '400':
+          description: Bad request - Missing parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                missingParams:
+                  summary: Required parameters missing
+                  value:
+                    error: "sku and location query parameters are required"
+                    code: "MISSING_PARAMETERS"
+                    timestamp: "2024-12-01T12:00:00Z"
+        '404':
+          description: Stock not found for SKU/location combination
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                stockNotFound:
+                  summary: No stock record found
+                  value:
+                    error: "stock not found for sku and location"
+                    code: "STOCK_NOT_FOUND"
+                    details:
+                      sku: "SKU-NONEXISTENT"
+                      location: "WH-01"
+                    timestamp: "2024-12-01T12:00:00Z"
+
+  /health:
+    get:
+      summary: Health check endpoint
+      description: |
+        Provides health status of the core inventory service.
+        
+        ## Health Checks
+        - **Database**: PostgreSQL connectivity and query performance
+        - **Cache**: Redis connectivity and response time
+        - **Lock Service**: Distributed lock service availability
+        - **NATS**: Message broker connectivity
+        - **Overall**: Aggregate health status
+        
+        ## Response Interpretation
+        - `200 OK`: All systems healthy
+        - `503 Service Unavailable**: One or more systems degraded
+      operationId: healthCheck
+      tags:
+        - System
+      responses:
+        '200':
+          description: All systems healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+              examples:
+                healthy:
+                  summary: All systems operational
+                  value:
+                    status: "healthy"
+                    timestamp: "2024-12-01T12:00:00Z"
+                    uptime_seconds: 86400
+                    checks:
+                      database: "healthy"
+                      cache: "healthy"
+                      locks: "healthy"
+                      nats: "healthy"
+                    version: "1.0.0"
+        '503':
+          description: One or more systems unhealthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+              examples:
+                degraded:
+                  summary: Database connectivity issues
+                  value:
+                    status: "degraded"
+                    timestamp: "2024-12-01T12:00:00Z"
+                    uptime_seconds: 86400
+                    checks:
+                      database: "unhealthy"
+                      cache: "healthy"
+                      locks: "healthy"
+                      nats: "healthy"
+                    version: "1.0.0"
+
+components:
+  schemas:
+    ReserveStockRequest:
+      type: object
+      required:
+        - sku
+        - location
+        - quantity
+      properties:
+        sku:
+          type: string
+          description: Stock Keeping Unit identifier
+          minLength: 1
+          maxLength: 100
+          pattern: '^[A-Za-z0-9\-_]+$'
+          example: "SKU-12345"
+        location:
+          type: string
+          description: Warehouse or store location code
+          minLength: 1
+          maxLength: 50
+          pattern: '^[A-Za-z0-9\-_]+$'
+          example: "WH-01"
+        quantity:
+          type: integer
+          description: Quantity to reserve (must be positive)
+          format: int64
+          minimum: 1
+          maximum: 1000000
+          example: 10
+        idempotency_key:
+          type: string
+          description: |
+            Unique identifier for idempotency protection.
+            Prevents duplicate reservations on network retries.
+            Recommended format: "{order_id}_{attempt}"
+          minLength: 1
+          maxLength: 255
+          example: "order_12345_v1"
+        ttl:
+          type: string
+          description: |
+            Time-to-live for the reservation.
+            If not specified, uses default TTL (15 minutes).
+            Must be valid duration string (e.g., "15m", "1h", "24h").
+          format: duration
+          pattern: '^\d+[smhd]$'
+          example: "15m"
+          default: "15m"
+
+    ReservationResponse:
+      type: object
+      properties:
+        reservation_id:
+          type: string
+          description: Unique identifier for the reservation
+          readOnly: true
+          example: "res_abc123def456"
+        sku:
+          type: string
+          description: Reserved SKU
+          readOnly: true
+          example: "SKU-12345"
+        location:
+          type: string
+          description: Reservation location
+          readOnly: true
+          example: "WH-01"
+        quantity:
+          type: integer
+          description: Reserved quantity
+          format: int64
+          readOnly: true
+          example: 10
+        status:
+          type: string
+          description: Current reservation status
+          enum: [pending, confirmed, released, expired]
+          readOnly: true
+          example: "pending"
+        expires_at:
+          type: string
+          description: Reservation expiration timestamp (ISO 8601)
+          format: date-time
+          readOnly: true
+          example: "2024-12-01T12:15:00Z"
+        created_at:
+          type: string
+          description: Reservation creation timestamp (ISO 8601)
+          format: date-time
+          readOnly: true
+          example: "2024-12-01T12:00:00Z"
+
+    ConfirmReservationRequest:
+      type: object
+      required:
+        - reservation_id
+      properties:
+        reservation_id:
+          type: string
+          description: Reservation ID to confirm
+          minLength: 1
+          maxLength: 255
+          example: "res_abc123def456"
+
+    ReservationConfirmationResponse:
+      type: object
+      properties:
+        reservation_id:
+          type: string
+          description: Confirmed reservation ID
+          readOnly: true
+          example: "res_abc123def456"
+        sku:
+          type: string
+          description: Confirmed SKU
+          readOnly: true
+          example: "SKU-12345"
+        location:
+          type: string
+          description: Confirmation location
+          readOnly: true
+          example: "WH-01"
+        quantity:
+          type: integer
+          description: Confirmed quantity
+          format: int64
+          readOnly: true
+          example: 10
+        status:
+          type: string
+          description: Updated reservation status
+          enum: [confirmed]
+          readOnly: true
+          example: "confirmed"
+        confirmed_at:
+          type: string
+          description: Confirmation timestamp (ISO 8601)
+          format: date-time
+          readOnly: true
+          example: "2024-12-01T12:05:00Z"
+        stock_after:
+          $ref: '#/components/schemas/StockLevels'
+
+    ReleaseReservationRequest:
+      type: object
+      required:
+        - reservation_id
+      properties:
+        reservation_id:
+          type: string
+          description: Reservation ID to release
+          minLength: 1
+          maxLength: 255
+          example: "res_abc123def456"
+
+    ReservationReleaseResponse:
+      type: object
+      properties:
+        reservation_id:
+          type: string
+          description: Released reservation ID
+          readOnly: true
+          example: "res_abc123def456"
+        sku:
+          type: string
+          description: Released SKU
+          readOnly: true
+          example: "SKU-12345"
+        location:
+          type: string
+          description: Release location
+          readOnly: true
+          example: "WH-01"
+        quantity:
+          type: integer
+          description: Released quantity
+          format: int64
+          readOnly: true
+          example: 10
+        status:
+          type: string
+          description: Updated reservation status
+          enum: [released]
+          readOnly: true
+          example: "released"
+        released_at:
+          type: string
+          description: Release timestamp (ISO 8601)
+          format: date-time
+          readOnly: true
+          example: "2024-12-01T12:05:00Z"
+        stock_after:
+          $ref: '#/components/schemas/StockLevels'
+
+    AdjustStockRequest:
+      type: object
+      required:
+        - sku
+        - location
+        - quantity
+        - reason
+        - created_by
+      properties:
+        sku:
+          type: string
+          description: Stock Keeping Unit identifier
+          minLength: 1
+          maxLength: 100
+          example: "SKU-12345"
+        location:
+          type: string
+          description: Warehouse or store location code
+          minLength: 1
+          maxLength: 50
+          example: "WH-01"
+        quantity:
+          type: integer
+          description: |
+            Adjustment quantity.
+            Positive = increase stock, Negative = decrease stock.
+          format: int64
+          minimum: -1000000
+          maximum: 1000000
+          example: 50
+        reason:
+          type: string
+          description: Business reason for the adjustment
+          minLength: 1
+          maxLength: 500
+          example: "New inventory receipt - PO-789"
+        created_by:
+          type: string
+          description: User or system performing the adjustment
+          minLength: 1
+          maxLength: 100
+          example: "inventory_manager_01"
+
+    StockAdjustmentResponse:
+      type: object
+      properties:
+        sku:
+          type: string
+          description: Adjusted SKU
+          readOnly: true
+          example: "SKU-12345"
+        location:
+          type: string
+          description: Adjustment location
+          readOnly: true
+          example: "WH-01"
+        adjustment_quantity:
+          type: integer
+          description: Quantity that was adjusted
+          format: int64
+          readOnly: true
+          example: 50
+        adjustment_type:
+          type: string
+          description: Type of adjustment
+          enum: [increase, decrease]
+          readOnly: true
+          example: "increase"
+        stock_after:
+          $ref: '#/components/schemas/StockLevels'
+        adjusted_at:
+          type: string
+          description: Adjustment timestamp (ISO 8601)
+          format: date-time
+          readOnly: true
+          example: "2024-12-01T12:05:00Z"
+
+    StockQueryResponse:
+      type: object
+      properties:
+        sku:
+          type: string
+          description: Queried SKU
+          readOnly: true
+          example: "SKU-12345"
+        location:
+          type: string
+          description: Queried location
+          readOnly: true
+          example: "WH-01"
+        stock:
+          $ref: '#/components/schemas/StockLevels'
+        last_updated:
+          type: string
+          description: Last stock update timestamp (ISO 8601)
+          format: date-time
+          readOnly: true
+          example: "2024-12-01T12:00:00Z"
+        cache_ttl:
+          type: integer
+          description: Cache TTL in seconds
+          format: int32
+          readOnly: true
+          example: 5
+
+    StockLevels:
+      type: object
+      description: Current stock levels for a SKU/location
+      properties:
+        available:
+          type: integer
+          description: Available stock for reservation
+          format: int64
+          readOnly: true
+          example: 100
+        reserved:
+          type: integer
+          description: Currently reserved stock
+          format: int64
+          readOnly: true
+          example: 25
+        total:
+          type: integer
+          description: Total stock in location
+          format: int64
+          readOnly: true
+          example: 125
+      required:
+        - available
+        - reserved
+        - total
+
+    HealthResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          description: Overall health status
+          enum: [healthy, degraded, unhealthy]
+          readOnly: true
+          example: "healthy"
+        timestamp:
+          type: string
+          description: Health check timestamp (ISO 8601)
+          format: date-time
+          readOnly: true
+          example: "2024-12-01T12:00:00Z"
+        uptime_seconds:
+          type: number
+          description: Service uptime in seconds
+          format: double
+          readOnly: true
+          example: 86400
+        checks:
+          type: object
+          description: Individual health check results
+          properties:
+            database:
+              type: string
+              enum: [healthy, unhealthy]
+              example: "healthy"
+            cache:
+              type: string
+              enum: [healthy, unhealthy]
+              example: "healthy"
+            locks:
+              type: string
+              enum: [healthy, unhealthy]
+              example: "healthy"
+            nats:
+              type: string
+              enum: [healthy, unhealthy]
+              example: "healthy"
+          readOnly: true
+        version:
+          type: string
+          description: Service version
+          readOnly: true
+          example: "1.0.0"
+
+    Error:
+      type: object
+      description: Standard error response format
+      properties:
+        error:
+          type: string
+          description: Human-readable error message
+          example: "insufficient stock available"
+        code:
+          type: string
+          description: Machine-readable error code
+          example: "INSUFFICIENT_STOCK"
+        details:
+          type: object
+          description: Additional error context (when available)
+          properties:
+            available:
+              type: integer
+              format: int64
+              example: 5
+            requested:
+              type: integer
+              format: int64
+              example: 10
+            sku:
+              type: string
+              example: "SKU-12345"
+            location:
+              type: string
+              example: "WH-01"
+          readOnly: true
+        retry_after:
+          type: integer
+          description: Suggested retry delay in seconds (for rate limiting)
+          format: int32
+          example: 60
+        timestamp:
+          type: string
+          description: Error timestamp (ISO 8601)
+          format: date-time
+          readOnly: true
+          example: "2024-12-01T12:00:00Z"
+      required:
+        - error
+        - code
+        - timestamp
+
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        JWT token containing user identity and permissions.
+        
+        Required claims:
+        - `sub`: User identifier
+        - `permissions`: Array of permission strings
+        - `exp`: Expiration timestamp
+        
+        Required permissions for endpoints:
+        - Reservations: `inventory:reserve`, `inventory:confirm`, `inventory:release`
+        - Stock Management: `inventory:adjust`
+        - Stock Queries: `inventory:read`
+
+tags:
+  - name: Reservations
+    description: Stock reservation lifecycle management
+  - name: Stock Management
+    description: Administrative stock adjustments and management
+  - name: Stock Queries
+    description: Stock level queries and information
+  - name: System
+    description: System health and status information

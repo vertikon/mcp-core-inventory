@@ -1,0 +1,406 @@
+openapi: 3.0.3
+info:
+  title: MCP Fulfillment Ops API
+  version: 1.0.0
+  description: >
+    API operacional responsável por orquestrar as operações físicas de inbound, outbound, transferências, devoluções e contagens.
+servers:
+  - url: https://api.vertikon.com/fulfillment/v1
+  - url: http://localhost:8082/v1
+tags:
+  - name: Inbound
+  - name: Outbound
+  - name: Transfers
+  - name: Returns
+  - name: CycleCount
+paths:
+  /inbound/start:
+    post:
+      tags: [Inbound]
+      summary: Registra o início de um recebimento
+      operationId: startInbound
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InboundStartRequest'
+      responses:
+        '202':
+          description: Recebimento aceito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InboundResponse'
+  /inbound/confirm:
+    post:
+      tags: [Inbound]
+      summary: Confirma o recebimento físico
+      operationId: confirmInbound
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InboundConfirmRequest'
+      responses:
+        '200':
+          description: Recebimento concluído
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InboundResponse'
+  /outbound/start_picking:
+    post:
+      tags: [Outbound]
+      summary: Inicia picking de um pedido
+      operationId: startPicking
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OutboundStartRequest'
+      responses:
+        '202':
+          description: Picking iniciado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutboundResponse'
+  /outbound/ship:
+    post:
+      tags: [Outbound]
+      summary: Confirma expedição
+      operationId: shipOrder
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OutboundShipRequest'
+      responses:
+        '200':
+          description: Pedido expedido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutboundResponse'
+  /transfer/create:
+    post:
+      tags: [Transfers]
+      summary: Cria ordem de transferência
+      operationId: createTransfer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransferCreateRequest'
+      responses:
+        '202':
+          description: Transferência registrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransferResponse'
+  /transfer/complete:
+    post:
+      tags: [Transfers]
+      summary: Conclui transferência
+      operationId: completeTransfer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransferCompleteRequest'
+      responses:
+        '200':
+          description: Transferência concluída
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransferResponse'
+  /returns/register:
+    post:
+      tags: [Returns]
+      summary: Registra devolução
+      operationId: registerReturn
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReturnRegisterRequest'
+      responses:
+        '202':
+          description: Devolução registrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReturnResponse'
+  /returns/complete:
+    post:
+      tags: [Returns]
+      summary: Conclui devolução
+      operationId: completeReturn
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReturnCompleteRequest'
+      responses:
+        '200':
+          description: Devolução concluída
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReturnResponse'
+  /cycle_count/open:
+    post:
+      tags: [CycleCount]
+      summary: Abre tarefa de contagem cíclica
+      operationId: openCycleCount
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CycleCountOpenRequest'
+      responses:
+        '202':
+          description: Tarefa criada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CycleCountResponse'
+  /cycle_count/submit:
+    post:
+      tags: [CycleCount]
+      summary: Envia contagem realizada
+      operationId: submitCycleCount
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CycleCountSubmitRequest'
+      responses:
+        '200':
+          description: Contagem processada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CycleCountResponse'
+components:
+  schemas:
+    Item:
+      type: object
+      required: [sku, quantity]
+      properties:
+        sku:
+          type: string
+        quantity:
+          type: integer
+        batch_code:
+          type: string
+        expiry_date:
+          type: string
+          format: date
+    InboundStartRequest:
+      type: object
+      required: [shipment_id, destination, items]
+      properties:
+        shipment_id:
+          type: string
+        origin:
+          type: string
+        destination:
+          type: string
+        expected_at:
+          type: string
+          format: date-time
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Item'
+    InboundConfirmRequest:
+      type: object
+      required: [shipment_id, items]
+      properties:
+        shipment_id:
+          type: string
+        received_at:
+          type: string
+          format: date-time
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Item'
+    InboundResponse:
+      type: object
+      properties:
+        shipment_id:
+          type: string
+        status:
+          type: string
+          enum: [PENDING, IN_PROGRESS, COMPLETED]
+        discrepancies:
+          type: array
+          items:
+            type: string
+    OutboundStartRequest:
+      type: object
+      required: [order_id, destination, items]
+      properties:
+        order_id:
+          type: string
+        destination:
+          type: string
+        priority:
+          type: integer
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Item'
+    OutboundShipRequest:
+      type: object
+      required: [order_id, carrier, tracking]
+      properties:
+        order_id:
+          type: string
+        carrier:
+          type: string
+        tracking:
+          type: string
+        shipped_at:
+          type: string
+          format: date-time
+    OutboundResponse:
+      type: object
+      properties:
+        order_id:
+          type: string
+        status:
+          type: string
+          enum: [PENDING, IN_PROGRESS, SHIPPED]
+    TransferCreateRequest:
+      type: object
+      required: [transfer_id, origin, destination, items]
+      properties:
+        transfer_id:
+          type: string
+        origin:
+          type: string
+        destination:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Item'
+    TransferCompleteRequest:
+      type: object
+      required: [transfer_id, received_at]
+      properties:
+        transfer_id:
+          type: string
+        received_at:
+          type: string
+          format: date-time
+    TransferResponse:
+      type: object
+      properties:
+        transfer_id:
+          type: string
+        status:
+          type: string
+          enum: [PENDING, IN_PROGRESS, COMPLETED]
+    ReturnRegisterRequest:
+      type: object
+      required: [return_id, source, reason, items]
+      properties:
+        return_id:
+          type: string
+        source:
+          type: string
+        reason:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Item'
+    ReturnCompleteRequest:
+      type: object
+      required: [return_id, disposition]
+      properties:
+        return_id:
+          type: string
+        disposition:
+          type: string
+          enum: [RESTOCK, SCRAP, INSPECTION]
+    ReturnResponse:
+      type: object
+      properties:
+        return_id:
+          type: string
+        status:
+          type: string
+          enum: [PENDING, IN_PROGRESS, COMPLETED]
+    CycleCountOpenRequest:
+      type: object
+      required: [task_id, location, items]
+      properties:
+        task_id:
+          type: string
+        location:
+          type: string
+        scheduled_for:
+          type: string
+          format: date-time
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              sku:
+                type: string
+              expected_quantity:
+                type: integer
+    CycleCountSubmitRequest:
+      type: object
+      required: [task_id, counted_by, results]
+      properties:
+        task_id:
+          type: string
+        counted_by:
+          type: string
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              sku:
+                type: string
+              counted_quantity:
+                type: integer
+    CycleCountResponse:
+      type: object
+      properties:
+        task_id:
+          type: string
+        status:
+          type: string
+          enum: [PENDING, IN_PROGRESS, COMPLETED]
+        discrepancies:
+          type: array
+          items:
+            type: object
+            properties:
+              sku:
+                type: string
+              expected:
+                type: integer
+              counted:
+                type: integer

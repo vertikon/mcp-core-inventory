@@ -1,0 +1,137 @@
+{
+  "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+  "runs": [
+    {
+      "results": [
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "vet.exe: internal/ai/knowledge/indexer_test.go"
+                },
+                "region": {
+                  "startColumn": 60,
+                  "startLine": 68
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "not enough arguments in call to NewIndexer"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/domain/value_objects/validation_rule.go"
+                },
+                "region": {
+                  "startColumn": 22,
+                  "startLine": 69
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "non-constant format string in call to fmt.Errorf"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "vet.exe: internal/mcp/generators/generator_factory_test.go"
+                },
+                "region": {
+                  "startColumn": 35,
+                  "startLine": 162
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "cannot use tt.request (variable of struct type GenerateRequest) as *GenerateRequest value in argument to factory.ValidateRequest"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "vet.exe: internal/mcp/protocol/server_test.go"
+                },
+                "region": {
+                  "startColumn": 2,
+                  "startLine": 5
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "\"encoding/json\" imported and not used"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "pkg/httpserver/server_test.go"
+                },
+                "region": {
+                  "startColumn": 5,
+                  "startLine": 216
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "comparison of function healthHandler == nil is always false"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "pkg/httpserver/server_test.go"
+                },
+                "region": {
+                  "startColumn": 5,
+                  "startLine": 224
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "comparison of function readyHandler == nil is always false"
+          },
+          "ruleId": "govet"
+        }
+      ],
+      "tool": {
+        "driver": {
+          "informationUri": "https://github.com/vertikon/mcp-validator",
+          "name": "MCP Validator V9.1",
+          "version": "9.4"
+        }
+      }
+    }
+  ],
+  "version": "2.1.0"
+}

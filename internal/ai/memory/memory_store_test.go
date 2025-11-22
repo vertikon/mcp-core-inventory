@@ -220,7 +220,9 @@ func TestMemoryStore_GetEpisodic(t *testing.T) {
 
 	ctx := context.Background()
 	memory, _ := entities.NewEpisodicMemory("content", "session1")
-	repo.Save(ctx, memory.Memory)
+	if err := store.SaveEpisodic(ctx, memory); err != nil {
+		t.Fatalf("failed to save episodic memory: %v", err)
+	}
 
 	episodic, err := store.GetEpisodic(ctx, "session1")
 	if err != nil {
@@ -238,7 +240,9 @@ func TestMemoryStore_GetSemantic(t *testing.T) {
 
 	ctx := context.Background()
 	memory, _ := entities.NewSemanticMemory("content", "session1")
-	repo.Save(ctx, memory.Memory)
+	if err := store.SaveSemantic(ctx, memory); err != nil {
+		t.Fatalf("failed to save semantic memory: %v", err)
+	}
 
 	semantic, err := store.GetSemantic(ctx, 10)
 	if err != nil {
@@ -257,7 +261,9 @@ func TestMemoryStore_GetWorking(t *testing.T) {
 
 	ctx := context.Background()
 	memory, _ := entities.NewWorkingMemory("content", "session1", "task1", 5)
-	repo.Save(ctx, memory.Memory)
+	if err := store.SaveWorking(ctx, memory); err != nil {
+		t.Fatalf("failed to save working memory: %v", err)
+	}
 
 	working, err := store.GetWorking(ctx, "session1", "task1")
 	if err != nil {
@@ -276,7 +282,7 @@ func TestMemoryStore_DeleteEpisodic(t *testing.T) {
 
 	ctx := context.Background()
 	memory, _ := entities.NewEpisodicMemory("content", "session1")
-	repo.Save(ctx, memory.Memory)
+	store.SaveEpisodic(ctx, memory)
 
 	err := store.DeleteEpisodic(ctx, "session1")
 	if err != nil {
@@ -296,7 +302,7 @@ func TestMemoryStore_DeleteWorking(t *testing.T) {
 
 	ctx := context.Background()
 	memory, _ := entities.NewWorkingMemory("content", "session1", "task1", 5)
-	repo.Save(ctx, memory.Memory)
+	store.SaveWorking(ctx, memory)
 
 	err := store.DeleteWorking(ctx, "session1", "task1")
 	if err != nil {
@@ -308,4 +314,3 @@ func TestMemoryStore_DeleteWorking(t *testing.T) {
 		t.Error("Expected error when getting deleted working memory")
 	}
 }
-

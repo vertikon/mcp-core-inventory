@@ -1,7 +1,120 @@
-# Feature flags (providers, modos, templates, integrações)
-# Enable/disable features without redeploy
+# Configuração de Features - BLOCO-1 Core Inventory
+# Controla ativação de funcionalidades do Ledger ACID
 
 features:
-  external_gpu: false    # Enable external GPU compute (RunPod)
-  audit_logging: false   # Enable detailed audit logging
-  beta_generators: false # Enable beta template generators
+  # Core Ledger (Sempre ON - P0)
+  enable_ledger_acid: true
+  enable_stock_reservations: true
+  enable_stock_adjustments: true
+  enable_batch_tracking: true
+  enable_expiration_control: true
+  
+  # Controle de Concorrência (P0)
+  enable_redis_locks: true
+  enable_postgres_fallback: true
+  enable_race_condition_detection: true
+  enable_deadlock_prevention: true
+  
+  # API e Contratos (P0)
+  enable_api_v1: true
+  enable_api_v2: false
+  enable_idempotency: true
+  enable_rate_limiting: true
+  enable_cors: true
+  
+  # Observabilidade (P0)
+  enable_metrics: true
+  enable_tracing: true
+  enable_structured_logging: true
+  enable_health_checks: true
+  enable_performance_monitoring: true
+  
+  # Eventos (P0)
+  enable_nats_events: true
+  enable_event_schemas: true
+  enable_event_idempotency: true
+  enable_event_retry: true
+  
+  # Cache (P0)
+  enable_redis_cache: true
+  enable_cache_invalidation: true
+  enable_cache_warmup: false
+  
+  # Segurança (P0)
+  enable_jwt_auth: true
+  enable_rbac: true
+  enable_input_validation: true
+  enable_audit_logging: true
+  
+  # IA e Machine Learning (P1 - Futuro)
+  enable_ai_inventory_specialist: false
+  enable_realtime_anomaly_detection: false
+  enable_demand_forecasting: false
+  enable_auto_replenishment: false
+  
+  # Operações Avançadas (P1)
+  enable_cycle_counting: false
+  enable_inventory_transfers: false
+  enable_cross_docking: false
+  enable_drop_shipping: false
+  
+  # Performance e Escalabilidade (P1)
+  enable_connection_pooling: true
+  enable_read_replicas: false
+  enable_horizontal_scaling: false
+  enable_auto_scaling: false
+  
+  # Testes e Validação (P1)
+  enable_chaos_testing: false
+  enable_load_testing: false
+  enable_integration_tests: false
+  enable_contract_tests: false
+  
+  # Monitoramento Avançado (P2)
+  enable_business_metrics: false
+  enable_sla_monitoring: false
+  enable_error_budgeting: false
+  enable_capacity_planning: false
+  
+  # Migração e Evolução (P2)
+  enable_schema_evolution: false
+  enable_data_migration: false
+  enable_legacy_compatibility: false
+  enable_api_deprecation: false
+
+# Configurações de Feature Flags
+feature_flags:
+  # Controle de Rollout
+  rollout_percentage: 100
+  rollout_strategy: "full"  # full, gradual, canary
+  
+  # Controle de Acesso
+  allowed_tenants: ["*"]
+  blocked_ips: []
+  rate_limit_per_minute: 1000
+  
+  # Controle de Versão
+  default_api_version: "v1"
+  deprecated_versions: []
+  
+  # Controle Experimental
+  experimental_features: []
+  beta_features: []
+  
+# Configurações de Ambientes
+environments:
+  development:
+    enable_debug_logs: true
+    enable_hot_reload: true
+    enable_mock_services: false
+    
+  staging:
+    enable_debug_logs: false
+    enable_performance_monitoring: true
+    enable_load_testing: true
+    
+  production:
+    enable_debug_logs: false
+    enable_performance_monitoring: true
+    enable_security_hardening: true
+    enable_backup_automation: true

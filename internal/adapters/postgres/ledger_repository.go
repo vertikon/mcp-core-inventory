@@ -95,13 +95,22 @@ func (r *LedgerRepository) FindReservationByKey(ctx context.Context, idempotency
 		WHERE idempotency_key = $1
 	`
 
-	var res ledger.Reservation
-	var status string
-	var expiresAt, createdAt, updatedAt time.Time
+	var (
+		id        string
+		ledgerID  string
+		sku       string
+		location  string
+		quantity  int64
+		storedKey string
+		status    string
+		expiresAt time.Time
+		createdAt time.Time
+		updatedAt time.Time
+	)
 
 	err := r.db.QueryRowContext(ctx, query, idempotencyKey).Scan(
-		&res.id, &res.ledgerID, &res.sku, &res.location, &res.quantity,
-		&res.idempotencyKey, &status, &expiresAt, &createdAt, &updatedAt,
+		&id, &ledgerID, &sku, &location, &quantity,
+		&storedKey, &status, &expiresAt, &createdAt, &updatedAt,
 	)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
@@ -110,13 +119,18 @@ func (r *LedgerRepository) FindReservationByKey(ctx context.Context, idempotency
 		return nil, err
 	}
 
-	// Reconstruct reservation
-	res.status = ledger.ReservationStatus(status)
-	res.expiresAt = expiresAt
-	res.createdAt = createdAt
-	res.updatedAt = updatedAt
-
-	return &res, nil
+	return ledger.NewReservationFromRecord(
+		id,
+		ledgerID,
+		sku,
+		location,
+		storedKey,
+		quantity,
+		ledger.ReservationStatus(status),
+		expiresAt,
+		createdAt,
+		updatedAt,
+	), nil
 }
 
 // FindByID finds a reservation by ID
@@ -127,13 +141,22 @@ func (r *LedgerRepository) FindByID(ctx context.Context, id string) (*ledger.Res
 		WHERE id = $1
 	`
 
-	var res ledger.Reservation
-	var status string
-	var expiresAt, createdAt, updatedAt time.Time
+	var (
+		resID       string
+		ledgerID    string
+		sku         string
+		location    string
+		quantity    int64
+		idempotency string
+		status      string
+		expiresAt   time.Time
+		createdAt   time.Time
+		updatedAt   time.Time
+	)
 
 	err := r.db.QueryRowContext(ctx, query, id).Scan(
-		&res.id, &res.ledgerID, &res.sku, &res.location, &res.quantity,
-		&res.idempotencyKey, &status, &expiresAt, &createdAt, &updatedAt,
+		&resID, &ledgerID, &sku, &location, &quantity,
+		&idempotency, &status, &expiresAt, &createdAt, &updatedAt,
 	)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
@@ -142,13 +165,18 @@ func (r *LedgerRepository) FindByID(ctx context.Context, id string) (*ledger.Res
 		return nil, err
 	}
 
-	// Reconstruct reservation
-	res.status = ledger.ReservationStatus(status)
-	res.expiresAt = expiresAt
-	res.createdAt = createdAt
-	res.updatedAt = updatedAt
-
-	return &res, nil
+	return ledger.NewReservationFromRecord(
+		resID,
+		ledgerID,
+		sku,
+		location,
+		idempotency,
+		quantity,
+		ledger.ReservationStatus(status),
+		expiresAt,
+		createdAt,
+		updatedAt,
+	), nil
 }
 
 // FindExpiredReservations finds all expired reservations before the given time
@@ -169,24 +197,38 @@ func (r *LedgerRepository) FindExpiredReservations(ctx context.Context, before t
 
 	var reservations []*ledger.Reservation
 	for rows.Next() {
-		var res ledger.Reservation
-		var status string
-		var expiresAt, createdAt, updatedAt time.Time
+		var (
+			id          string
+			ledgerID    string
+			sku         string
+			location    string
+			quantity    int64
+			idempotency string
+			status      string
+			expiresAt   time.Time
+			createdAt   time.Time
+			updatedAt   time.Time
+		)
 
 		if err := rows.Scan(
-			&res.id, &res.ledgerID, &res.sku, &res.location, &res.quantity,
-			&res.idempotencyKey, &status, &expiresAt, &createdAt, &updatedAt,
+			&id, &ledgerID, &sku, &location, &quantity,
+			&idempotency, &status, &expiresAt, &createdAt, &updatedAt,
 		); err != nil {
 			return nil, err
 		}
 
-		// Reconstruct reservation
-		res.status = ledger.ReservationStatus(status)
-		res.expiresAt = expiresAt
-		res.createdAt = createdAt
-		res.updatedAt = updatedAt
-
-		reservations = append(reservations, &res)
+		reservations = append(reservations, ledger.NewReservationFromRecord(
+			id,
+			ledgerID,
+			sku,
+			location,
+			idempotency,
+			quantity,
+			ledger.ReservationStatus(status),
+			expiresAt,
+			createdAt,
+			updatedAt,
+		))
 	}
 
 	if err := rows.Err(); err != nil {
@@ -205,8 +247,7 @@ func (r *LedgerRepository) SaveLedger(ctx context.Context, l *ledger.StockLedger
 
 func (r *LedgerRepository) createLedger(ctx context.Context, sku, location string) (*ledger.StockLedger, error) {
 	id := generateID()
-	now := time.Now()
-	
+
 	ledger, err := ledger.NewStockLedger(id, sku, location, 0)
 	if err != nil {
 		return nil, err
@@ -230,35 +271,7 @@ func (r *LedgerRepository) createLedger(ctx context.Context, sku, location strin
 }
 
 func (r *LedgerRepository) reconstructLedger(id, sku, location string, available, reserved, total int64, createdAt, updatedAt time.Time) *ledger.StockLedger {
-	// Create ledger with total quantity
-	ledger, err := ledger.NewStockLedger(id, sku, location, total)
-	if err != nil {
-		// Fallback: create with zero and adjust
-		ledger, _ = ledger.NewStockLedger(id, sku, location, 0)
-		ledger.Adjust(total)
-		return ledger
-	}
-	
-	// Adjust to match the actual state (available + reserved should equal total)
-	// If there's a mismatch, we need to adjust
-	currentTotal := ledger.Available() + ledger.Reserved()
-	if currentTotal != total {
-		diff := total - currentTotal
-		ledger.Adjust(diff)
-	}
-	
-	// Now we need to set reserved quantity
-	// Since Reserve() reduces available and increases reserved, we can simulate this
-	currentAvailable := ledger.Available()
-	if currentAvailable != available {
-		// Reserve the difference
-		reserveDiff := currentAvailable - available
-		if reserveDiff > 0 {
-			ledger.Reserve(reserveDiff)
-		}
-	}
-	
-	return ledger
+	return ledger.NewStockLedgerFromRecord(id, sku, location, available, reserved, total, createdAt, updatedAt)
 }
 
 func generateID() string {
@@ -274,4 +287,3 @@ func randomString(length int) string {
 	}
 	return string(b)
 }
-

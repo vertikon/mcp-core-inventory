@@ -1,0 +1,1437 @@
+{
+  "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+  "runs": [
+    {
+      "results": [
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/core/scheduler/scheduler.go"
+                },
+                "region": {
+                  "startColumn": 19,
+                  "startLine": 62
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "undefined: nats.ErrStreamNameExist"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/adapters/postgres/ledger_repository.go"
+                },
+                "region": {
+                  "startColumn": 8,
+                  "startLine": 103
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "res.id undefined (type ledger.Reservation has no field or method id)"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/adapters/postgres/ledger_repository.go"
+                },
+                "region": {
+                  "startColumn": 17,
+                  "startLine": 103
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "res.ledgerID undefined (type ledger.Reservation has no field or method ledgerID, but does have method LedgerID)"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/adapters/postgres/ledger_repository.go"
+                },
+                "region": {
+                  "startColumn": 32,
+                  "startLine": 103
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "res.sku undefined (type ledger.Reservation has no field or method sku)"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/adapters/postgres/ledger_repository.go"
+                },
+                "region": {
+                  "startColumn": 42,
+                  "startLine": 103
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "res.location undefined (type ledger.Reservation has no field or method location, but does have method Location)"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/adapters/postgres/ledger_repository.go"
+                },
+                "region": {
+                  "startColumn": 57,
+                  "startLine": 103
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "res.quantity undefined (type ledger.Reservation has no field or method quantity, but does have method Quantity)"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/adapters/postgres/ledger_repository.go"
+                },
+                "region": {
+                  "startColumn": 8,
+                  "startLine": 104
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "res.idempotencyKey undefined (type ledger.Reservation has no field or method idempotencyKey, but does have method IdempotencyKey)"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/adapters/postgres/ledger_repository.go"
+                },
+                "region": {
+                  "startColumn": 6,
+                  "startLine": 114
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "res.status undefined (type ledger.Reservation has no field or method status, but does have method Status)"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/adapters/postgres/ledger_repository.go"
+                },
+                "region": {
+                  "startColumn": 6,
+                  "startLine": 115
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "res.expiresAt undefined (type ledger.Reservation has no field or method expiresAt, but does have method ExpiresAt)"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/adapters/postgres/ledger_repository.go"
+                },
+                "region": {
+                  "startColumn": 6,
+                  "startLine": 116
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "res.createdAt undefined (type ledger.Reservation has no field or method createdAt, but does have method CreatedAt)"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/adapters/postgres/ledger_repository.go"
+                },
+                "region": {
+                  "startColumn": 6,
+                  "startLine": 117
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "res.updatedAt undefined (type ledger.Reservation has no field or method updatedAt, but does have method UpdatedAt)"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/adapters/postgres/ledger_repository.go"
+                },
+                "region": {
+                  "startColumn": 6,
+                  "startLine": 117
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "too many errors"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/app/query_available.go"
+                },
+                "region": {
+                  "startColumn": 2,
+                  "startLine": 7
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "\"github.com/vertikon/mcp-core-inventory/internal/domain/ledger\" imported and not used"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/adapters/redis/reservation_lock.go"
+                },
+                "region": {
+                  "startColumn": 2,
+                  "startLine": 55
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "declared and not used: script"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/mcp/generators/generator_factory.go"
+                },
+                "region": {
+                  "startColumn": 32,
+                  "startLine": 317
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "req.Stack undefined (type GenerateRequest has no field or method Stack)"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/mcp/generators/generator_factory.go"
+                },
+                "region": {
+                  "startColumn": 50,
+                  "startLine": 319
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "req.Stack undefined (type GenerateRequest has no field or method Stack)"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/mcp/generators/generator_factory.go"
+                },
+                "region": {
+                  "startColumn": 54,
+                  "startLine": 323
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "req.Stack undefined (type GenerateRequest has no field or method Stack)"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/mcp/generators/generator_factory.go"
+                },
+                "region": {
+                  "startColumn": 75,
+                  "startLine": 334
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "req.Stack undefined (type GenerateRequest has no field or method Stack)"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/mcp/generators/generator_factory.go"
+                },
+                "region": {
+                  "startColumn": 39,
+                  "startLine": 350
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "req.Stack undefined (type GenerateRequest has no field or method Stack)"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/mcp/generators/tinygo_generator.go"
+                },
+                "region": {
+                  "startColumn": 3,
+                  "startLine": 324
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "cannot use \"project\" (untyped string constant) as zap.Field value in argument to g.logger.Info"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/mcp/generators/tinygo_generator.go"
+                },
+                "region": {
+                  "startColumn": 14,
+                  "startLine": 324
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "cannot use req.Name (variable of type string) as zap.Field value in argument to g.logger.Info"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/mcp/generators/tinygo_generator.go"
+                },
+                "region": {
+                  "startColumn": 3,
+                  "startLine": 325
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "cannot use \"language\" (untyped string constant) as zap.Field value in argument to g.logger.Info"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/mcp/generators/tinygo_generator.go"
+                },
+                "region": {
+                  "startColumn": 15,
+                  "startLine": 325
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "cannot use g.language (variable of type string) as zap.Field value in argument to g.logger.Info"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/mcp/generators/tinygo_generator.go"
+                },
+                "region": {
+                  "startColumn": 3,
+                  "startLine": 326
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "cannot use \"features\" (untyped string constant) as zap.Field value in argument to g.logger.Info"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/mcp/generators/tinygo_generator.go"
+                },
+                "region": {
+                  "startColumn": 3,
+                  "startLine": 326
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "too many errors"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/mcp/registry/template_registry.go"
+                },
+                "region": {
+                  "startColumn": 6,
+                  "startLine": 17
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "TemplateInfo redeclared in this block"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/mcp/registry/mcp_registry.go"
+                },
+                "region": {
+                  "startColumn": 6,
+                  "startLine": 301
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "other declaration of TemplateInfo"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/mcp/registry/template_registry.go"
+                },
+                "region": {
+                  "startColumn": 17,
+                  "startLine": 75
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "templateInfo.Path undefined (type *TemplateInfo has no field or method Path)"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/mcp/registry/template_registry.go"
+                },
+                "region": {
+                  "startColumn": 3,
+                  "startLine": 124
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "unknown field Summary in struct literal of type TemplateInfo"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/mcp/registry/template_registry.go"
+                },
+                "region": {
+                  "startColumn": 3,
+                  "startLine": 125
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "unknown field Placeholders in struct literal of type TemplateInfo"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/mcp/registry/discovery.go"
+                },
+                "region": {
+                  "startColumn": 13,
+                  "startLine": 21
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "undefined: logger"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/mcp/registry/discovery.go"
+                },
+                "region": {
+                  "startColumn": 5,
+                  "startLine": 27
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "sd.mu undefined (type *ServiceDiscovery has no field or method mu)"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/mcp/registry/discovery.go"
+                },
+                "region": {
+                  "startColumn": 11,
+                  "startLine": 28
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "sd.mu undefined (type *ServiceDiscovery has no field or method mu)"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/mcp/registry/discovery.go"
+                },
+                "region": {
+                  "startColumn": 11,
+                  "startLine": 51
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "service.Description undefined (type *ServiceInfo has no field or method Description)"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/mcp/registry/service_registry.go"
+                },
+                "region": {
+                  "startColumn": 10,
+                  "startLine": 33
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "service.LastChecked undefined (type *ServiceInfo has no field or method LastChecked)"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/mcp/registry/service_registry.go"
+                },
+                "region": {
+                  "startColumn": 10,
+                  "startLine": 96
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "service.LastChecked undefined (type *ServiceInfo has no field or method LastChecked)"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/mcp/registry/template_registry.go"
+                },
+                "region": {
+                  "startColumn": 3,
+                  "startLine": 125
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "too many errors"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "tools/deployers/hybrid_deployer.go"
+                },
+                "region": {
+                  "startColumn": 2,
+                  "startLine": 10
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "\"github.com/vertikon/mcp-core-inventory/internal/infrastructure/cloud/kubernetes\" imported and not used"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "vet.exe: internal/core/crush/memory_optimizer.go"
+                },
+                "region": {
+                  "startColumn": 2,
+                  "startLine": 31
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "PolicyLRU redeclared in this block"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "vet.exe: cmd/tools-validator/main.go"
+                },
+                "region": {
+                  "startColumn": 4,
+                  "startLine": 60
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "unknown field StrictMode in struct literal of type \"github.com/vertikon/mcp-core-inventory/tools/validators\".ConfigValidateRequest"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "vet.exe: internal/ai/knowledge/indexer_test.go"
+                },
+                "region": {
+                  "startColumn": 60,
+                  "startLine": 68
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "not enough arguments in call to NewIndexer"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "vet.exe: internal/core/transformer/feedforward.go"
+                },
+                "region": {
+                  "startColumn": 21,
+                  "startLine": 194
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "ffn.router undefined (type *FeedForwardNetwork has no field or method router)"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "vet.exe: internal/domain/services/ai_domain_service.go"
+                },
+                "region": {
+                  "startColumn": 17,
+                  "startLine": 33
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "context.documents undefined (type *entities.KnowledgeContext has no field or method documents, but does have method Documents)"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "vet.exe: internal/core/state/distributed_store.go"
+                },
+                "region": {
+                  "startColumn": 22,
+                  "startLine": 543
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "invalid operation: cannot take address of dss.stats.LockWaitTime.Nanoseconds() (value of type int64)"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/domain/value_objects/validation_rule.go"
+                },
+                "region": {
+                  "startColumn": 22,
+                  "startLine": 69
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "non-constant format string in call to fmt.Errorf"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "vet.exe: internal/infrastructure/messaging/pubsub/pubsub_client.go"
+                },
+                "region": {
+                  "startColumn": 6,
+                  "startLine": 9
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "PubSubClient redeclared in this block"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "vet.exe: internal/infrastructure/compute/serverless/cloud_functions.go"
+                },
+                "region": {
+                  "startColumn": 46,
+                  "startLine": 14
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "undefined: FunctionConfig"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "vet.exe: internal/infrastructure/messaging/streaming/nats_jetstream.go"
+                },
+                "region": {
+                  "startColumn": 18,
+                  "startLine": 178
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "undefined: nats.ErrStreamNameExist"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "vet.exe: internal/infrastructure/persistence/relational/postgres_knowledge_repository.go"
+                },
+                "region": {
+                  "startColumn": 6,
+                  "startLine": 87
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "declared and not used: knowledge"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "vet.exe: internal/interfaces/cli/root.go"
+                },
+                "region": {
+                  "startColumn": 21,
+                  "startLine": 42
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "undefined: analytics"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "vet.exe: internal/mcp/registry/template_registry.go"
+                },
+                "region": {
+                  "startColumn": 6,
+                  "startLine": 17
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "TemplateInfo redeclared in this block"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "vet.exe: internal/mcp/generators/generator_factory.go"
+                },
+                "region": {
+                  "startColumn": 32,
+                  "startLine": 317
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "req.Stack undefined (type GenerateRequest has no field or method Stack)"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/security/encryption/encryption_manager.go"
+                },
+                "region": {
+                  "startColumn": 6,
+                  "startLine": 56
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Manager redeclared in this block"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/security/encryption/certificate_manager.go"
+                },
+                "region": {
+                  "startColumn": 6,
+                  "startLine": 42
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "other declaration of Manager"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/security/encryption/encryption_manager.go"
+                },
+                "region": {
+                  "startColumn": 3,
+                  "startLine": 64
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "unknown field keyManager in struct literal of type Manager"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/security/encryption/encryption_manager.go"
+                },
+                "region": {
+                  "startColumn": 16,
+                  "startLine": 71
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "m.keyManager undefined (type *Manager has no field or method keyManager)"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/security/encryption/encryption_manager.go"
+                },
+                "region": {
+                  "startColumn": 16,
+                  "startLine": 81
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "m.keyManager undefined (type *Manager has no field or method keyManager)"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/security/encryption/key_manager.go"
+                },
+                "region": {
+                  "startColumn": 6,
+                  "startLine": 52
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Manager redeclared in this block"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/security/encryption/certificate_manager.go"
+                },
+                "region": {
+                  "startColumn": 6,
+                  "startLine": 42
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "other declaration of Manager"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/security/encryption/key_manager.go"
+                },
+                "region": {
+                  "startColumn": 3,
+                  "startLine": 72
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "unknown field keyVersion in struct literal of type Manager"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/security/encryption/key_manager.go"
+                },
+                "region": {
+                  "startColumn": 6,
+                  "startLine": 82
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "km.encryptionKey undefined (type *Manager has no field or method encryptionKey)"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/security/encryption/key_manager.go"
+                },
+                "region": {
+                  "startColumn": 4,
+                  "startLine": 96
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "m.mu undefined (type *Manager has no field or method mu)"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/security/encryption/key_manager.go"
+                },
+                "region": {
+                  "startColumn": 10,
+                  "startLine": 97
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "m.mu undefined (type *Manager has no field or method mu)"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/security/encryption/key_manager.go"
+                },
+                "region": {
+                  "startColumn": 7,
+                  "startLine": 99
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "m.encryptionKey undefined (type *Manager has no field or method encryptionKey)"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/security/encryption/key_manager.go"
+                },
+                "region": {
+                  "startColumn": 7,
+                  "startLine": 99
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "too many errors"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "vet.exe: internal/state/cache/cache_coherency.go"
+                },
+                "region": {
+                  "startColumn": 11,
+                  "startLine": 162
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "cm.cache.Delete undefined (type *StateCache is pointer to interface, not interface)"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "vet.exe: internal/security/encryption/encryption_manager.go"
+                },
+                "region": {
+                  "startColumn": 6,
+                  "startLine": 56
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Manager redeclared in this block"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "vet.exe: internal/state/store/conflict_resolver.go"
+                },
+                "region": {
+                  "startColumn": 6,
+                  "startLine": 622
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "max redeclared in this block"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "vet.exe: internal/state/events/event_replay.go"
+                },
+                "region": {
+                  "startColumn": 2,
+                  "startLine": 249
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "declared and not used: snapshot"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "pkg/httpserver/server_test.go"
+                },
+                "region": {
+                  "startColumn": 5,
+                  "startLine": 216
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "comparison of function healthHandler == nil is always false"
+          },
+          "ruleId": "govet"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "pkg/httpserver/server_test.go"
+                },
+                "region": {
+                  "startColumn": 5,
+                  "startLine": 224
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "comparison of function readyHandler == nil is always false"
+          },
+          "ruleId": "govet"
+        }
+      ],
+      "tool": {
+        "driver": {
+          "informationUri": "https://github.com/vertikon/mcp-validator",
+          "name": "MCP Validator V9.1",
+          "version": "9.4"
+        }
+      }
+    }
+  ],
+  "version": "2.1.0"
+}

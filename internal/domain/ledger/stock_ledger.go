@@ -176,3 +176,20 @@ func (l *StockLedger) CanReserve(quantity int64) bool {
 	return l.available >= quantity && quantity > 0
 }
 
+// NewStockLedgerFromRecord reconstructs a ledger entry from persisted data.
+func NewStockLedgerFromRecord(
+	id, sku, location string,
+	available, reserved, total int64,
+	createdAt, updatedAt time.Time,
+) *StockLedger {
+	return &StockLedger{
+		id:        id,
+		sku:       sku,
+		location:  location,
+		available: available,
+		reserved:  reserved,
+		total:     total,
+		createdAt: createdAt,
+		updatedAt: updatedAt,
+	}
+}

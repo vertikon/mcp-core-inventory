@@ -41,7 +41,7 @@ func NewReservationCleanupService(
 		logger:          logger,
 		metrics:         metrics,
 		interval:        1 * time.Minute, // Run every minute
-		batchSize:       100,              // Process 100 at a time
+		batchSize:       100,             // Process 100 at a time
 	}
 }
 
@@ -71,7 +71,7 @@ func (s *ReservationCleanupService) Start(ctx context.Context) {
 // cleanup processes expired reservations
 func (s *ReservationCleanupService) cleanup(ctx context.Context) {
 	now := time.Now()
-	
+
 	// Find expired reservations
 	expiredReservations, err := s.reservationRepo.FindExpiredReservations(ctx, now)
 	if err != nil {
@@ -167,4 +167,3 @@ func (s *ReservationCleanupService) processExpiredReservation(ctx context.Contex
 
 	return nil
 }
-

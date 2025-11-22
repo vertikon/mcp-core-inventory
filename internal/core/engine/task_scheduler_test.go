@@ -119,8 +119,16 @@ func TestTaskScheduler_Stop(t *testing.T) {
 	}
 }
 
-func TestTaskScheduler_Schedule(t *testing.T) {
+func newTestScheduler(interval time.Duration) *TaskScheduler {
 	ts := NewTaskScheduler()
+	if interval > 0 {
+		ts.interval = interval
+	}
+	return ts
+}
+
+func TestTaskScheduler_Schedule(t *testing.T) {
+	ts := newTestScheduler(0)
 	ctx := context.Background()
 
 	if err := ts.Start(ctx); err != nil {
@@ -152,7 +160,7 @@ func TestTaskScheduler_Schedule(t *testing.T) {
 }
 
 func TestTaskScheduler_ScheduleInterval(t *testing.T) {
-	ts := NewTaskScheduler()
+	ts := newTestScheduler(0)
 	ctx := context.Background()
 
 	if err := ts.Start(ctx); err != nil {
@@ -184,7 +192,7 @@ func TestTaskScheduler_ScheduleInterval(t *testing.T) {
 }
 
 func TestTaskScheduler_Cancel(t *testing.T) {
-	ts := NewTaskScheduler()
+	ts := newTestScheduler(0)
 	ctx := context.Background()
 
 	if err := ts.Start(ctx); err != nil {
@@ -214,7 +222,7 @@ func TestTaskScheduler_Cancel(t *testing.T) {
 }
 
 func TestTaskScheduler_Cancel_NonExistent(t *testing.T) {
-	ts := NewTaskScheduler()
+	ts := newTestScheduler(0)
 	ctx := context.Background()
 
 	if err := ts.Start(ctx); err != nil {
@@ -229,7 +237,7 @@ func TestTaskScheduler_Cancel_NonExistent(t *testing.T) {
 }
 
 func TestTaskScheduler_ExecuteScheduledTask(t *testing.T) {
-	ts := NewTaskScheduler()
+	ts := newTestScheduler(20 * time.Millisecond)
 	ctx := context.Background()
 
 	if err := ts.Start(ctx); err != nil {
@@ -247,7 +255,7 @@ func TestTaskScheduler_ExecuteScheduledTask(t *testing.T) {
 	}
 
 	// Schedule task for immediate execution
-	when := time.Now().Add(100 * time.Millisecond)
+	when := time.Now().Add(30 * time.Millisecond)
 	_ = ts.Schedule(task, when)
 
 	// Wait for task to be executed
@@ -269,7 +277,7 @@ func TestTaskScheduler_ExecuteScheduledTask(t *testing.T) {
 }
 
 func TestTaskScheduler_ExecuteRepeatingTask(t *testing.T) {
-	ts := NewTaskScheduler()
+	ts := newTestScheduler(20 * time.Millisecond)
 	ctx := context.Background()
 
 	if err := ts.Start(ctx); err != nil {
@@ -291,11 +299,11 @@ func TestTaskScheduler_ExecuteRepeatingTask(t *testing.T) {
 	}
 
 	// Schedule repeating task
-	interval := 100 * time.Millisecond
+	interval := 50 * time.Millisecond
 	_ = ts.ScheduleInterval(task, interval)
 
 	// Wait for multiple executions
-	time.Sleep(350 * time.Millisecond)
+	time.Sleep(250 * time.Millisecond)
 
 	mu.Lock()
 	count := executionCount
@@ -316,7 +324,7 @@ func TestTaskScheduler_ExecuteRepeatingTask(t *testing.T) {
 }
 
 func TestTaskScheduler_TaskFailure(t *testing.T) {
-	ts := NewTaskScheduler()
+	ts := newTestScheduler(20 * time.Millisecond)
 	ctx := context.Background()
 
 	if err := ts.Start(ctx); err != nil {
@@ -334,7 +342,7 @@ func TestTaskScheduler_TaskFailure(t *testing.T) {
 	}
 
 	// Schedule task for immediate execution
-	when := time.Now().Add(100 * time.Millisecond)
+	when := time.Now().Add(30 * time.Millisecond)
 	_ = ts.Schedule(task, when)
 
 	// Wait for task to be executed (even if it fails)
@@ -371,4 +379,3 @@ func TestTaskScheduler_MultipleTasks(t *testing.T) {
 		t.Errorf("Expected 5 tasks, got %d", taskCount)
 	}
 }
-

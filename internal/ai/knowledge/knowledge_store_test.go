@@ -55,22 +55,38 @@ func (m *mockKnowledgeRepository) Delete(ctx context.Context, id string) error {
 
 // mockVectorClient and mockGraphClient for creating real Indexer
 type mockVectorClientForIndexer struct{}
-func (m *mockVectorClientForIndexer) Upsert(ctx context.Context, collection string, id string, vector []float64, metadata map[string]interface{}) error { return nil }
-func (m *mockVectorClientForIndexer) Search(ctx context.Context, collection string, queryVector []float64, limit int) ([]VectorResult, error) { return nil, nil }
-func (m *mockVectorClientForIndexer) Delete(ctx context.Context, collection string, id string) error { return nil }
-func (m *mockVectorClientForIndexer) DeleteCollection(ctx context.Context, collection string) error { return nil }
+
+func (m *mockVectorClientForIndexer) Upsert(ctx context.Context, collection string, id string, vector []float64, metadata map[string]interface{}) error {
+	return nil
+}
+func (m *mockVectorClientForIndexer) Search(ctx context.Context, collection string, queryVector []float64, limit int) ([]VectorResult, error) {
+	return nil, nil
+}
+func (m *mockVectorClientForIndexer) Delete(ctx context.Context, collection string, id string) error {
+	return nil
+}
+func (m *mockVectorClientForIndexer) DeleteCollection(ctx context.Context, collection string) error {
+	return nil
+}
 
 type mockGraphClientForIndexer struct{}
-func (m *mockGraphClientForIndexer) CreateNode(ctx context.Context, collection string, id string, properties map[string]interface{}) error { return nil }
-func (m *mockGraphClientForIndexer) CreateEdge(ctx context.Context, fromID string, toID string, relation string, properties map[string]interface{}) error { return nil }
-func (m *mockGraphClientForIndexer) Query(ctx context.Context, cypher string, params map[string]interface{}) ([]GraphResult, error) { return nil, nil }
+
+func (m *mockGraphClientForIndexer) CreateNode(ctx context.Context, collection string, id string, properties map[string]interface{}) error {
+	return nil
+}
+func (m *mockGraphClientForIndexer) CreateEdge(ctx context.Context, fromID string, toID string, relation string, properties map[string]interface{}) error {
+	return nil
+}
+func (m *mockGraphClientForIndexer) Query(ctx context.Context, cypher string, params map[string]interface{}) ([]GraphResult, error) {
+	return nil, nil
+}
 func (m *mockGraphClientForIndexer) DeleteNode(ctx context.Context, id string) error { return nil }
 
 func TestNewKnowledgeStore(t *testing.T) {
 	repo := newMockKnowledgeRepository()
-	indexer := NewIndexer(&mockVectorClientForIndexer{}, &mockGraphClientForIndexer{}, 1000, 200)
+	indexer := NewIndexer(&mockVectorClientForIndexer{}, &mockGraphClientForIndexer{}, &mockEmbedder{}, 1000, 200)
 
-	store := NewKnowledgeStore(repo, indexer)
+	store := NewKnowledgeStore(repo, indexer, &mockEmbedder{})
 
 	if store == nil {
 		t.Fatal("NewKnowledgeStore returned nil")
@@ -85,8 +101,8 @@ func TestNewKnowledgeStore(t *testing.T) {
 
 func TestKnowledgeStore_AddKnowledge(t *testing.T) {
 	repo := newMockKnowledgeRepository()
-	indexer := NewIndexer(&mockVectorClientForIndexer{}, &mockGraphClientForIndexer{}, 1000, 200)
-	store := NewKnowledgeStore(repo, indexer)
+	indexer := NewIndexer(&mockVectorClientForIndexer{}, &mockGraphClientForIndexer{}, &mockEmbedder{}, 1000, 200)
+	store := NewKnowledgeStore(repo, indexer, &mockEmbedder{})
 
 	ctx := context.Background()
 	knowledge, err := store.AddKnowledge(ctx, "test knowledge", "test description")
@@ -105,8 +121,8 @@ func TestKnowledgeStore_AddKnowledge(t *testing.T) {
 
 func TestKnowledgeStore_AddDocument(t *testing.T) {
 	repo := newMockKnowledgeRepository()
-	indexer := NewIndexer(&mockVectorClientForIndexer{}, &mockGraphClientForIndexer{}, 1000, 200)
-	store := NewKnowledgeStore(repo, indexer)
+	indexer := NewIndexer(&mockVectorClientForIndexer{}, &mockGraphClientForIndexer{}, &mockEmbedder{}, 1000, 200)
+	store := NewKnowledgeStore(repo, indexer, &mockEmbedder{})
 
 	ctx := context.Background()
 	knowledge, _ := store.AddKnowledge(ctx, "test", "desc")
@@ -121,8 +137,8 @@ func TestKnowledgeStore_AddDocument(t *testing.T) {
 
 func TestKnowledgeStore_GetKnowledge(t *testing.T) {
 	repo := newMockKnowledgeRepository()
-	indexer := NewIndexer(&mockVectorClientForIndexer{}, &mockGraphClientForIndexer{}, 1000, 200)
-	store := NewKnowledgeStore(repo, indexer)
+	indexer := NewIndexer(&mockVectorClientForIndexer{}, &mockGraphClientForIndexer{}, &mockEmbedder{}, 1000, 200)
+	store := NewKnowledgeStore(repo, indexer, &mockEmbedder{})
 
 	ctx := context.Background()
 	created, _ := store.AddKnowledge(ctx, "test", "desc")
@@ -141,8 +157,8 @@ func TestKnowledgeStore_GetKnowledge(t *testing.T) {
 
 func TestKnowledgeStore_DeleteKnowledge(t *testing.T) {
 	repo := newMockKnowledgeRepository()
-	indexer := NewIndexer(&mockVectorClientForIndexer{}, &mockGraphClientForIndexer{}, 1000, 200)
-	store := NewKnowledgeStore(repo, indexer)
+	indexer := NewIndexer(&mockVectorClientForIndexer{}, &mockGraphClientForIndexer{}, &mockEmbedder{}, 1000, 200)
+	store := NewKnowledgeStore(repo, indexer, &mockEmbedder{})
 
 	ctx := context.Background()
 	knowledge, _ := store.AddKnowledge(ctx, "test", "desc")
@@ -163,8 +179,8 @@ func TestKnowledgeStore_DeleteKnowledge(t *testing.T) {
 
 func TestKnowledgeStore_GetStats(t *testing.T) {
 	repo := newMockKnowledgeRepository()
-	indexer := NewIndexer(&mockVectorClientForIndexer{}, &mockGraphClientForIndexer{}, 1000, 200)
-	store := NewKnowledgeStore(repo, indexer)
+	indexer := NewIndexer(&mockVectorClientForIndexer{}, &mockGraphClientForIndexer{}, &mockEmbedder{}, 1000, 200)
+	store := NewKnowledgeStore(repo, indexer, &mockEmbedder{})
 
 	ctx := context.Background()
 	knowledge, _ := store.AddKnowledge(ctx, "test", "desc")
@@ -189,8 +205,8 @@ func TestKnowledgeStore_GetStats(t *testing.T) {
 
 func TestKnowledgeStore_IncrementVersion(t *testing.T) {
 	repo := newMockKnowledgeRepository()
-	indexer := NewIndexer(&mockVectorClientForIndexer{}, &mockGraphClientForIndexer{}, 1000, 200)
-	store := NewKnowledgeStore(repo, indexer)
+	indexer := NewIndexer(&mockVectorClientForIndexer{}, &mockGraphClientForIndexer{}, &mockEmbedder{}, 1000, 200)
+	store := NewKnowledgeStore(repo, indexer, &mockEmbedder{})
 
 	ctx := context.Background()
 	knowledge, _ := store.AddKnowledge(ctx, "test", "desc")
@@ -211,8 +227,8 @@ func TestKnowledgeStore_IncrementVersion(t *testing.T) {
 
 func TestKnowledgeStore_BulkIndex(t *testing.T) {
 	repo := newMockKnowledgeRepository()
-	indexer := NewIndexer(&mockVectorClientForIndexer{}, &mockGraphClientForIndexer{}, 1000, 200)
-	store := NewKnowledgeStore(repo, indexer)
+	indexer := NewIndexer(&mockVectorClientForIndexer{}, &mockGraphClientForIndexer{}, &mockEmbedder{}, 1000, 200)
+	store := NewKnowledgeStore(repo, indexer, &mockEmbedder{})
 
 	ctx := context.Background()
 	knowledge, _ := store.AddKnowledge(ctx, "test", "desc")
@@ -234,4 +250,3 @@ func TestKnowledgeStore_BulkIndex(t *testing.T) {
 		t.Errorf("Expected 2 documents after bulk index, got %d", stats.DocumentCount)
 	}
 }
-

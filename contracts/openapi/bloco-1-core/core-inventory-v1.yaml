@@ -1,0 +1,281 @@
+openapi: 3.0.3
+info:
+  title: MCP Core Inventory API
+  version: 1.0.0
+  description: >
+    API oficial do bloco-1 para operações determinísticas de estoque.
+servers:
+  - url: https://api.vertikon.com/inventory/v1
+    description: Produção
+  - url: http://localhost:8080/v1
+    description: Desenvolvimento local
+tags:
+  - name: Reservations
+  - name: Adjustments
+  - name: Queries
+paths:
+  /reserve:
+    post:
+      tags: [Reservations]
+      summary: Cria uma reserva de estoque
+      operationId: reserveStock
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReserveRequest'
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+      responses:
+        '200':
+          description: Reserva criada
+          headers:
+            X-Reservation-Id:
+              schema: { type: string }
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReserveResponse'
+        '409':
+          description: Conflito de estoque
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Falha de validação
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /confirm:
+    post:
+      tags: [Reservations]
+      summary: Confirma uma reserva existente
+      operationId: confirmReservation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfirmRequest'
+      responses:
+        '200':
+          description: Reserva confirmada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConfirmResponse'
+        '404':
+          description: Reserva não encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /release:
+    post:
+      tags: [Reservations]
+      summary: Libera uma reserva
+      operationId: releaseReservation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReleaseRequest'
+      responses:
+        '200':
+          description: Reserva liberada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReleaseResponse'
+        '404':
+          description: Reserva não encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /adjust:
+    post:
+      tags: [Adjustments]
+      summary: Ajusta manualmente um saldo
+      operationId: adjustStock
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdjustRequest'
+      responses:
+        '200':
+          description: Ajuste realizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdjustResponse'
+        '422':
+          description: Ajuste inválido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /available:
+    get:
+      tags: [Queries]
+      summary: Consulta saldo disponível
+      operationId: queryAvailable
+      parameters:
+        - in: query
+          name: sku
+          required: true
+          schema: { type: string }
+        - in: query
+          name: location
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: Consulta realizada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueryResponse'
+        '404':
+          description: Ledger inexistente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  parameters:
+    IdempotencyKey:
+      name: X-Idempotency-Key
+      in: header
+      required: false
+      schema: { type: string, minLength: 16, maxLength: 64 }
+      description: Chave idempotente enviada pelo cliente.
+  schemas:
+    ReserveRequest:
+      type: object
+      required: [sku, location, quantity]
+      properties:
+        sku:
+          type: string
+        location:
+          type: string
+        quantity:
+          type: integer
+          minimum: 1
+        ttl_seconds:
+          type: integer
+          minimum: 60
+          maximum: 3600
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+    ReserveResponse:
+      type: object
+      properties:
+        reservation_id:
+          type: string
+        sku:
+          type: string
+        location:
+          type: string
+        quantity:
+          type: integer
+        expires_at:
+          type: string
+          format: date-time
+    ConfirmRequest:
+      type: object
+      required: [reservation_id]
+      properties:
+        reservation_id:
+          type: string
+    ConfirmResponse:
+      type: object
+      properties:
+        reservation_id:
+          type: string
+        sku:
+          type: string
+        location:
+          type: string
+        quantity:
+          type: integer
+        confirmed_at:
+          type: string
+          format: date-time
+    ReleaseRequest:
+      type: object
+      required: [reservation_id]
+      properties:
+        reservation_id:
+          type: string
+        reason:
+          type: string
+    ReleaseResponse:
+      type: object
+      properties:
+        reservation_id:
+          type: string
+        sku:
+          type: string
+        location:
+          type: string
+        quantity:
+          type: integer
+        released_at:
+          type: string
+          format: date-time
+    AdjustRequest:
+      type: object
+      required: [sku, location, quantity, reason, created_by]
+      properties:
+        sku:
+          type: string
+        location:
+          type: string
+        quantity:
+          type: integer
+        reason:
+          type: string
+        created_by:
+          type: string
+    AdjustResponse:
+      type: object
+      properties:
+        ledger_id:
+          type: string
+        sku:
+          type: string
+        location:
+          type: string
+        new_total:
+          type: integer
+        new_available:
+          type: integer
+    QueryResponse:
+      type: object
+      properties:
+        sku:
+          type: string
+        location:
+          type: string
+        available:
+          type: integer
+        reserved:
+          type: integer
+        total:
+          type: integer
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string

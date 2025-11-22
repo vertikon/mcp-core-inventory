@@ -3,6 +3,7 @@ package httpserver
 import (
 	"context"
 	"net/http"
+	"net/http/httptest"
 	"testing"
 	"time"
 
@@ -211,18 +212,29 @@ func TestServer_Middlewares(t *testing.T) {
 }
 
 func TestHealthHandler(t *testing.T) {
-	// This is tested indirectly through server tests
-	// but we can verify the handler function exists
-	if healthHandler == nil {
-		t.Error("healthHandler should be defined")
+	e := echo.New()
+	req := httptest.NewRequest(http.MethodGet, "/health", nil)
+	rec := httptest.NewRecorder()
+	ctx := e.NewContext(req, rec)
+
+	if err := healthHandler(ctx); err != nil {
+		t.Fatalf("healthHandler() error = %v", err)
+	}
+	if rec.Code != http.StatusOK {
+		t.Fatalf("healthHandler() status = %d, want %d", rec.Code, http.StatusOK)
 	}
 }
 
 func TestReadyHandler(t *testing.T) {
-	// This is tested indirectly through server tests
-	// but we can verify the handler function exists
-	if readyHandler == nil {
-		t.Error("readyHandler should be defined")
+	e := echo.New()
+	req := httptest.NewRequest(http.MethodGet, "/ready", nil)
+	rec := httptest.NewRecorder()
+	ctx := e.NewContext(req, rec)
+
+	if err := readyHandler(ctx); err != nil {
+		t.Fatalf("readyHandler() error = %v", err)
+	}
+	if rec.Code != http.StatusOK {
+		t.Fatalf("readyHandler() status = %d, want %d", rec.Code, http.StatusOK)
 	}
 }
-

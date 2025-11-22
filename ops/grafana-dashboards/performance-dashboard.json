@@ -1,0 +1,164 @@
+# Performance Testing Dashboard for mcp-core-inventory
+
+## Overview
+Dashboard to monitor real-time performance metrics and race condition detection during load testing and production monitoring.
+
+## Variables
+- `base_url`: http://localhost:8080/v1
+- `warehouse_location`: WH-MAIN
+- `test_sku`: BLACK-FRIDAY-SPECIAL-001
+
+## Dashboard Panels
+
+### Row 1: Real-time Request Metrics
+* **Request Rate (RPS)**
+  - Rate: http_server_requests_total
+  - Legend: {{method}} {{status}}
+  - Unit: req/s
+  
+* **Response Time Distribution**
+  - Heatmap: http_server_request_duration_seconds_bucket
+  - X-axis: Request latency buckets
+  - Y-axis: Time
+  - Color: Request count
+
+* **Error Rate**
+  - Stat: (http_server_requests_total{status=~"4..|5.."} / http_server_requests_total) * 100
+  - Unit: percent
+  - Thresholds: 5% (warning), 10% (critical)
+
+### Row 2: Race Condition Detection
+* **Race Condition Incidents**
+  - Stat: race_condition_incidents_total
+  - Visualization: Single stat + Sparkline
+  - Color: red if > 0
+  
+* **Stock Inconsistency Events**
+  - Stat: stock_inconsistency_total
+  - Visualization: Single stat + Trend
+  - Color: red if > 0
+  
+* **Lock Acquisition Failures**
+  - Rate: lock_acquisition_failures_total
+  - Unit: failures/sec
+  - Legend: {{lock_type}}
+
+### Row 3: Stock Ledger Metrics
+* **Available Stock Levels**
+  - Gauge: stock_ledger_available_quantity
+  - Label: {{sku}}, {{location}}
+  - Thresholds: 10 (warning), 0 (critical)
+  
+* **Reserved Stock**
+  - Gauge: stock_ledger_reserved_quantity
+  - Label: {{sku}}, {{location}}
+  
+* **Stock Reservation Rate**
+  - Rate: stock_reservations_total
+  - Unit: reservations/sec
+  - Legend: {{status}}
+
+### Row 4: System Performance
+* **Database Connection Pool**
+  - Graph: db_connections_active
+  - Label: {{database}}
+  - Unit: connections
+  
+* **Cache Hit Rate**
+  - Stat: (cache_hits_total / (cache_hits_total + cache_misses_total)) * 100
+  - Unit: percent
+  - Thresholds: 80% (warning), 60% (critical)
+
+* **NATS Message Queue Depth**
+  - Graph: nats_jetstream_stream_consumer_msg_ack
+  - Label: {{stream}}, {{consumer}}
+  - Unit: messages
+
+### Row 5: Performance Under Load
+* **Concurrent Users vs Response Time**
+  - Graph: Concurrent users (custom metric) vs http_server_request_duration_seconds
+  - Left Y-axis: Response time (ms)
+  - Right Y-axis: Active users
+  
+* **Throughput vs Error Rate**
+  - Dual axis graph
+  - Left: Request rate (RPS)
+  - Right: Error rate (%)
+
+### Row 6: Alerting Panel
+* **Active Alerts**
+  - Table: alert_conditions
+  - Columns: Alert Name, Severity, Duration, Value
+
+## Alert Rules
+
+### Critical Alerts (PagerDuty)
+- **Race Conditions Detected**
+  - Condition: increase(race_condition_incidents_total[1m]) > 0
+  - Severity: critical
+  - Message: "🚨 RACE CONDITION DETECTED in mcp-core-inventory"
+  
+- **Stock Inconsistency**
+  - Condition: increase(stock_inconsistency_total[1m]) > 0
+  - Severity: critical
+  - Message: "🚨 STOCK INCONSISTENCY detected - possible data corruption"
+
+- **Negative Stock Available**
+  - Condition: stock_ledger_available_quantity < 0
+  - Severity: critical
+  - Message: "🚨 NEGATIVE STOCK detected - business logic failure"
+
+### Warning Alerts (Slack)
+- **High Error Rate**
+  - Condition: error_rate > 5%
+  - Severity: warning
+  - Message: "⚠️ High error rate detected in inventory service"
+  
+- **Slow Response Times**
+  - Condition: histogram_quantile(0.95, rate(http_server_request_duration_seconds_bucket[1m])) > 500ms
+  - Severity: warning
+  - Message: "⚠️ Response times degrading (P95 > 500ms)"
+
+- **Low Cache Hit Rate**
+  - Condition: cache_hit_rate < 80%
+  - Duration: 5m
+  - Severity: warning
+  - Message: "⚠️ Low cache hit rate - may impact performance"
+
+## Annotations
+- **Load Test Start**: Manual annotation when load tests begin
+- **Deployment Events**: Auto-annotation from CI/CD pipeline
+- **Configuration Changes**: Manual annotation for config updates
+
+## Templating for Multi-Environment
+```json
+{
+  "dashboard": {
+    "uid": "mcp-core-inventory-performance",
+    "title": "MCP Core Inventory - Performance Dashboard",
+    "tags": ["mcp-core-inventory", "performance", "inventory"],
+    "timezone": "browser",
+    "refresh": "5s",
+    "variables": {
+      "base_url": {
+        "type": "constant",
+        "value": "http://localhost:8080/v1"
+      },
+      "environment": {
+        "type": "constant", 
+        "value": "development"
+      }
+    }
+  }
+}
+```
+
+## Export Dashboard
+```bash
+# Import to Grafana
+curl -X POST \
+  -H "Authorization: Bearer $GRAFANA_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d @performance-dashboard.json \
+  http://grafana:3000/api/dashboards/db
+```

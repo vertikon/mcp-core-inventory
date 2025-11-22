@@ -1,1 +1,4 @@
-# Função: Sincronizar repositório (pull/push templates)
+// Package repo contains buildable stubs until the real implementation is ready.
+package repo
+
+// TODO: Função: Sincronizar repositório (pull/push templates).
